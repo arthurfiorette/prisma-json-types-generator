@@ -19,7 +19,7 @@
   "dependencies": {
     "@prisma/client": "3.7.0",
     "@prisma/generator-helper": "3.7.0",
-    "@prisma/sdk": "3.7.0",
+    "@prisma/sdk": "3.15.2",
     "prettier": "2.5.0"
   },
   "devDependencies": {
