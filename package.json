@@ -1,7 +1,7 @@
 {
   "name": "prisma-json-types-generator",
   "description": "Changes JsonValues to your custom typescript type",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/generator.js",
   "bin": "./dist/bin.js",
   "license": "MIT",
