@@ -1,0 +1,11 @@
+export function createNamespace(nsName: string) {
+  return `
+
+declare global {
+  namespace ${nsName} {}
+
+  type DeepPartial<T> = T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T;  
+};
+
+`.trim();
+}
