@@ -86,7 +86,7 @@ export async function handleModule(
               break;
  
           case 'NullableJsonNullValueInput | InputJsonValue':
-            replacer(signature.type.pos, signature.type.end, `Nullable<DeepPartial<${nsName}.${typename}>>`);
+            replacer(signature.type.pos, signature.type.end, `DeepPartial<${nsName}.${typename}> | null`);
             break;
 
           // TODO
