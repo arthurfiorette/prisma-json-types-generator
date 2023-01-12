@@ -68,11 +68,12 @@ export async function handleModule(
 
         // TODO: JsonFilter and JsonWithAggregatesFilter
         switch (signatureType) {
-          case 'NullableJsonNullValueInput | InputJsonValue':
-            replacer(signature.type.pos, signature.type.end, `Nullable<${nsName}.${typename}>`);
-            break;
           case 'JsonValue':
             replacer(signature.type.pos, signature.type.end, `${nsName}.${typename}`);
+            break;
+            
+          case 'JsonValue | null':
+            replacer(signature.type.pos, signature.type.end, `Nullable<${nsName}.${typename}>`);
             break;
 
           case 'InputJsonValue':
@@ -81,7 +82,11 @@ export async function handleModule(
               signature.type.pos,
               signature.type.end,
               `DeepPartial<${nsName}.${typename}>`
-            );
+              );
+              break;
+ 
+          case 'NullableJsonNullValueInput | InputJsonValue':
+            replacer(signature.type.pos, signature.type.end, `Nullable<DeepPartial<${nsName}.${typename}>>`);
             break;
 
           // TODO
