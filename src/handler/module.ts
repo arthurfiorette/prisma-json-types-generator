@@ -73,7 +73,7 @@ export async function handleModule(
             break;
             
           case 'JsonValue | null':
-            replacer(signature.type.pos, signature.type.end, `Nullable<${nsName}.${typename}>`);
+            replacer(signature.type.pos, signature.type.end, `${nsName}.${typename} | null`);
             break;
 
           case 'InputJsonValue':
