@@ -8,7 +8,11 @@ import { parseDmmf } from './helpers/dmmf';
 export async function onGenerate(options: GeneratorOptions) {
   const nsName = options.generator.config.namespace || 'PrismaJson';
 
-  const { content, replacer, sourcePath, update } = await readPrismaDeclarations(nsName);
+  const { content, replacer, sourcePath, update } = await readPrismaDeclarations(
+    nsName,
+    options.generator.config.output,
+    options.schemaPath
+  );
 
   const tsSource = ts.createSourceFile(
     sourcePath,

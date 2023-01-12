@@ -15,13 +15,22 @@ export type Declaration = {
   update: () => Promise<void>;
 };
 
-export async function readPrismaDeclarations(nsName: string): Promise<Declaration> {
+export async function readPrismaDeclarations(
+  nsName: string,
+  overrideTarget?: string,
+  schemaTarget?: string
+): Promise<Declaration> {
   const declaration = {} as Declaration;
 
-  declaration.sourcePath = path.resolve(
-    path.dirname(require.resolve('.prisma/client')),
-    'index.d.ts'
-  );
+  declaration.sourcePath = overrideTarget
+    ? overrideTarget.startsWith('.')
+      ? path.resolve(schemaTarget!, overrideTarget)
+      : require.resolve(overrideTarget)
+    : path.resolve(
+        // prisma client directory
+        path.dirname(require.resolve('.prisma/client')),
+        'index.d.ts'
+      );
 
   // reads the file content
   declaration.content = await fs.readFile(declaration.sourcePath, 'utf-8');

@@ -28,6 +28,8 @@ generator client {
 generator test {
   provider = "prisma-json-types-generator"
   namespace = "PrismaJson" // default
+  output = "./custom.d.ts" // defaults to where the prisma client is generated.
+  // uses ./ to resolve from this schema path, or an importable path to resolve with require.resolve
 }
 
 model Test {
