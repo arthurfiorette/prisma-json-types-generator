@@ -68,6 +68,9 @@ export async function handleModule(
 
         // TODO: JsonFilter and JsonWithAggregatesFilter
         switch (signatureType) {
+          case 'NullableJsonNullValueInput | InputJsonValue':
+            replacer(signature.type.pos, signature.type.end, `Nullable<${nsName}.${typename}>`);
+            break;
           case 'JsonValue':
             replacer(signature.type.pos, signature.type.end, `${nsName}.${typename}`);
             break;
