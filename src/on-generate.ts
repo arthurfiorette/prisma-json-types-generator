@@ -10,7 +10,7 @@ export async function onGenerate(options: GeneratorOptions) {
 
   const { content, replacer, sourcePath, update } = await readPrismaDeclarations(
     nsName,
-    options.generator.config.output,
+    options.generator.output?.value,
     options.schemaPath
   );
 
