@@ -23,7 +23,7 @@ export async function readPrismaDeclarations(
   const declaration = {} as Declaration;
 
   declaration.sourcePath = overrideTarget
-    ? overrideTarget.startsWith('.')
+    ? overrideTarget.startsWith('./')
       ? path.resolve(schemaTarget!, overrideTarget)
       : require.resolve(overrideTarget)
     : path.resolve(
