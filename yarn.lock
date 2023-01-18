@@ -60,9 +60,9 @@
     debug "4.3.4"
     strip-ansi "6.0.1"
 
-"@prisma/debug@4.8.1":
-  version "4.8.1"
-  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-4.8.1.tgz"
+"@prisma/debug@4.9.0":
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/@prisma/debug/-/debug-4.9.0.tgz#8e08ddcaead3ea6977cdfcc7ddbbbdb3d40698d9"
   dependencies:
     "@types/debug" "4.1.7"
     debug "4.3.4"
@@ -124,11 +124,11 @@
     chalk "4.1.2"
     cross-spawn "7.0.3"
 
-"@prisma/generator-helper@4.8.1":
-  version "4.8.1"
-  resolved "https://registry.npmjs.org/@prisma/generator-helper/-/generator-helper-4.8.1.tgz"
+"@prisma/generator-helper@4.9.0":
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/@prisma/generator-helper/-/generator-helper-4.9.0.tgz#7bf61f33047c25ffb1fba3a528a2597a62ddbc68"
   dependencies:
-    "@prisma/debug" "4.8.1"
+    "@prisma/debug" "4.9.0"
     "@types/cross-spawn" "6.0.2"
     chalk "4.1.2"
     cross-spawn "7.0.3"

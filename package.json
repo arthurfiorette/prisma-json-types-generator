@@ -23,7 +23,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@prisma/generator-helper": "4.8.1",
+    "@prisma/generator-helper": "4.9.0",
     "@prisma/sdk": "^4.0.0"
   },
   "devDependencies": {
