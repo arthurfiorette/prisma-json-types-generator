@@ -10,7 +10,7 @@ export type Declaration = {
   /** replaces the coordinates with the provided text, adjusting the coords to previous changes.  */
   replacer: (start: number, end: number, text: string) => void;
   /** a list of changes made in the original file to adjust any future coordinates of texts */
-  changeset: Array<{ start: number; end: number; diff: number }>;
+  changeset: Array<{ start: number; diff: number }>;
   /** updates the original file of sourcePath with the content's contents */
   update: () => Promise<void>;
 };
@@ -70,7 +70,10 @@ export async function readPrismaDeclarations(
       declaration.content.slice(0, start) + text + declaration.content.slice(end);
 
     // adds the change to the list
-    declaration.changeset.push({ start, end, diff: start - end + text.length });
+    declaration.changeset.push({
+      start,
+      diff: start - end + text.length
+    });
   };
 
   declaration.update = async () => {
