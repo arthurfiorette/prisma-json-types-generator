@@ -78,9 +78,15 @@ and changes their field type in the original file.
 > ⚠️ **It just changes the declaration files of your generated client, no runtime code is
 > affected!**
 
+### Some types are still json!
+
+There's some complex json types like `JsonFilter` and `JsonWithAggregatesFilter` that
+still aren't supported. Feel free to make a PR!
+
+https://github.com/arthurfiorette/prisma-json-types-generator/blob/9b2ceea0a8372629d224287a5590dbce1f0ca6dd/src/handler/module.ts#L92-L98
+
 ### Limitations
 
-- This project is a temporary workaround to https://github.com/prisma/prisma/issues/3219.
-  (and possible solution).
+- This project is a temporary workaround _(and possible solution)_ to https://github.com/prisma/prisma/issues/3219.
 - Json types inside `type` declarations won't work. (see
   https://github.com/prisma/prisma/issues/13726)
