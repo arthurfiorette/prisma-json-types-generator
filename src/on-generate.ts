@@ -8,8 +8,22 @@ import { parseDmmf } from './helpers/dmmf';
 export async function onGenerate(options: GeneratorOptions) {
   const nsName = options.generator.config.namespace || 'PrismaJson';
 
+  const prismaClientOptions = options.otherGenerators.find((g) => g.name === 'client');
+
+  if (!prismaClientOptions) {
+    throw new Error(
+      'Could not find client generator options, are you using prisma-client-js before prisma-json-types-generator?'
+    );
+  }
+
+  if (!prismaClientOptions.output?.value) {
+    console.debug({ prismaClientOptions });
+    throw new Error('prisma client output not found');
+  }
+
   const { content, replacer, sourcePath, update } = await readPrismaDeclarations(
     nsName,
+    prismaClientOptions.output.value,
     options.generator.config.clientOutput,
     options.schemaPath
   );
