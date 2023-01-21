@@ -1,9 +1,8 @@
-import { logger } from '@prisma/sdk';
 import ts from 'typescript';
 import type { Declaration } from '../file/reader';
 import type { ModelWithRegex } from '../helpers/dmmf';
-import { JSON_REGEX } from '../helpers/regex';
 import { replaceSignature } from '../helpers/handle-signature';
+import { JSON_REGEX } from '../helpers/regex';
 
 export async function handleModule(
   module: ts.ModuleDeclaration,
@@ -16,8 +15,7 @@ export async function handleModule(
     .find((n): n is ts.ModuleBlock => n.kind === ts.SyntaxKind.ModuleBlock);
 
   if (!namespace) {
-    logger.error('Prisma namespace could not be found');
-    return;
+    throw new Error('Prisma namespace could not be found');
   }
 
   for (const statement of namespace.statements) {

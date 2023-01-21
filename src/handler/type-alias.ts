@@ -1,9 +1,8 @@
-import { logger } from '@prisma/sdk';
 import ts from 'typescript';
 import type { Declaration } from '../file/reader';
 import type { ModelWithRegex } from '../helpers/dmmf';
-import { JSON_REGEX } from '../helpers/regex';
 import { replaceSignature } from '../helpers/handle-signature';
+import { JSON_REGEX } from '../helpers/regex';
 
 export async function handleTypeAlias(
   typeAlias: ts.TypeAliasDeclaration,
@@ -30,8 +29,7 @@ export async function handleTypeAlias(
 
   // not a type literal. TODO: there is a way of this happen?
   if (object.kind !== ts.SyntaxKind.TypeLiteral) {
-    logger.error(`Provided object is not a type literal: ${object.getText()}`);
-    return;
+    throw new Error(`Provided object is not a type literal: ${object.getText()}`);
   }
 
   for (const member of object.members) {

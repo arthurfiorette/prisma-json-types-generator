@@ -97,7 +97,7 @@ export function replaceSignature(
 
     default:
       console.log(
-        `Type (${signatureType.getText()}) at ${typeAliasName}.${fieldName} is not supported.`
+        `\x1b[90m✘\x1b[0m Type \x1b[1m${typeAliasName}.${fieldName}\x1b[0m is not supported.`
       );
   }
 }

@@ -17,8 +17,9 @@ export async function onGenerate(options: GeneratorOptions) {
   }
 
   if (!prismaClientOptions.output?.value) {
-    console.debug({ prismaClientOptions });
-    throw new Error('prisma client output not found');
+    throw new Error(
+      'prisma client output not found: ' + JSON.stringify(prismaClientOptions, null, 2)
+    );
   }
 
   const { content, replacer, sourcePath, update } = await readPrismaDeclarations(
