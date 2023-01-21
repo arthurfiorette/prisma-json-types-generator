@@ -21,15 +21,13 @@ A generator that changes the Prisma Client output to strongly type Json fields
 
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["windows", "native"]
 }
 
 /// >>> ALWAYS PUT AFTER THE PRISMA CLIENT GENERATOR <<<
 generator test {
   provider = "prisma-json-types-generator"
   // namespace = "PrismaJson"
-  // clientOutput = ".prisma/client" 
-  // uses ./ to resolve relative to this schema path, or an importable path to resolve with require.resolve
+  // clientOutput = ".prisma/client" // (./ -> relative to schema, or an importable path to require() it)
 }
 
 model Test {
