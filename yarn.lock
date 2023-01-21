@@ -89,9 +89,9 @@
   version "3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11"
   resolved "https://registry.npmjs.org/@prisma/engines/-/engines-3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11.tgz"
 
-"@prisma/engines@4.8.1":
-  version "4.8.1"
-  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-4.8.1.tgz"
+"@prisma/engines@4.9.0":
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-4.9.0.tgz#05a1411964e047c1bc43f777c7a1c69f86a2a26c"
 
 "@prisma/fetch-engine@3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11":
   version "3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11"
@@ -1129,11 +1129,11 @@ prettysize@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/prettysize/-/prettysize-2.0.0.tgz"
 
-prisma@4.8.1:
-  version "4.8.1"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-4.8.1.tgz"
+prisma@4.9.0:
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-4.9.0.tgz#295954b2a89cd35a0e6bcf66b2b036dbf80c75ee"
   dependencies:
-    "@prisma/engines" "4.8.1"
+    "@prisma/engines" "4.9.0"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
