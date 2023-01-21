@@ -23,49 +23,42 @@ generator client {
   provider      = "prisma-client-js"
 }
 
-/// >>> ALWAYS PUT AFTER THE PRISMA CLIENT GENERATOR <<<
-generator test {
+/// Always after the prisma-client-js generator
+generator json {
   provider = "prisma-json-types-generator"
   // namespace = "PrismaJson"
-  // clientOutput = ".prisma/client" // (./ -> relative to schema, or an importable path to require() it)
+  // clientOutput = "<finds it automatically>" // (./ -> relative to schema, or an importable path to require() it)
 }
 
-model Test {
-  /// [NormalType]
-  field Json
+model Example {
+  /// [MyType]
+  normal Json
 
-  /// [OptionalType]
-  field2 Json
+  /// [MyType]
+  optional Json?
 
-  /// [ArrayType]
-  field3 Json
+  /// [MyType]
+  array Json[]
 }
 ```
 
 ```ts
 // index.ts
 
+import type { Example } from '@prisma/client';
+
 declare global {
   namespace PrismaJson {
-    type NormalType = boolean;
-
-    type OptionalType = { a: number } | null;
-
-    type ArrayType = { a: number }[];
-
     // you can use classes, interfaces, types, etc.
+    type MyType = boolean;
   }
 }
-```
 
-```ts
-// myFile.ts
-
-import { Test } from '@prisma/client';
-
-const test: Test = {
-  // Intellisense works!
-};
+function myFunction(example: Example) {
+  // example.normal   is now a  boolean
+  // example.optional is now a  boolean | null
+  // example.array    is now a  boolean[]
+}
 ```
 
 ### How it works
@@ -78,10 +71,8 @@ and changes their field type in the original file.
 
 ### Some types are still json!
 
-There's some complex json types like `JsonFilter` and `JsonWithAggregatesFilter` that
-still aren't supported. Feel free to make a PR!
-
-https://github.com/arthurfiorette/prisma-json-types-generator/blob/9b2ceea0a8372629d224287a5590dbce1f0ca6dd/src/handler/module.ts#L92-L98
+There are some complex json types like `JsonFilter` and `JsonWithAggregatesFilter` that if typed, would
+impact the usability of the client. So, they are still json.
 
 ### Limitations
 
