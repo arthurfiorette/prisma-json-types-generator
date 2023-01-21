@@ -3,6 +3,7 @@ import ts from 'typescript';
 import type { Declaration } from '../file/reader';
 import type { ModelWithRegex } from '../helpers/dmmf';
 import { JSON_REGEX } from '../helpers/regex';
+import { replaceSignature } from '../helpers/handle-signature';
 
 export async function handleModule(
   module: ts.ModuleDeclaration,
@@ -33,80 +34,52 @@ export async function handleModule(
     const typeAliasName = typeAlias.name.getText();
     const typeAliasType = typeAlias.type as ts.TypeLiteralNode;
 
-    for (const model of models) {
-      // May includes the model name but is not the actual model, like
-      // UserCreateWithoutPostsInput for Post model. that's why we need
-      // to check if the model name is in the regex
-      if (!model.regexps.some((r) => r.test(typeAliasName))) {
+    // May includes the model name but is not the actual model, like
+    // UserCreateWithoutPostsInput for Post model. that's why we need
+    // to check if the model name is in the regex
+    const model = models.find((m) => m.regexps.some((r) => r.test(typeAliasName)));
+
+    if (!model) {
+      continue;
+    }
+
+    const fields = model.fields.filter((f) => f.documentation?.match(JSON_REGEX));
+
+    for (const member of typeAliasType.members) {
+      if (member.kind !== ts.SyntaxKind.PropertySignature) {
         continue;
       }
 
-      const fields = model.fields.filter((f) => f.documentation?.match(JSON_REGEX));
+      const signature = member as ts.PropertySignature;
 
-      for (const member of typeAliasType.members) {
-        if (member.kind !== ts.SyntaxKind.PropertySignature) {
-          continue;
-        }
+      const fieldName = member.name?.getText();
+      const field = fields.find((f) => f.name === fieldName);
 
-        const signature = member as ts.PropertySignature;
-
-        const fieldName = member.name?.getText();
-        const field = fields.find((f) => f.name === fieldName);
-
-        if (!field) {
-          continue;
-        }
-
-        if (!signature.type) {
-          throw new Error(
-            `No type found for field ${fieldName} at model ${typeAliasName}`
-          );
-        }
-
-        const typename = field.documentation?.match(JSON_REGEX)?.[1];
-        const signatureType = signature.type.getText();
-
-        // TODO: JsonFilter and JsonWithAggregatesFilter
-        switch (signatureType) {
-          case 'JsonValue':
-            replacer(signature.type.pos, signature.type.end, `${nsName}.${typename}`);
-            break;
-            
-          case 'JsonValue | null':
-            replacer(signature.type.pos, signature.type.end, `${nsName}.${typename} | null`);
-            break;
-
-          case 'InputJsonValue':
-          case 'InputJsonValue | InputJsonValue':
-            replacer(
-              signature.type.pos,
-              signature.type.end,
-              `DeepPartial<${nsName}.${typename}>`
-              );
-              break;
- 
-          case 'NullableJsonNullValueInput | InputJsonValue':
-            replacer(signature.type.pos, signature.type.end, `DeepPartial<${nsName}.${typename}> | null`);
-            break;
-
-          // TODO
-          case 'JsonFilter':
-            break;
-
-          // TODO
-          case 'JsonWithAggregatesFilter':
-            break;
-
-          default:
-            logger.error(
-              `Unknown type ${signatureType} for field ${fieldName} at model ${typeAliasName}`
-            );
-        }
+      if (!field || !fieldName) {
+        continue;
       }
 
-      // There is no need to continue the loop
-      // as only ONE model may match
-      break;
+      if (!signature.type) {
+        throw new Error(`No type found for field ${fieldName} at model ${typeAliasName}`);
+      }
+
+      const typename = field.documentation?.match(JSON_REGEX)?.[1];
+
+      if (!typename) {
+        throw new Error(
+          `No typename found for field ${fieldName} at model ${typeAliasName}`
+        );
+      }
+
+      replaceSignature(
+        signature.type,
+        typename,
+        nsName,
+        replacer,
+        fieldName,
+        model.name,
+        typeAliasName
+      );
     }
   }
 }

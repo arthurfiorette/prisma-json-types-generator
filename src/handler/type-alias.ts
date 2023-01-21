@@ -3,19 +3,20 @@ import ts from 'typescript';
 import type { Declaration } from '../file/reader';
 import type { ModelWithRegex } from '../helpers/dmmf';
 import { JSON_REGEX } from '../helpers/regex';
+import { replaceSignature } from '../helpers/handle-signature';
 
 export async function handleTypeAlias(
-  type: ts.TypeAliasDeclaration,
+  typeAlias: ts.TypeAliasDeclaration,
   replacer: Declaration['replacer'],
   models: ModelWithRegex[],
   nsName: string
 ) {
   // enum declarations
-  if (type.getChildAt(4)?.getText().startsWith('(typeof')) {
+  if (typeAlias.getChildAt(4)?.getText().startsWith('(typeof')) {
     return;
   }
 
-  const name = type.name.getText();
+  const name = typeAlias.name.getText();
   const model = models.find((m) => m.name === name);
 
   // not a model with typed json fields
@@ -25,7 +26,7 @@ export async function handleTypeAlias(
 
   const fields = model.fields.filter((f) => f.documentation?.match(JSON_REGEX));
 
-  const object = type.type as ts.TypeLiteralNode;
+  const object = typeAlias.type as ts.TypeLiteralNode;
 
   // not a type literal. TODO: there is a way of this happen?
   if (object.kind !== ts.SyntaxKind.TypeLiteral) {
@@ -35,16 +36,30 @@ export async function handleTypeAlias(
 
   for (const member of object.members) {
     for (const field of fields) {
-      if (member.name?.getText() !== field.name) {
+      const fieldName = member.name?.getText();
+
+      if (fieldName !== field.name) {
         continue;
       }
 
       const typename = field.documentation?.match(JSON_REGEX)?.[1];
 
-      replacer(
-        (member as ts.PropertySignature).type!.pos,
-        (member as ts.PropertySignature).type!.end,
-        `${nsName}.${typename}`
+      const signatureType = (member as ts.PropertySignature).type;
+
+      if (!typename || !signatureType) {
+        throw new Error(
+          `Could not find typename or signature type for ${field.name} at `
+        );
+      }
+
+      replaceSignature(
+        signatureType,
+        typename,
+        nsName,
+        replacer,
+        fieldName,
+        model.name,
+        typeAlias.name.getText()
       );
     }
   }
