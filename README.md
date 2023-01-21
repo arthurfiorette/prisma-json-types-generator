@@ -27,7 +27,8 @@ generator client {
 generator json {
   provider = "prisma-json-types-generator"
   // namespace = "PrismaJson"
-  // clientOutput = "<finds it automatically>" // (./ -> relative to schema, or an importable path to require() it)
+  // clientOutput = "<finds it automatically>"
+  // (./ -> relative to schema, or an importable path to require() it)
 }
 
 model Example {
