@@ -31,13 +31,13 @@ generator test {
 }
 
 model Test {
-  /// @json("NormalType")
+  /// [NormalType]
   field Json
 
-  /// @json("OptionalType")
+  /// [OptionalType]
   field2 Json
 
-  /// @json("ArrayType")
+  /// [ArrayType]
   field3 Json
 }
 ```
