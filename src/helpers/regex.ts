@@ -15,6 +15,7 @@ export function regexForPrismaType(name: string) {
 
     // new RegExp(`^${name}Select$`, 'm'), boolean type
     new RegExp(`^${name}WhereInput$`, 'm'),
+    new RegExp(`^${name}WhereUniqueInput$`, 'm'),
 
     // new RegExp(`^${name}OrderByWithRelationInput$`, 'm'), `SortOrder` fields
     // new RegExp(`^${name}OrderByWithAggregationInput$`, 'm'), `SortOrder` fields
@@ -23,21 +24,20 @@ export function regexForPrismaType(name: string) {
     new RegExp(`^${name}ScalarWhereInput$`, 'm'),
     new RegExp(`^${name}ScalarWhereWithAggregatesInput$`, 'm'),
 
-    new RegExp(`^${name}CreateInput$`, 'm'),
-    new RegExp(`^${name}CreateManyInput$`, 'm'),
-    new RegExp(`^${name}CreateWithout(?:\\w+?)Input$`, 'm'),
-    new RegExp(`^${name}CreateMany(?:\\w+?)Input$`, 'm'),
+    new RegExp(`^${name}(?:Unchecked)?CreateInput$`, 'm'),
+    new RegExp(`^${name}(?:Unchecked)?CreateManyInput$`, 'm'),
+    new RegExp(`^${name}(?:Unchecked)?CreateWithout(?:\\w+?)Input$`, 'm'),
+    new RegExp(`^${name}(?:Unchecked)?CreateMany(?:\\w+?)Input$`, 'm'),
 
-    new RegExp(`^${name}UncheckedCreateInput$`, 'm'),
-    new RegExp(`^${name}UncheckedCreateWithout(?:\\w+?)Input$`, 'm'),
-    new RegExp(`^${name}UncheckedUpdateInput$`, 'm'),
-    new RegExp(`^${name}UncheckedUpdateWithout(?:\\w+?)Input$`, 'm'),
-    new RegExp(`^${name}UncheckedUpdateManyInput$`, 'm'),
-    new RegExp(`^${name}UncheckedUpdateManyWithout(?:\\w+?)Input$`, 'm'),
+    ...regexForPrismaUpdateType(name)
+  ];
+}
 
-    new RegExp(`^${name}UpdateInput$`, 'm'),
-    new RegExp(`^${name}UpdateManyInput$`, 'm'),
-    new RegExp(`^${name}UpdateManyMutationInput$`, 'm'),
-    new RegExp(`^${name}UpdateWithout(?:\\w+?)Input$`, 'm')
+export function regexForPrismaUpdateType(name: string) {
+  return [
+    new RegExp(`^${name}(?:Unchecked)?UpdateInput$`, 'm'),
+    new RegExp(`^${name}(?:Unchecked)?UpdateManyInput$`, 'm'),
+    new RegExp(`^${name}(?:Unchecked)?UpdateManyMutationInput$`, 'm'),
+    new RegExp(`^${name}(?:Unchecked)?UpdateWithout(?:\\w+?)Input$`, 'm')
   ];
 }
