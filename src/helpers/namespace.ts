@@ -9,10 +9,10 @@ declare global {
  * A filter to be used against nullable List types.
  */
 export type NullableListFilter<T> = {
-  equals?: Enumerable<T> | null;
+  equals?: T | T[] | null;
   has?: T | null;
-  hasEvery?: Enumerable<T>;
-  hasSome?: Enumerable<T>;
+  hasEvery?: T | T[];
+  hasSome?: T | T[];
   isEmpty?: boolean;
 };
 
@@ -29,19 +29,21 @@ export type UpdateInput<T> = T extends object
  * A type to determine how to update a json[] field
  */
 export type UpdateManyInput<T> =
-  | Enumerable<T>
+  | T
+  | T[]
   | {
-      set?: Enumerable<T>;
-      push?: Enumerable<T>;
+      set?: T | T[];
+      push?: T | T[];
     };
 
 /**
  * A type to determine how to create a json[] input
  */
 export type CreateManyInput<T> =
-  | Enumerable<T>
+  | T
+  | T[]
   | {
-      set?: Enumerable<T>;
+      set?: T | T[];
     };
 
 `.trim();

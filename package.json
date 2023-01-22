@@ -20,17 +20,19 @@
     "dev": "npx tsc -w",
     "build": "npx tsc",
     "prepack": "yarn build",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
     "@prisma/generator-helper": "4.9.0"
   },
   "devDependencies": {
     "@arthurfiorette/prettier-config": "^1.0.7",
+    "@prisma/client": "^4.9.0",
     "@types/node": "18.11.18",
     "@types/prettier": "2.7.2",
     "prettier": "2.8.3",
-    "prisma": "4.9.0",
+    "prisma": "^4.9.0",
     "typescript": "4.9.4"
   },
   "engines": {
