@@ -5,11 +5,10 @@ declare global {
   namespace ${nsName} {}
 }
 
-// Helpers
-
-type Update<T> = T extends object ? { [P in keyof T]?: Update<T[P]> } : T;
-
-type NullableListFilter<T> = {
+/**
+ * A filter to be used against nullable List types.
+ */
+export type NullableListFilter<T> = {
   equals?: Enumerable<T> | null;
   has?: T | null;
   hasEvery?: Enumerable<T>;
@@ -17,14 +16,33 @@ type NullableListFilter<T> = {
   isEmpty?: boolean;
 };
 
-export type UpdateInput<T> = {
-  set?: Enumerable<T>;
-  push?: T | Enumerable<T>;
-};
+/**
+ * A type to determine how to update a json field
+ */
+export type UpdateInput<T> = T extends object
+  ? {
+      [P in keyof T]?: UpdateInput<T[P]>;
+    }
+  : T;
 
-export type CreateInput<T> = {
-  set?: Enumerable<T>;
-};
+/**
+ * A type to determine how to update a json[] field
+ */
+export type UpdateManyInput<T> =
+  | Enumerable<T>
+  | {
+      set?: Enumerable<T>;
+      push?: Enumerable<T>;
+    };
+
+/**
+ * A type to determine how to create a json[] input
+ */
+export type CreateManyInput<T> =
+  | Enumerable<T>
+  | {
+      set?: Enumerable<T>;
+    };
 
 `.trim();
 }

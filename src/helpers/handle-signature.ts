@@ -1,6 +1,6 @@
 import type ts from 'typescript';
 import type { Declaration } from '../file/reader';
-import { regexForPrismaUpdateType } from './regex';
+import { isUpdateOne } from './regex';
 
 /**
  * Handles and replaces the signature of a typed field.
@@ -14,12 +14,10 @@ export function replaceSignature(
   modelName: string,
   typeAliasName: string
 ) {
-  let name = `${nsName}.${typename}`;
-
   // Updates should leave optional fields
-  if (regexForPrismaUpdateType(modelName).some((r) => r.test(typeAliasName))) {
-    name = `Update<${name}>`;
-  }
+  const name = isUpdateOne(modelName)
+    ? `UpdateInput<${nsName}.${typename}>`
+    : `${nsName}.${typename}`;
 
   switch (signatureType.getText()) {
     //
@@ -31,6 +29,7 @@ export function replaceSignature(
     case 'InputJsonValue | InputJsonValue':
     case 'JsonNullValueInput | InputJsonValue':
       replacer(signatureType.pos, signatureType.end, name);
+
       break;
 
     // Super complex type that strictly typing will lose functionality
@@ -71,8 +70,11 @@ export function replaceSignature(
     //
     case 'Prisma.JsonValue[]':
     case 'JsonValue[]':
-    case 'Enumerable<InputJsonValue>':
       replacer(signatureType.pos, signatureType.end, `${name}[]`);
+      break;
+
+    case 'Enumerable<InputJsonValue>':
+      replacer(signatureType.pos, signatureType.end, `Enumerable<${name}>`);
       break;
 
     case 'JsonNullableListFilter':
@@ -80,19 +82,11 @@ export function replaceSignature(
       break;
 
     case `${modelName}Update${fieldName}Input | Enumerable<InputJsonValue>`:
-      replacer(
-        signatureType.pos,
-        signatureType.end,
-        `UpdateInput<${name}> | Enumerable<${name}>`
-      );
+      replacer(signatureType.pos, signatureType.end, `UpdateManyInput<${name}>`);
       break;
 
     case `${modelName}Create${fieldName}Input | Enumerable<InputJsonValue>`:
-      replacer(
-        signatureType.pos,
-        signatureType.end,
-        `CreateInput<${name}> | Enumerable<${name}>`
-      );
+      replacer(signatureType.pos, signatureType.end, `CreateManyInput<${name}>`);
       break;
 
     default:
