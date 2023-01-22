@@ -21,7 +21,7 @@
     "build": "npx tsc",
     "prepack": "yarn build",
     "format": "prettier --write .",
-    "test": "tsc --noEmit -p tsconfig.test.json"
+    "test": "prisma generate && tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
     "@prisma/generator-helper": "4.9.0"
