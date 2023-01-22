@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
-import path from 'path';
 import { createNamespace } from '../helpers/namespace';
+import { getSourcePath } from './source-path';
 
 export type Declaration = {
   /** path to the original file */
@@ -23,19 +23,7 @@ export async function readPrismaDeclarations(
 ): Promise<Declaration> {
   const declaration = {} as Declaration;
 
-  declaration.sourcePath = overrideTarget
-    ? overrideTarget.startsWith('./')
-      ? path.resolve(schemaTarget!, overrideTarget)
-      : require.resolve(overrideTarget)
-    : path.resolve(
-        // prisma client directory
-        path.dirname(
-          // We cannot directly resolve .prisma/client because pnpm uses a different directory structure,
-          // so we find @prisma/client path and resolve the parent directory
-          require.resolve(path.resolve(clientOutput, '../../.prisma/client'))
-        ),
-        'index.d.ts'
-      );
+  declaration.sourcePath = getSourcePath(clientOutput, overrideTarget, schemaTarget);
 
   // reads the file content
   declaration.content = await fs.readFile(declaration.sourcePath, 'utf-8');
