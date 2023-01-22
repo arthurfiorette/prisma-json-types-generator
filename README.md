@@ -20,7 +20,7 @@ A generator that changes the Prisma Client output to strongly type Json fields
 // schema.prisma
 
 generator client {
-  provider      = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 /// Always after the prisma-client-js generator
@@ -72,11 +72,12 @@ and changes their field type in the original file.
 
 ### Some types are still json!
 
-There are some complex json types like `JsonFilter` and `JsonWithAggregatesFilter` that if typed, would
-impact the usability of the client. So, they are still json.
+There are some complex json types like `JsonFilter` and `JsonWithAggregatesFilter` that if
+typed, would impact the usability of the client. So, they are still json.
 
 ### Limitations
 
-- This project is a temporary workaround _(and possible solution)_ to https://github.com/prisma/prisma/issues/3219.
+- This project is a temporary workaround _(and possible solution)_ to
+  https://github.com/prisma/prisma/issues/3219.
 - Json types inside `type` declarations won't work. (see
   https://github.com/prisma/prisma/issues/13726)
