@@ -1,8 +1,8 @@
 import ts from 'typescript';
 import type { Declaration } from '../file/reader';
 import type { ModelWithRegex } from '../helpers/dmmf';
-import { replaceSignature } from '../helpers/handle-signature';
-import { JSON_REGEX } from '../helpers/regex';
+import { replaceObject } from '../helpers/replace-object';
+import { handleModelPayload } from './model-payload';
 
 export async function handleTypeAlias(
   typeAlias: ts.TypeAliasDeclaration,
@@ -20,45 +20,26 @@ export async function handleTypeAlias(
 
   // not a model with typed json fields
   if (!model) {
+    const modelPayload = models.find((m) => `${m.name}Payload` === name);
+
+    if (modelPayload) {
+      return handleModelPayload(typeAlias, replacer, modelPayload, nsName);
+    }
+
     return;
   }
-
-  const fields = model.fields.filter((f) => f.documentation?.match(JSON_REGEX));
 
   const object = typeAlias.type as ts.TypeLiteralNode;
 
   // not a type literal. TODO: there is a way of this happen?
   if (object.kind !== ts.SyntaxKind.TypeLiteral) {
+    // For `model`Payload types. They were handled in `handleModelPayload` call
+    if (object.kind === ts.SyntaxKind.IndexedAccessType) {
+      return;
+    }
+
     throw new Error(`Provided object is not a type literal: ${object.getText()}`);
   }
 
-  for (const member of object.members) {
-    for (const field of fields) {
-      const fieldName = member.name?.getText();
-
-      if (fieldName !== field.name) {
-        continue;
-      }
-
-      const typename = field.documentation?.match(JSON_REGEX)?.[1];
-
-      const signatureType = (member as ts.PropertySignature).type;
-
-      if (!typename || !signatureType) {
-        throw new Error(
-          `Could not find typename or signature type for ${field.name} at `
-        );
-      }
-
-      replaceSignature(
-        signatureType,
-        typename,
-        nsName,
-        replacer,
-        fieldName,
-        model.name,
-        typeAlias.name.getText()
-      );
-    }
-  }
+  replaceObject(model, object, nsName, replacer, typeAlias.name.getText());
 }
