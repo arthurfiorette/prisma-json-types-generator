@@ -24,7 +24,7 @@
     "test": "prisma generate && tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
-    "@prisma/generator-helper": "4.9.0"
+    "@prisma/generator-helper": "4.10.0"
   },
   "devDependencies": {
     "@arthurfiorette/prettier-config": "^1.0.7",
