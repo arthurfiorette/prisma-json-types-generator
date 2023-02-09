@@ -17,32 +17,18 @@ export async function handleModelPayload(
 
   const scalarsField = type.members.find((m) => m.name?.getText() === 'scalars');
 
-  if (scalarsField) {
-    const object = ((scalarsField as ts.PropertySignature)?.type as ts.TypeReferenceNode)
-      ?.typeArguments?.[0] as ts.TypeLiteralNode;
-
-    if (!object) {
-      throw new Error(`Payload scalars could not be resolved: ${type.getText()}`);
-    }
-
-    replaceObject(model, object, nsName, replacer, typeAlias.name.getText());
+  // Besides `scalars` field, the `objects` field also exists, but we don't need to handle it
+  // because it just contains references to other <model>Payloads that we already change separately
+  if (!scalarsField) {
+    return;
   }
 
-  const objectsField = type.members.find((m) => m.name?.getText() === 'objects');
+  const object = ((scalarsField as ts.PropertySignature)?.type as ts.TypeReferenceNode)
+    ?.typeArguments?.[0] as ts.TypeLiteralNode;
 
-  // TODO: Implement objects field
-  if (objectsField) {
-    const members = ((objectsField as ts.PropertySignature)?.type as ts.TypeLiteralNode)
-      ?.members;
-
-    if (members?.length) {
-      console.log(
-        `You had an object fields, but they aren't supported yet.\nCan you open a issue at https://github.com/arthurfiorette/prisma-json-types-generator?\n`,
-        {
-          model,
-          typeAlias: typeAlias.getText()
-        }
-      );
-    }
+  if (!object) {
+    throw new Error(`Payload scalars could not be resolved: ${type.getText()}`);
   }
+
+  replaceObject(model, object, nsName, replacer, typeAlias.name.getText());
 }
