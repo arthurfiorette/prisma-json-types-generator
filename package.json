@@ -24,16 +24,16 @@
     "test": "prisma generate && tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
-    "@prisma/generator-helper": "4.9.0"
+    "@prisma/generator-helper": "4.10.0"
   },
   "devDependencies": {
-    "@arthurfiorette/prettier-config": "^1.0.7",
-    "@prisma/client": "^4.9.0",
-    "@types/node": "18.11.18",
+    "@arthurfiorette/prettier-config": "^1.0.8",
+    "@prisma/client": "^4.10.0",
+    "@types/node": "18.13.0",
     "@types/prettier": "2.7.2",
-    "prettier": "2.8.3",
-    "prisma": "^4.9.0",
-    "typescript": "4.9.4"
+    "prettier": "2.8.4",
+    "prisma": "^4.10.0",
+    "typescript": "4.9.5"
   },
   "engines": {
     "node": ">=14.0"
