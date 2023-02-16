@@ -8,7 +8,12 @@ export function getSourcePath(
   if (overrideTarget) {
     // schema relative
     if (overrideTarget.startsWith('./')) {
-      return path.resolve(schemaTarget!, overrideTarget);
+      return path.resolve(
+        // schemaTarget is the full path of the Prisma schema - we need the directory
+        path.dirname(schemaTarget!),
+        overrideTarget,
+        overrideTarget.endsWith('.d.ts') ? '' : 'index.d.ts'
+      );
     }
 
     // importable
