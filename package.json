@@ -17,22 +17,24 @@
   ],
   "scripts": {
     "start": "node dist/bin.js",
-    "dev": "npx tsc -w",
-    "build": "npx tsc",
-    "prepack": "yarn build",
+    "dev": "tsc -w",
+    "build": "tsc",
+    "prepack": "rm -rf dist && pnpm build",
     "format": "prettier --write .",
-    "test": "prisma generate && tsc --noEmit -p tsconfig.test.json"
+    "test": "prisma generate && tsc --noEmit -p tsconfig.test.json",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "@prisma/generator-helper": "4.10.0"
+    "@prisma/generator-helper": "^4.10.1",
+    "tslib": "^2.5.0"
   },
   "devDependencies": {
     "@arthurfiorette/prettier-config": "^1.0.8",
-    "@prisma/client": "^4.10.0",
+    "@prisma/client": "^4.10.1",
     "@types/node": "18.13.0",
     "@types/prettier": "2.7.2",
     "prettier": "2.8.4",
-    "prisma": "^4.10.0",
+    "prisma": "^4.10.1",
     "typescript": "4.9.5"
   },
   "engines": {
