@@ -1,7 +1,7 @@
 {
   "name": "prisma-json-types-generator",
   "description": "Changes JsonValues to your custom typescript type",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "main": "dist/generator.js",
   "bin": "./dist/bin.js",
   "license": "MIT",
@@ -21,8 +21,7 @@
     "build": "tsc",
     "prepack": "rm -rf dist && pnpm build",
     "format": "prettier --write .",
-    "test": "prisma generate && tsc --noEmit -p tsconfig.test.json",
-    "preinstall": "npx only-allow pnpm"
+    "test": "prisma generate && tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
     "@prisma/generator-helper": "^4.10.1",
