@@ -7,7 +7,7 @@ generator client {
 }
 
 generator json {
-  provider = "prisma-json-types-generator"
+  provider = "node ./dist/generator.js"
 }
 
 datasource db {
@@ -26,4 +26,7 @@ model User {
 
   /// [List]
   list Json[]
+
+  /// [String]
+  stringField String @db.VarChar(512)
 }
