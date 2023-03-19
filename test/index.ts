@@ -454,3 +454,9 @@ client.groupBy({
   //@ts-expect-error - should only be a | b
   having: { stringField: { notIn: ["a", "b", "c"] } },
 });
+
+//@ts-expect-error - should only be a | b
+client.update({ where: { id: 1 }, data: { stringField: "c" } });
+
+//@ts-expect-error - should only be a | b
+client.update({ where: { id: 1 }, data: { stringField: { set: "c" } } });

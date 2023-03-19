@@ -59,5 +59,9 @@ export type TypedStringWithAggregatesFilter<T> = Prisma.StringWithAggregatesFilt
   notIn?: Prisma.Enumerable<T>;
   not?: TypedNestedStringWithAggregatesFilter<T> | T
 }
+
+export type TypedStringFieldUpdateOperationsInput<T> = Prisma.StringFieldUpdateOperationsInput & {
+  set?: T
+}
 `.trim();
 }

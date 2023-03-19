@@ -63,6 +63,14 @@ export function replaceSignature(
       );
       break;
 
+    case `StringFieldUpdateOperationsInput | string`:
+      replacer(
+        signatureType.pos,
+        signatureType.end,
+        `TypedStringFieldUpdateOperationsInput<${name}> | ${name}`
+      );
+      break;
+
     //
     // Nullable
     //
