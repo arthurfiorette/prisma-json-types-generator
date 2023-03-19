@@ -41,4 +41,7 @@ model User {
 
   /// [Simple]
   incorrectlyTypedStringField String @db.VarChar(512)
+
+  /// [String]
+  stringArrayField String[] @default([])
 }

@@ -47,6 +47,10 @@ export function replaceSignature(
       replacer(signatureType.pos, signatureType.end, name);
       break;
 
+    case "string[]":
+      replacer(signatureType.pos, signatureType.end, `(${name})[]`);
+      break;
+
     case "string | null":
       replacer(signatureType.pos, signatureType.end, name);
       break;
@@ -64,6 +68,14 @@ export function replaceSignature(
         signatureType.pos,
         signatureType.end,
         `TypedStringNullableFilter<${name}> | ${name} | null`
+      );
+      break;
+
+    case `StringNullableListFilter`:
+      replacer(
+        signatureType.pos,
+        signatureType.end,
+        `TypedStringNullableListFilter<${name}>`
       );
       break;
 
@@ -96,6 +108,22 @@ export function replaceSignature(
         signatureType.pos,
         signatureType.end,
         `TypedNullableStringFieldUpdateOperationsInput<${name}> | ${name} | null`
+      );
+      break;
+
+    case `${modelName}Create${fieldName}Input | Enumerable<string>`:
+      replacer(
+        signatureType.pos,
+        signatureType.end,
+        `CreateStringArrayInput<${name}> | Enumerable<${name}>`
+      );
+      break;
+
+    case `${modelName}Update${fieldName}Input | Enumerable<string>`:
+      replacer(
+        signatureType.pos,
+        signatureType.end,
+        `CreateStringArrayInput<${name}> | Enumerable<${name}>`
       );
       break;
 

@@ -140,5 +140,30 @@ export type TypedNullableStringFieldUpdateOperationsInput<T extends string> = Pr
   set?: T | null
 }
 
+/**
+ * A typed version of StringNullableListFilter, allowing narrowing of string types to discriminated unions.
+ */
+export type TypedStringNullableListFilter<T extends string> = Prisma.StringNullableListFilter & {
+  equals?: Enumerable<T> | null
+  has?: T | null
+  hasEvery?: Enumerable<T>
+  hasSome?: Enumerable<T>
+}
+
+/**
+ * A typed version of the input type to update a string[] field, allowing narrowing of string types to discriminated unions.
+ */
+export type UpdateStringArrayInput<T extends string> = {
+  set?: Enumerable<T>
+  push?: T | Enumerable<T>
+}
+
+/**
+ * A typed version of the input type to create a string[] field, allowing narrowing of string types to discriminated unions.
+ */
+export type CreateStringArrayInput<T extends string> = {
+  set?: Enumerable<T>
+}
+
 `.trim();
 }

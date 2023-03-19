@@ -90,6 +90,9 @@ client.create({
         b: true,
       },
     ],
+
+    //@ts-expect-error - should be a or b
+    stringArrayField: ["c"],
   },
 });
 
@@ -246,6 +249,9 @@ client.update({
         b: true,
       },
     ],
+
+    //@ts-expect-error - should be a or b
+    stringArrayField: ["c"],
   },
 });
 
@@ -575,3 +581,12 @@ client.findMany({ where: { enumField: PrismaJson.EnumType.Case1 } });
 //@ts-expect-error - should only be able to pass enum values
 client.findMany({ where: { optionalEnumField: "incorrectCase" } });
 client.findMany({ where: { optionalEnumField: PrismaJson.EnumType.Case1 } });
+
+//
+// String Arrays
+//
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { stringArrayField: ["c", "d"] } });
+
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { stringArrayField: { has: "c" } } });
