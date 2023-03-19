@@ -49,120 +49,120 @@ export type CreateManyInput<T> =
 /**
  * A typed version of NestedStringFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedNestedStringFilter<T extends string> = Prisma.StringFilter & {
-  equals?: T;
-  in?: Prisma.Enumerable<T>;
-  notIn?: Prisma.Enumerable<T>;
-  not: TypedNestedStringFilter<T> | T
+export type TypedNestedStringFilter<S extends string> = Prisma.StringFilter & {
+  equals?: S;
+  in?: Prisma.Enumerable<S>;
+  notIn?: Prisma.Enumerable<S>;
+  not: TypedNestedStringFilter<S> | S
 }
 
 /**
  * A typed version of StringFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedStringFilter<T extends string> = Prisma.StringFilter & {
-  equals?: T;
-  in?: Prisma.Enumerable<T>;
-  notIn?: Prisma.Enumerable<T>;
-  not: TypedNestedStringFilter<T> | T
+export type TypedStringFilter<S extends string> = Prisma.StringFilter & {
+  equals?: S;
+  in?: Prisma.Enumerable<S>;
+  notIn?: Prisma.Enumerable<S>;
+  not: TypedNestedStringFilter<S> | S
 }
 
 /**
  * A typed version of NestedStringNullableFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedNestedStringNullableFilter<T extends string> = Prisma.StringNullableFilter & {
-  equals?: T | null;
-  in?: Prisma.Enumerable<T> | null;
-  notIn?: Prisma.Enumerable<T> | null;
-  not: TypedNestedStringNullableFilter<T> | T | null
+export type TypedNestedStringNullableFilter<S extends string> = Prisma.StringNullableFilter & {
+  equals?: S | null;
+  in?: Prisma.Enumerable<S> | null;
+  notIn?: Prisma.Enumerable<S> | null;
+  not: TypedNestedStringNullableFilter<S> | S | null
 }
 
 /**
  * A typed version of StringNullableFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedStringNullableFilter<T extends string> = Prisma.StringNullableFilter & {
-  equals?: T | null;
-  in?: Prisma.Enumerable<T> | null;
-  notIn?: Prisma.Enumerable<T> | null;
-  not: TypedNestedStringNullableFilter<T> | T | null
+export type TypedStringNullableFilter<S extends string> = Prisma.StringNullableFilter & {
+  equals?: S | null;
+  in?: Prisma.Enumerable<S> | null;
+  notIn?: Prisma.Enumerable<S> | null;
+  not: TypedNestedStringNullableFilter<T> | S | null
 }
 
 /**
  * A typed version of NestedStringWithAggregatesFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedNestedStringWithAggregatesFilter<T extends string> = Prisma.NestedStringWithAggregatesFilter & {
-  equals?: T;
-  in?: Prisma.Enumerable<T>;
-  notIn?: Prisma.Enumerable<T>;
-  not: TypedNestedStringWithAggregatesFilter<T> | T
+export type TypedNestedStringWithAggregatesFilter<S extends string> = Prisma.NestedStringWithAggregatesFilter & {
+  equals?: S;
+  in?: Prisma.Enumerable<S>;
+  notIn?: Prisma.Enumerable<S>;
+  not: TypedNestedStringWithAggregatesFilter<S> | S
 }
 
 /**
  * A typed version of StringWithAggregatesFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedStringWithAggregatesFilter<T extends string> = Prisma.StringWithAggregatesFilter & {
-  equals?: T;
-  in?: Prisma.Enumerable<T>;
-  notIn?: Prisma.Enumerable<T>;
-  not?: TypedNestedStringWithAggregatesFilter<T> | T
+export type TypedStringWithAggregatesFilter<S extends string> = Prisma.StringWithAggregatesFilter & {
+  equals?: S;
+  in?: Prisma.Enumerable<S>;
+  notIn?: Prisma.Enumerable<S>;
+  not?: TypedNestedStringWithAggregatesFilter<S> | S
 }
 
 /**
  * A typed version of NestedStringNullableWithAggregatesFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedNestedStringNullableWithAggregatesFilter<T extends string> = Prisma.NestedStringNullableWithAggregatesFilter & {
-  equals?: T | null;
-  in?: Prisma.Enumerable<T> | null;
-  notIn?: Prisma.Enumerable<T> | null;
-  not: TypedNestedStringNullableWithAggregatesFilter<T> | T | null
+export type TypedNestedStringNullableWithAggregatesFilter<S extends string> = Prisma.NestedStringNullableWithAggregatesFilter & {
+  equals?: S | null;
+  in?: Prisma.Enumerable<S> | null;
+  notIn?: Prisma.Enumerable<S> | null;
+  not: TypedNestedStringNullableWithAggregatesFilter<S> | S | null
 }
 
 /**
  * A typed version of tringNullableWithAggregatesFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedStringNullableWithAggregatesFilter<T extends string> = Prisma.StringNullableWithAggregatesFilter & {
-  equals?: T | null;
-  in?: Prisma.Enumerable<T> | null;
-  notIn?: Prisma.Enumerable<T> | null;
-  not?: TypedNestedStringNullableWithAggregatesFilter<T> | T | null
+export type TypedStringNullableWithAggregatesFilter<S extends string> = Prisma.StringNullableWithAggregatesFilter & {
+  equals?: S | null;
+  in?: Prisma.Enumerable<S> | null;
+  notIn?: Prisma.Enumerable<S> | null;
+  not?: TypedNestedStringNullableWithAggregatesFilter<T> | S | null
 }
 
 /**
  * A typed version of StringFieldUpdateOperationsInput, allowing narrowing of string types to discriminated unions.
  */
-export type TypedStringFieldUpdateOperationsInput<T extends string> = Prisma.StringFieldUpdateOperationsInput & {
-  set?: T
+export type TypedStringFieldUpdateOperationsInput<S extends string> = Prisma.StringFieldUpdateOperationsInput & {
+  set?: S
 }
 
 /**
  * A typed version of NullableStringFieldUpdateOperationsInput, allowing narrowing of string types to discriminated unions.
  */
-export type TypedNullableStringFieldUpdateOperationsInput<T extends string> = Prisma.NullableStringFieldUpdateOperationsInput & {
-  set?: T | null
+export type TypedNullableStringFieldUpdateOperationsInput<S extends string> = Prisma.NullableStringFieldUpdateOperationsInput & {
+  set?: S | null
 }
 
 /**
  * A typed version of StringNullableListFilter, allowing narrowing of string types to discriminated unions.
  */
-export type TypedStringNullableListFilter<T extends string> = Prisma.StringNullableListFilter & {
-  equals?: Enumerable<T> | null
-  has?: T | null
-  hasEvery?: Enumerable<T>
-  hasSome?: Enumerable<T>
+export type TypedStringNullableListFilter<S extends string> = Prisma.StringNullableListFilter & {
+  equals?: Enumerable<S> | null
+  has?: S | null
+  hasEvery?: Enumerable<S>
+  hasSome?: Enumerable<S>
 }
 
 /**
  * A typed version of the input type to update a string[] field, allowing narrowing of string types to discriminated unions.
  */
-export type UpdateStringArrayInput<T extends string> = {
-  set?: Enumerable<T>
-  push?: T | Enumerable<T>
+export type UpdateStringArrayInput<S extends string> = {
+  set?: Enumerable<S>
+  push?: S | Enumerable<S>
 }
 
 /**
  * A typed version of the input type to create a string[] field, allowing narrowing of string types to discriminated unions.
  */
-export type CreateStringArrayInput<T extends string> = {
-  set?: Enumerable<T>
+export type CreateStringArrayInput<S extends string> = {
+  set?: Enumerable<S>
 }
 
 `.trim();
