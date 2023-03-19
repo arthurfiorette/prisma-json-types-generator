@@ -9,6 +9,11 @@ declare global {
     type List = { a: number };
 
     type String = "a" | "b";
+
+    enum EnumType {
+      Case1 = "Case1",
+      Case2 = "Case2",
+    }
   }
 }
 
@@ -554,3 +559,11 @@ client.update({
   //@ts-expect-error - should only be a | b
   data: { optionalStringField: { set: "c" } },
 });
+
+//@ts-expect-error - should only be able to pass enum values
+client.findMany({ where: { enumField: "incorrectCase" } });
+client.findMany({ where: { enumField: PrismaJson.EnumType.Case1 } });
+
+//@ts-expect-error - should only be able to pass enum values
+client.findMany({ where: { optionalEnumField: "incorrectCase" } });
+client.findMany({ where: { optionalEnumField: PrismaJson.EnumType.Case1 } });

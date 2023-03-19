@@ -32,4 +32,10 @@ model User {
 
   /// [String]
   optionalStringField String? @db.VarChar(512)
+
+  /// [EnumType]
+  enumField String @db.VarChar(512)
+
+  /// [EnumType]
+  optionalEnumField String @db.VarChar(512)
 }
