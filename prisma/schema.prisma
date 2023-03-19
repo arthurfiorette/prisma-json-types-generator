@@ -29,4 +29,7 @@ model User {
 
   /// [String]
   stringField String @db.VarChar(512)
+
+  /// [String]
+  optionalStringField String? @db.VarChar(512)
 }

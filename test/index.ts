@@ -407,8 +407,25 @@ user({
   stringField: "c",
 });
 
+//
+// Strings
+//
+
 //@ts-expect-error - should only be a | b
 client.findMany({ where: { stringField: "c" } });
+
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { stringField: { equals: "c" } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { stringField: { in: ["c"] } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { stringField: { notIn: ["c"] } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { stringField: { not: { equals: "c" } } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { stringField: { not: { in: ["c"] } } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { stringField: { not: { notIn: ["c"] } } } });
 
 //@ts-expect-error - should only be a | b
 client.aggregate({ _count: { list: true }, where: { stringField: "c" } });
@@ -460,3 +477,80 @@ client.update({ where: { id: 1 }, data: { stringField: "c" } });
 
 //@ts-expect-error - should only be a | b
 client.update({ where: { id: 1 }, data: { stringField: { set: "c" } } });
+
+//
+// Nullable Strings
+//
+
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { optionalStringField: "c" } });
+
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { optionalStringField: { equals: "c" } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { optionalStringField: { in: ["c"] } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { optionalStringField: { notIn: ["c"] } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { optionalStringField: { not: { equals: "c" } } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { optionalStringField: { not: { in: ["c"] } } } });
+//@ts-expect-error - should only be a | b
+client.findMany({ where: { optionalStringField: { not: { notIn: ["c"] } } } });
+
+client.aggregate({
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  where: { optionalStringField: "c" },
+});
+
+client.groupBy({
+  by: ["optionalStringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { optionalStringField: "c" },
+});
+
+client.groupBy({
+  by: ["optionalStringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { optionalStringField: { equals: "c" } },
+});
+
+client.groupBy({
+  by: ["optionalStringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { optionalStringField: { not: "c" } },
+});
+
+client.groupBy({
+  by: ["optionalStringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { optionalStringField: { not: { equals: "c" } } },
+});
+
+client.groupBy({
+  by: ["optionalStringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { optionalStringField: { in: ["a", "b", "c"] } },
+});
+
+client.groupBy({
+  by: ["optionalStringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { optionalStringField: { notIn: ["a", "b", "c"] } },
+});
+
+//@ts-expect-error - should only be a | b
+client.update({ where: { id: 1 }, data: { optionalStringField: "c" } });
+
+client.update({
+  where: { id: 1 },
+  //@ts-expect-error - should only be a | b
+  data: { optionalStringField: { set: "c" } },
+});

@@ -52,7 +52,19 @@ export function replaceSignature(
       break;
 
     case `StringFilter | string`:
-      replacer(signatureType.pos, signatureType.end, `StringFilter | ${name}`);
+      replacer(
+        signatureType.pos,
+        signatureType.end,
+        `TypedStringFilter<${name}> | ${name}`
+      );
+      break;
+
+    case `StringNullableFilter | string | null`:
+      replacer(
+        signatureType.pos,
+        signatureType.end,
+        `TypedStringNullableFilter<${name}> | ${name} | null`
+      );
       break;
 
     case `StringWithAggregatesFilter | string`:
@@ -63,11 +75,27 @@ export function replaceSignature(
       );
       break;
 
+    case `StringNullableWithAggregatesFilter | string | null`:
+      replacer(
+        signatureType.pos,
+        signatureType.end,
+        `TypedStringNullableWithAggregatesFilter<${name}> | ${name}`
+      );
+      break;
+
     case `StringFieldUpdateOperationsInput | string`:
       replacer(
         signatureType.pos,
         signatureType.end,
         `TypedStringFieldUpdateOperationsInput<${name}> | ${name}`
+      );
+      break;
+
+    case `NullableStringFieldUpdateOperationsInput | string | null`:
+      replacer(
+        signatureType.pos,
+        signatureType.end,
+        `TypedNullableStringFieldUpdateOperationsInput<${name}> | ${name} | null`
       );
       break;
 
