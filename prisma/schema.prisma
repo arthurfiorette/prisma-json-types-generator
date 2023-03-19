@@ -38,4 +38,7 @@ model User {
 
   /// [EnumType]
   optionalEnumField String @db.VarChar(512)
+
+  /// [Simple]
+  incorrectlyTypedStringField String @db.VarChar(512)
 }

@@ -8,7 +8,7 @@ declare global {
 
     type List = { a: number };
 
-    type String = "a" | "b";
+    type String = { one: string };
 
     enum EnumType {
       Case1 = "Case1",
@@ -418,6 +418,14 @@ user({
 
 //@ts-expect-error - should only be a | b
 client.findMany({ where: { stringField: "c" } });
+
+client.findMany({
+  //@ts-expect-error - should not be able to construct since {one: "a"} is not a string
+  where: { incorrectlyTypedStringField: { equals: { one: "a" } } },
+});
+
+//@ts-expect-error - should not be able to construct since {one: "a"} is not a string
+client.findMany({ where: { incorrectlyTypedStringField: { one: "a" } } });
 
 //@ts-expect-error - should only be a | b
 client.findMany({ where: { stringField: { equals: "c" } } });

@@ -46,67 +46,67 @@ export type CreateManyInput<T> =
       set?: T | T[];
     };
 
-export type TypedNestedStringFilter<T> = Prisma.StringFilter & {
+export type TypedNestedStringFilter<T extends string> = Prisma.StringFilter & {
   equals?: T;
   in?: Prisma.Enumerable<T>;
   notIn?: Prisma.Enumerable<T>;
   not: TypedNestedStringFilter<T> | T
 }
 
-export type TypedStringFilter<T> = Prisma.StringFilter & {
+export type TypedStringFilter<T extends string> = Prisma.StringFilter & {
   equals?: T;
   in?: Prisma.Enumerable<T>;
   notIn?: Prisma.Enumerable<T>;
   not: TypedNestedStringFilter<T> | T
 }
 
-export type TypedNestedStringNullableFilter<T> = Prisma.StringNullableFilter & {
+export type TypedNestedStringNullableFilter<T extends string> = Prisma.StringNullableFilter & {
   equals?: T | null;
   in?: Prisma.Enumerable<T> | null;
   notIn?: Prisma.Enumerable<T> | null;
   not: TypedNestedStringNullableFilter<T> | T | null
 }
 
-export type TypedStringNullableFilter<T> = Prisma.StringNullableFilter & {
+export type TypedStringNullableFilter<T extends string> = Prisma.StringNullableFilter & {
   equals?: T | null;
   in?: Prisma.Enumerable<T> | null;
   notIn?: Prisma.Enumerable<T> | null;
   not: TypedNestedStringNullableFilter<T> | T | null
 }
 
-export type TypedNestedStringWithAggregatesFilter<T> = Prisma.NestedStringWithAggregatesFilter & {
+export type TypedNestedStringWithAggregatesFilter<T extends string> = Prisma.NestedStringWithAggregatesFilter & {
   equals?: T;
   in?: Prisma.Enumerable<T>;
   notIn?: Prisma.Enumerable<T>;
   not: TypedNestedStringWithAggregatesFilter<T> | T
 }
 
-export type TypedStringWithAggregatesFilter<T> = Prisma.StringWithAggregatesFilter & {
+export type TypedStringWithAggregatesFilter<T extends string> = Prisma.StringWithAggregatesFilter & {
   equals?: T;
   in?: Prisma.Enumerable<T>;
   notIn?: Prisma.Enumerable<T>;
   not?: TypedNestedStringWithAggregatesFilter<T> | T
 }
 
-export type TypedNestedStringNullableWithAggregatesFilter<T> = Prisma.NestedStringNullableWithAggregatesFilter & {
+export type TypedNestedStringNullableWithAggregatesFilter<T extends string> = Prisma.NestedStringNullableWithAggregatesFilter & {
   equals?: T | null;
   in?: Prisma.Enumerable<T> | null;
   notIn?: Prisma.Enumerable<T> | null;
   not: TypedNestedStringNullableWithAggregatesFilter<T> | T | null
 }
 
-export type TypedStringNullableWithAggregatesFilter<T> = Prisma.StringNullableWithAggregatesFilter & {
+export type TypedStringNullableWithAggregatesFilter<T extends string> = Prisma.StringNullableWithAggregatesFilter & {
   equals?: T | null;
   in?: Prisma.Enumerable<T> | null;
   notIn?: Prisma.Enumerable<T> | null;
   not?: TypedNestedStringNullableWithAggregatesFilter<T> | T | null
 }
 
-export type TypedStringFieldUpdateOperationsInput<T> = Prisma.StringFieldUpdateOperationsInput & {
+export type TypedStringFieldUpdateOperationsInput<T extends string> = Prisma.StringFieldUpdateOperationsInput & {
   set?: T
 }
 
-export type TypedNullableStringFieldUpdateOperationsInput<T> = Prisma.NullableStringFieldUpdateOperationsInput & {
+export type TypedNullableStringFieldUpdateOperationsInput<T extends string> = Prisma.NullableStringFieldUpdateOperationsInput & {
   set?: T | null
 }
 
