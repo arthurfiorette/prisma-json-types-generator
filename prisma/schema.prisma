@@ -28,10 +28,10 @@ model User {
   /// [List]
   list Json[]
 
-  /// [String]
+  /// [StringType]
   stringField String @db.VarChar(512)
 
-  /// [String]
+  /// [StringType]
   optionalStringField String? @db.VarChar(512)
 
   /// [EnumType]
@@ -43,6 +43,6 @@ model User {
   /// [Simple]
   incorrectlyTypedStringField String @db.VarChar(512)
 
-  /// [String]
+  /// [StringType]
   stringArrayField String[] @default([])
 }
