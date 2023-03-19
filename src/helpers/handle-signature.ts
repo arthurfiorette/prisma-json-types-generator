@@ -190,18 +190,6 @@ export function replaceSignature(
 
     default:
       console.log(
-        "INCOMING ERROR signature: ",
-        signatureType.getText(),
-        " for field: ",
-        fieldName,
-        " in model: ",
-        modelName,
-        " with typeAliasName: ",
-        typeAliasName,
-        " and name: ",
-        name
-      );
-      console.log(
         `\x1b[90m✘\x1b[0m Type \x1b[1m${typeAliasName}.${fieldName}\x1b[0m is not supported.`
       );
   }
