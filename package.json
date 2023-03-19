@@ -1,26 +1,26 @@
 {
   "name": "prisma-json-types-generator",
-  "description": "Changes JsonValues to your custom typescript type",
   "version": "2.2.3",
-  "main": "dist/generator.js",
-  "bin": "./dist/bin.js",
-  "license": "MIT",
-  "funding": "https://github.com/ArthurFiorette/prisma-json-types-generator?sponsor=1",
-  "repository": "https://github.com/arthurfiorette/prisma-json-types-generator.git",
-  "bugs": "https://github.com/arthurfiorette/prisma-json-types-generator/issues",
-  "author": "Arthur Fiorette <npm@arthur.place>",
+  "description": "Changes JsonValues to your custom typescript type",
   "keywords": [
     "prisma",
     "prisma2",
     "generator",
     "json"
   ],
+  "bugs": "https://github.com/arthurfiorette/prisma-json-types-generator/issues",
+  "repository": "https://github.com/arthurfiorette/prisma-json-types-generator.git",
+  "funding": "https://github.com/ArthurFiorette/prisma-json-types-generator?sponsor=1",
+  "license": "MIT",
+  "author": "Arthur Fiorette <npm@arthur.place>",
+  "main": "dist/generator.js",
+  "bin": "./dist/bin.js",
   "scripts": {
-    "start": "node dist/bin.js",
-    "dev": "tsc -w",
     "build": "tsc",
-    "prepack": "rm -rf dist && pnpm build",
+    "dev": "tsc -w",
     "format": "prettier --write .",
+    "prepack": "rm -rf dist && pnpm build",
+    "start": "node dist/bin.js",
     "test": "prisma generate && tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {

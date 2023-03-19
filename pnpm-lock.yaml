@@ -4,12 +4,12 @@ specifiers:
   '@arthurfiorette/prettier-config': ^1.0.8
   '@prisma/client': ^4.10.1
   '@prisma/generator-helper': ^4.10.1
-  '@types/node': 18.15.1
+  '@types/node': 18.15.3
   '@types/prettier': 2.7.2
   prettier: 2.8.4
   prisma: ^4.10.1
   tslib: ^2.5.0
-  typescript: 4.9.5
+  typescript: 5.0.2
 
 dependencies:
   '@prisma/generator-helper': 4.10.1
@@ -18,11 +18,11 @@ dependencies:
 devDependencies:
   '@arthurfiorette/prettier-config': 1.0.8_prettier@2.8.4
   '@prisma/client': 4.10.1_prisma@4.10.1
-  '@types/node': 18.15.1
+  '@types/node': 18.15.3
   '@types/prettier': 2.7.2
   prettier: 2.8.4
   prisma: 4.10.1
-  typescript: 4.9.5
+  typescript: 5.0.2
 
 packages:
 
@@ -32,9 +32,9 @@ packages:
     dependencies:
       '@types/prettier': 2.7.2
       prettier-plugin-jsdoc: 0.4.2_prettier@2.8.4
-      prettier-plugin-organize-imports: 3.2.2_silln3pw57har7jydmecgzoypa
+      prettier-plugin-organize-imports: 3.2.2_za2cb7z32ksq5gw6txs6br4sn4
       prettier-plugin-packagejson: 2.4.2_prettier@2.8.4
-      typescript: 4.9.5
+      typescript: 5.0.2
     transitivePeerDependencies:
       - '@volar/vue-language-plugin-pug'
       - '@volar/vue-typescript'
@@ -122,7 +122,7 @@ packages:
   /@types/cross-spawn/6.0.2:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
     dependencies:
-      '@types/node': 18.15.1
+      '@types/node': 18.15.3
     dev: false
 
   /@types/debug/4.1.7:
@@ -139,8 +139,8 @@ packages:
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
 
-  /@types/node/18.15.1:
-    resolution: {integrity: sha512-U2TWca8AeHSmbpi314QBESRk7oPjSZjDsR+c+H4ECC1l+kFgpZf8Ydhv3SJpPy51VyZHHqxlb6mTTqYNNRVAIw==}
+  /@types/node/18.15.3:
+    resolution: {integrity: sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==}
 
   /@types/prettier/2.7.2:
     resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
@@ -628,7 +628,7 @@ packages:
       - supports-color
     dev: true
 
-  /prettier-plugin-organize-imports/3.2.2_silln3pw57har7jydmecgzoypa:
+  /prettier-plugin-organize-imports/3.2.2_za2cb7z32ksq5gw6txs6br4sn4:
     resolution: {integrity: sha512-e97lE6odGSiHonHJMTYC0q0iLXQyw0u5z/PJpvP/3vRy6/Zi9kLBwFAbEGjDzIowpjQv8b+J04PDamoUSQbzGA==}
     peerDependencies:
       '@volar/vue-language-plugin-pug': ^1.0.4
@@ -642,7 +642,7 @@ packages:
         optional: true
     dependencies:
       prettier: 2.8.4
-      typescript: 4.9.5
+      typescript: 5.0.2
     dev: true
 
   /prettier-plugin-packagejson/2.4.2_prettier@2.8.4:
@@ -765,9 +765,9 @@ packages:
   /tslib/2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
 
-  /typescript/4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
+  /typescript/5.0.2:
+    resolution: {integrity: sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==}
+    engines: {node: '>=12.20'}
     hasBin: true
     dev: true
 
