@@ -413,5 +413,44 @@ client.findMany({ where: { stringField: "c" } });
 //@ts-expect-error - should only be a | b
 client.aggregate({ _count: { list: true }, where: { stringField: "c" } });
 
-//@ts-expect-error - should only be a | b
-client.findMany({ where: { stringField: { endsWith: "c" } } });
+client.groupBy({
+  by: ["stringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { stringField: "c" },
+});
+
+client.groupBy({
+  by: ["stringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { stringField: { equals: "c" } },
+});
+
+client.groupBy({
+  by: ["stringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { stringField: { not: "c" } },
+});
+
+client.groupBy({
+  by: ["stringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { stringField: { not: { equals: "c" } } },
+});
+
+client.groupBy({
+  by: ["stringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { stringField: { in: ["a", "b", "c"] } },
+});
+
+client.groupBy({
+  by: ["stringField"],
+  _count: { list: true },
+  //@ts-expect-error - should only be a | b
+  having: { stringField: { notIn: ["a", "b", "c"] } },
+});

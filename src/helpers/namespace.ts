@@ -46,5 +46,18 @@ export type CreateManyInput<T> =
       set?: T | T[];
     };
 
+export type TypedNestedStringWithAggregatesFilter<T> = Prisma.NestedStringWithAggregatesFilter & {
+  equals?: T;
+  in?: Prisma.Enumerable<T>;
+  notIn?: Prisma.Enumerable<T>;
+  not: TypedNestedStringWithAggregatesFilter<T> | T
+}
+
+export type TypedStringWithAggregatesFilter<T> = Prisma.StringWithAggregatesFilter & {
+  equals?: T;
+  in?: Prisma.Enumerable<T>;
+  notIn?: Prisma.Enumerable<T>;
+  not?: TypedNestedStringWithAggregatesFilter<T> | T
+}
 `.trim();
 }

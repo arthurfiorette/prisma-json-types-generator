@@ -59,7 +59,7 @@ export function replaceSignature(
       replacer(
         signatureType.pos,
         signatureType.end,
-        `StringWithAggregatesFilter | ${name}`
+        `TypedStringWithAggregatesFilter<${name}> | ${name}`
       );
       break;
 
