@@ -4,7 +4,7 @@ specifiers:
   '@arthurfiorette/prettier-config': ^1.0.8
   '@prisma/client': ^4.10.1
   '@prisma/generator-helper': ^4.10.1
-  '@types/node': 18.15.1
+  '@types/node': 18.15.3
   '@types/prettier': 2.7.2
   prettier: 2.8.4
   prisma: ^4.10.1
@@ -18,7 +18,7 @@ dependencies:
 devDependencies:
   '@arthurfiorette/prettier-config': 1.0.8_prettier@2.8.4
   '@prisma/client': 4.10.1_prisma@4.10.1
-  '@types/node': 18.15.1
+  '@types/node': 18.15.3
   '@types/prettier': 2.7.2
   prettier: 2.8.4
   prisma: 4.10.1
@@ -122,7 +122,7 @@ packages:
   /@types/cross-spawn/6.0.2:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
     dependencies:
-      '@types/node': 18.15.1
+      '@types/node': 18.15.3
     dev: false
 
   /@types/debug/4.1.7:
@@ -139,8 +139,8 @@ packages:
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
 
-  /@types/node/18.15.1:
-    resolution: {integrity: sha512-U2TWca8AeHSmbpi314QBESRk7oPjSZjDsR+c+H4ECC1l+kFgpZf8Ydhv3SJpPy51VyZHHqxlb6mTTqYNNRVAIw==}
+  /@types/node/18.15.3:
+    resolution: {integrity: sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==}
 
   /@types/prettier/2.7.2:
     resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
