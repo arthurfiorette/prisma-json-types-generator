@@ -83,7 +83,7 @@ export type TypedStringNullableFilter<S extends string> = Prisma.StringNullableF
   equals?: S | null;
   in?: Prisma.Enumerable<S> | null;
   notIn?: Prisma.Enumerable<S> | null;
-  not: TypedNestedStringNullableFilter<T> | S | null
+  not: TypedNestedStringNullableFilter<S> | S | null
 }
 
 /**
@@ -123,7 +123,7 @@ export type TypedStringNullableWithAggregatesFilter<S extends string> = Prisma.S
   equals?: S | null;
   in?: Prisma.Enumerable<S> | null;
   notIn?: Prisma.Enumerable<S> | null;
-  not?: TypedNestedStringNullableWithAggregatesFilter<T> | S | null
+  not?: TypedNestedStringNullableWithAggregatesFilter<S> | S | null
 }
 
 /**
