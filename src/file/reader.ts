@@ -3,15 +3,18 @@ import { createNamespace } from '../helpers/namespace';
 import { getSourcePath } from './source-path';
 
 export type Declaration = {
-  /** path to the original file */
+  /** Path to the original file */
   sourcePath: string;
-  /** the modified or not content of the file */
+  /** The modified or not content of the file */
   content: string;
-  /** replaces the coordinates with the provided text, adjusting the coords to previous changes.  */
+  /**
+   * Replaces the coordinates with the provided text, adjusting the coords to previous
+   * changes.
+   */
   replacer: (start: number, end: number, text: string) => void;
-  /** a list of changes made in the original file to adjust any future coordinates of texts */
+  /** A list of changes made in the original file to adjust any future coordinates of texts */
   changeset: Array<{ start: number; diff: number }>;
-  /** updates the original file of sourcePath with the content's contents */
+  /** Updates the original file of sourcePath with the content's contents */
   update: () => Promise<void>;
 };
 

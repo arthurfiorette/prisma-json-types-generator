@@ -1,8 +1,8 @@
 import type ts from 'typescript';
+import type { Declaration } from '../file/reader';
 import type { ModelWithRegex } from './dmmf';
 import { replaceSignature } from './handle-signature';
 import { JSON_REGEX } from './regex';
-import type { Declaration } from '../file/reader';
 
 export function replaceObject(
   model: ModelWithRegex,
