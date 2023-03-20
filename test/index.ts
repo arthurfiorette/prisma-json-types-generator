@@ -8,7 +8,7 @@ declare global {
 
     type List = { a: number };
 
-    type StringType = "a" | "b";
+    type StringType = 'a' | 'b';
 
     enum EnumType {
       Case1 = 'Case1',
