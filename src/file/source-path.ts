@@ -6,18 +6,18 @@ export function getSourcePath(
   schemaTarget?: string
 ) {
   if (overrideTarget) {
-    // schema relative
-    if (overrideTarget.startsWith('./')) {
-      return path.resolve(
-        // schemaTarget is the full path of the Prisma schema - we need the directory
-        path.dirname(schemaTarget!),
-        overrideTarget,
-        overrideTarget.endsWith('.d.ts') ? '' : 'index.d.ts'
-      );
+    if (path.isAbsolute(overrideTarget)) {
+      // importable
+      return require.resolve(overrideTarget);
     }
 
-    // importable
-    return require.resolve(overrideTarget);
+    // schema relative
+    return path.resolve(
+      // schemaTarget is the full path of the Prisma schema - we need the directory
+      path.dirname(schemaTarget!),
+      overrideTarget,
+      overrideTarget.endsWith('.d.ts') ? '' : 'index.d.ts'
+    );
   }
 
   return path.resolve(
