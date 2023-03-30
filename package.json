@@ -9,6 +9,7 @@
     "json"
   ],
   "bugs": "https://github.com/arthurfiorette/prisma-json-types-generator/issues",
+  "homepage": "https://arthur.run/prisma-json-types-generator",
   "repository": "https://github.com/arthurfiorette/prisma-json-types-generator.git",
   "funding": "https://github.com/ArthurFiorette/prisma-json-types-generator?sponsor=1",
   "license": "MIT",
