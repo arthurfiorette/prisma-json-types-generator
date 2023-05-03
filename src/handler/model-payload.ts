@@ -7,7 +7,8 @@ export async function handleModelPayload(
   typeAlias: ts.TypeAliasDeclaration,
   replacer: Declaration['replacer'],
   model: ModelWithRegex,
-  nsName: string
+  nsName: string,
+  mode: 'namespace' | 'type'
 ) {
   const type = typeAlias.type as ts.TypeLiteralNode;
 
@@ -30,5 +31,5 @@ export async function handleModelPayload(
     throw new Error(`Payload scalars could not be resolved: ${type.getText()}`);
   }
 
-  replaceObject(model, object, nsName, replacer, typeAlias.name.getText());
+  replaceObject(model, object, nsName, replacer, typeAlias.name.getText(), mode);
 }

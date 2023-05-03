@@ -35,6 +35,8 @@ generator json {
   // namespace = "PrismaJson"
   // clientOutput = "<finds it automatically>"
   // (./ -> relative to schema, or an importable path to require() it)
+  // mode = "namespace" 
+  // Also allows "type" when you are using a export type instead of export namespace.
 }
 
 model Example {

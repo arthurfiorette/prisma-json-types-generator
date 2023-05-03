@@ -8,7 +8,8 @@ export async function handleTypeAlias(
   typeAlias: ts.TypeAliasDeclaration,
   replacer: Declaration['replacer'],
   models: ModelWithRegex[],
-  nsName: string
+  nsName: string,
+  mode: 'namespace' | 'type'
 ) {
   // enum declarations
   if (typeAlias.getChildAt(4)?.getText().startsWith('(typeof')) {
@@ -23,7 +24,7 @@ export async function handleTypeAlias(
     const modelPayload = models.find((m) => `${m.name}Payload` === name);
 
     if (modelPayload) {
-      return handleModelPayload(typeAlias, replacer, modelPayload, nsName);
+      return handleModelPayload(typeAlias, replacer, modelPayload, nsName, mode);
     }
 
     return;
@@ -41,5 +42,5 @@ export async function handleTypeAlias(
     throw new Error(`Provided object is not a type literal: ${object.getText()}`);
   }
 
-  replaceObject(model, object, nsName, replacer, typeAlias.name.getText());
+  replaceObject(model, object, nsName, replacer, typeAlias.name.getText(), mode);
 }

@@ -9,7 +9,8 @@ export function replaceObject(
   object: ts.TypeLiteralNode,
   nsName: string,
   replacer: Declaration['replacer'],
-  typeAliasName: string
+  typeAliasName: string,
+  mode: 'namespace' | 'type'
 ) {
   const fields = model.fields.filter((f) => f.documentation?.match(JSON_REGEX));
 
@@ -36,7 +37,8 @@ export function replaceObject(
         replacer,
         fieldName,
         model.name,
-        typeAliasName
+        typeAliasName,
+        mode
       );
     }
   }

@@ -37,6 +37,12 @@ export async function onGenerate(options: GeneratorOptions) {
     ts.ScriptKind.TS
   );
 
+  const mode = options.generator.config.mode || 'namespace';
+
+  if (mode !== 'namespace' && mode !== 'type') {
+    throw new Error(`Invalid mode: ${mode}. Use only "namespace" or "type"`);
+  }
+
   const models = parseDmmf(options.dmmf);
 
   const promises: Promise<void>[] = [];
@@ -45,13 +51,19 @@ export async function onGenerate(options: GeneratorOptions) {
     switch (child.kind) {
       case ts.SyntaxKind.TypeAliasDeclaration:
         promises.push(
-          handleTypeAlias(child as ts.TypeAliasDeclaration, replacer, models, nsName)
+          handleTypeAlias(
+            child as ts.TypeAliasDeclaration,
+            replacer,
+            models,
+            nsName,
+            mode
+          )
         );
         break;
 
       case ts.SyntaxKind.ModuleDeclaration:
         promises.push(
-          handleModule(child as ts.ModuleDeclaration, replacer, models, nsName)
+          handleModule(child as ts.ModuleDeclaration, replacer, models, nsName, mode)
         );
         break;
     }
