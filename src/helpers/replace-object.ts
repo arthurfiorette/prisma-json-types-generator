@@ -10,7 +10,7 @@ export function replaceObject(
   nsName: string,
   replacer: Declaration['replacer'],
   typeAliasName: string,
-  mode: 'namespace' | 'type'
+  useType?: string
 ) {
   const fields = model.fields.filter((f) => f.documentation?.match(JSON_REGEX));
 
@@ -38,7 +38,7 @@ export function replaceObject(
         fieldName,
         model.name,
         typeAliasName,
-        mode
+        useType
       );
     }
   }

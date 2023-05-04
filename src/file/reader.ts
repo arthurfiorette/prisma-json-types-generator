@@ -19,7 +19,7 @@ export type Declaration = {
 };
 
 export async function readPrismaDeclarations(
-  nsName: string,
+  nsName: string, 
   clientOutput: string,
   overrideTarget?: string,
   schemaTarget?: string

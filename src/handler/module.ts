@@ -9,7 +9,7 @@ export async function handleModule(
   replacer: Declaration['replacer'],
   models: ModelWithRegex[],
   nsName: string,
-  mode: 'namespace' | 'type'
+  useType?: string
 ) {
   const namespace = module
     .getChildren()
@@ -78,7 +78,7 @@ export async function handleModule(
         fieldName,
         model.name,
         typeAliasName,
-        mode
+        useType
       );
     }
   }

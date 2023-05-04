@@ -11,17 +11,16 @@ export function replaceSignature(
   fieldName: string,
   modelName: string,
   typeAliasName: string,
-  mode: 'namespace' | 'type'
+  useType?: string
 ) {
- 
- // In case the typename is a type instead of namespace. 
-  let name = mode === 'namespace' ? `${nsName}.${typename}` : `["${nsName}"]["${typename}"]`;
-  
+  let name = useType
+    ? `${nsName}.${useType}["${typename}"]`
+    : `${nsName}.${typename}`;
+
   // Updates should leave optional fields
-  if(isUpdateOne(modelName)) {
+  if (isUpdateOne(modelName)) {
     name = `UpdateInput<${name}>`;
   }
-
 
   switch (signatureType.getText()) {
     //

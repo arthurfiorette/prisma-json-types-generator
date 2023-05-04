@@ -35,8 +35,9 @@ generator json {
   // namespace = "PrismaJson"
   // clientOutput = "<finds it automatically>"
   // (./ -> relative to schema, or an importable path to require() it)
-  // mode = "namespace" 
-  // Also allows "type" when you are using a export type instead of export namespace.
+  // useType = "MyType" 
+  // In case you need to use a type, export it inside the namespace and we will add a index signature to it
+  // (e.g.  export namespace PrismaJson { export type MyType = {a: 1, b: 2} }; will generate namespace.MyType["TYPE HERE"])
 }
 
 model Example {

@@ -21,9 +21,10 @@ export async function onGenerate(options: GeneratorOptions) {
       'prisma client output not found: ' + JSON.stringify(prismaClientOptions, null, 2)
     );
   }
-
+ 
+ 
   const { content, replacer, sourcePath, update } = await readPrismaDeclarations(
-    nsName,
+    nsName, 
     prismaClientOptions.output.value,
     options.generator.config.clientOutput,
     options.schemaPath
@@ -37,12 +38,6 @@ export async function onGenerate(options: GeneratorOptions) {
     ts.ScriptKind.TS
   );
 
-  const mode = options.generator.config.mode || 'namespace';
-
-  if (mode !== 'namespace' && mode !== 'type') {
-    throw new Error(`Invalid mode: ${mode}. Use only "namespace" or "type"`);
-  }
-
   const models = parseDmmf(options.dmmf);
 
   const promises: Promise<void>[] = [];
@@ -55,15 +50,14 @@ export async function onGenerate(options: GeneratorOptions) {
             child as ts.TypeAliasDeclaration,
             replacer,
             models,
-            nsName,
-            mode
+            nsName,options.generator.config.useType
           )
         );
         break;
 
       case ts.SyntaxKind.ModuleDeclaration:
         promises.push(
-          handleModule(child as ts.ModuleDeclaration, replacer, models, nsName, mode)
+          handleModule(child as ts.ModuleDeclaration, replacer, models, nsName, options.generator.config.useType)
         );
         break;
     }
