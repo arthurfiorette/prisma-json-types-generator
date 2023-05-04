@@ -1,21 +1,19 @@
 import { Prisma, PrismaClient, User } from '@prisma/client';
 
 declare global {
-  export namespace asd {
-    export type test = {
-      Simple: { a: number };
+  namespace PrismaJson {
+    type Simple = { a: number };
 
-      Optional: { a: number };
+    type Optional = { a: number };
 
-      List: { a: number };
+    type List = { a: number };
 
-      StringType: 'a' | 'b';
+    type StringType = 'a' | 'b';
 
-      EnumType: {
-        Case1: 'Case1';
-        Case2: 'Case2';
-      };
-    };
+    enum EnumType {
+      Case1 = 'Case1',
+      Case2 = 'Case2'
+    }
   }
 }
 

@@ -8,9 +8,7 @@ generator client {
 }
 
 generator json {
-  provider  = "node ./dist/generator.js"
-  useType   = "test"
-  namespace = "asd"
+  provider = "node ./dist/generator.js"
 }
 
 datasource db {

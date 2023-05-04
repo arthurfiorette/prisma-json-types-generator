@@ -21,10 +21,9 @@ export async function onGenerate(options: GeneratorOptions) {
       'prisma client output not found: ' + JSON.stringify(prismaClientOptions, null, 2)
     );
   }
- 
- 
+
   const { content, replacer, sourcePath, update } = await readPrismaDeclarations(
-    nsName, 
+    nsName,
     prismaClientOptions.output.value,
     options.generator.config.clientOutput,
     options.schemaPath
@@ -50,14 +49,21 @@ export async function onGenerate(options: GeneratorOptions) {
             child as ts.TypeAliasDeclaration,
             replacer,
             models,
-            nsName,options.generator.config.useType
+            nsName,
+            options.generator.config.useType
           )
         );
         break;
 
       case ts.SyntaxKind.ModuleDeclaration:
         promises.push(
-          handleModule(child as ts.ModuleDeclaration, replacer, models, nsName, options.generator.config.useType)
+          handleModule(
+            child as ts.ModuleDeclaration,
+            replacer,
+            models,
+            nsName,
+            options.generator.config.useType
+          )
         );
         break;
     }

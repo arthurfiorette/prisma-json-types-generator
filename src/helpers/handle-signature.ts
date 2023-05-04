@@ -13,9 +13,7 @@ export function replaceSignature(
   typeAliasName: string,
   useType?: string
 ) {
-  let name = useType
-    ? `${nsName}.${useType}["${typename}"]`
-    : `${nsName}.${typename}`;
+  let name = useType ? `${nsName}.${useType}["${typename}"]` : `${nsName}.${typename}`;
 
   // Updates should leave optional fields
   if (isUpdateOne(modelName)) {
