@@ -49,25 +49,42 @@ model Example {
 
   /// [MyType]
   array Json[]
+
+  /// [ComplexType]
+  complex Json
 }
 ```
 
-```ts
-// index.ts
+Provide type definitions in a file that is part of the `tsconfig.json#includes` paths. For example:
 
-import type { Example } from '@prisma/client';
+```ts
+// src/jsonTypes.ts
 
 declare global {
   namespace PrismaJson {
-    // you can use classes, interfaces, types, etc.
+    // you can use typical basic types
     type MyType = boolean;
+    // or you can use classes, interfaces, object types, etc.
+    type ComplexType = {
+      foo: string;
+      bar: number;
+    }
   }
 }
+```
+
+When you use your Prisma types in your application code, the JSON columns will now have the types provided under the `PrismaJson` namespace.
+
+```ts
+// src/example.ts
+
+import type { Example } from '@prisma/client';
 
 function myFunction(example: Example) {
   // example.normal   is now a boolean
   // example.optional is now a boolean | null
   // example.array    is now a boolean[]
+  // example.complex  is now a { foo: string; bar: number }
 }
 ```
 
@@ -84,6 +101,24 @@ replaces them with their corresponding type.
 
 There are some complex json types like `JsonFilter` and `JsonWithAggregatesFilter` that,
 if typed, would impact the usability of the client. So, they are still json.
+
+### Usage with monorepos
+
+If you're working with a monorepo, you must make sure the file containing the global definition for `namespace PrismaJson` is part of the runtime imports of your application. If you don't, the types will silently fall back to `any`.
+
+```ts
+// package1/src/jsonTypes.ts
+declare global {
+  namespace PrismaJson { /* ... */ }
+}
+
+// package1/src/client.ts
+import { PrismaClient } from '@prisma/client';
+import './jsonTypes.ts'; // if this is omitted, types are silently `any` outside of `package1`
+
+export const client = new PrismaClient(...);
+export { Example } from '@prisma/client';
+```
 
 ### Limitations
 
