@@ -32,7 +32,7 @@
     "@arthurfiorette/prettier-config": "^1.0.8",
     "@prisma/client": "^4.10.1",
     "@types/node": "18.16.3",
-    "@types/prettier": "2.7.2",
+    "@types/prettier": "2.7.3",
     "prettier": "2.8.8",
     "prisma": "^4.10.1",
     "typescript": "5.0.4"
