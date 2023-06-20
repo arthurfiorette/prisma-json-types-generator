@@ -1,6 +1,6 @@
 {
   "name": "prisma-json-types-generator",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "Changes JsonValues to your custom typescript type",
   "keywords": [
     "prisma",
