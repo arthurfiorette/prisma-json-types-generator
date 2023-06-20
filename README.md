@@ -55,7 +55,8 @@ model Example {
 }
 ```
 
-Provide type definitions in a file that is part of the `tsconfig.json#includes` paths. For example:
+Provide type definitions in a file that is part of the `tsconfig.json#includes` paths. For
+example:
 
 ```ts
 // src/jsonTypes.ts
@@ -68,12 +69,13 @@ declare global {
     type ComplexType = {
       foo: string;
       bar: number;
-    }
+    };
   }
 }
 ```
 
-When you use your Prisma types in your application code, the JSON columns will now have the types provided under the `PrismaJson` namespace.
+When you use your Prisma types in your application code, the JSON columns will now have
+the types provided under the `PrismaJson` namespace.
 
 ```ts
 // src/example.ts
@@ -104,7 +106,9 @@ if typed, would impact the usability of the client. So, they are still json.
 
 ### Usage with monorepos
 
-If you're working with a monorepo, you must make sure the file containing the global definition for `namespace PrismaJson` is part of the runtime imports of your application. If you don't, the types will silently fall back to `any`.
+If you're working with a monorepo, you must make sure the file containing the global
+definition for `namespace PrismaJson` is part of the runtime imports of your application.
+If you don't, the types will silently fall back to `any`.
 
 ```ts
 // package1/src/jsonTypes.ts

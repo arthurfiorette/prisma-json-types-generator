@@ -1,17 +1,20 @@
-name: Code CI
+name: Publish to NPM
 
 on:
-  push:
-  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: Build and test code
+  publish:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -20,16 +23,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          registry-url: 'https://registry.npmjs.org/'
           cache: 'pnpm'
 
       - name: Install packages
         run: pnpm install --frozen-lockfile
 
-      - name: Style
-        run: pnpm prettier --check .
-
       - name: Build
-        run: pnpm build
+        run: pnpm run build
 
-      - name: Test
-        run: pnpm test
+      - name: Publish to NPM
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

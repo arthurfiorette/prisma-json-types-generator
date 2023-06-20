@@ -20,7 +20,6 @@
     "build": "tsc",
     "dev": "tsc -w",
     "format": "prettier --write .",
-    "prepack": "rm -rf dist && pnpm build",
     "start": "node dist/bin.js",
     "test": "prisma generate && tsc --noEmit -p tsconfig.test.json"
   },
@@ -40,8 +39,8 @@
   "peerDependencies": {
     "prisma": "^4.16.0"
   },
+  "packageManager": "pnpm@8.4.0",
   "engines": {
     "node": ">=14.0"
-  },
-  "packageManager": "pnpm@8.4.0"
+  }
 }
