@@ -6,7 +6,7 @@ import { JSON_REGEX } from './regex';
 
 export function replaceObject(
   model: ModelWithRegex,
-  object: ts.TypeLiteralNode,
+  object: ts.TypeReferenceNode,
   nsName: string,
   replacer: Declaration['replacer'],
   typeAliasName: string,

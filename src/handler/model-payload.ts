@@ -13,7 +13,7 @@ export async function handleModelPayload(
   const type = typeAlias.type as ts.TypeLiteralNode;
 
   if (type.kind !== ts.SyntaxKind.TypeLiteral) {
-    throw new Error(`prisma-json-types-generator: Provided object is not a type literal: ${type.getText()}`);
+    throw new Error(`prisma-json-types-generator: Provided model payload is not a type literal: ${type.getText()}`);
   }
 
   const scalarsField = type.members.find((m) => m.name?.getText() === 'scalars');

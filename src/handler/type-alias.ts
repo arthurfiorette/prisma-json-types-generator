@@ -35,11 +35,12 @@ export async function handleTypeAlias(
   // not a type literal. TODO: there is a way of this happen?
   if (object.kind !== ts.SyntaxKind.TypeLiteral) {
     // For `model`Payload types. They were handled in `handleModelPayload` call
-    if (object.kind === ts.SyntaxKind.IndexedAccessType) {
+    if (object.kind === ts.SyntaxKind.IndexedAccessType || object.kind === ts.SyntaxKind.TypeReference) {
       return;
     }
 
-    throw new Error(`prisma-json-types-generator: Provided object is not a type literal: ${object.getText()}`);
+
+    throw new Error(`Provided object is not a type literal: ${object.getText()}`);
   }
 
   replaceObject(model, object, nsName, replacer, typeAlias.name.getText(), useType);

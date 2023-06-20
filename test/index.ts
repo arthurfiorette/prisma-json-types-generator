@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, User } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '.prisma/client';
 
 declare global {
   namespace PrismaJson {
