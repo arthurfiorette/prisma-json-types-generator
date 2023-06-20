@@ -27,7 +27,9 @@ export function replaceObject(
       const signatureType = (member as ts.PropertySignature).type;
 
       if (!typename || !signatureType) {
-        throw new Error(`prisma-json-types-generator: Could not find typename or signature type for ${field.name}`);
+        throw new Error(
+          `prisma-json-types-generator: Could not find typename or signature type for ${field.name}`
+        );
       }
 
       replaceSignature(

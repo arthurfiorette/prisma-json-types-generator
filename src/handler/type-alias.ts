@@ -35,10 +35,12 @@ export async function handleTypeAlias(
   // not a type literal. TODO: there is a way of this happen?
   if (object.kind !== ts.SyntaxKind.TypeLiteral) {
     // For `model`Payload types. They were handled in `handleModelPayload` call
-    if (object.kind === ts.SyntaxKind.IndexedAccessType || object.kind === ts.SyntaxKind.TypeReference) {
+    if (
+      object.kind === ts.SyntaxKind.IndexedAccessType ||
+      object.kind === ts.SyntaxKind.TypeReference
+    ) {
       return;
     }
-
 
     throw new Error(`Provided object is not a type literal: ${object.getText()}`);
   }

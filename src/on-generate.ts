@@ -18,7 +18,8 @@ export async function onGenerate(options: GeneratorOptions) {
 
   if (!prismaClientOptions.output?.value) {
     throw new Error(
-      'prisma-json-types-generator: prisma client output not found: ' + JSON.stringify(prismaClientOptions, null, 2)
+      'prisma-json-types-generator: prisma client output not found: ' +
+        JSON.stringify(prismaClientOptions, null, 2)
     );
   }
 
