@@ -39,7 +39,7 @@ export async function handleTypeAlias(
       return;
     }
 
-    throw new Error(`Provided object is not a type literal: ${object.getText()}`);
+    throw new Error(`prisma-json-types-generator: Provided object is not a type literal: ${object.getText()}`);
   }
 
   replaceObject(model, object, nsName, replacer, typeAlias.name.getText(), useType);

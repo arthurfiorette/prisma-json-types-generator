@@ -59,14 +59,14 @@ export async function handleModule(
       }
 
       if (!signature.type) {
-        throw new Error(`No type found for field ${fieldName} at model ${typeAliasName}`);
+        throw new Error(`prisma-json-types-generator: No type found for field ${fieldName} at model ${typeAliasName}`);
       }
 
       const typename = field.documentation?.match(JSON_REGEX)?.[1];
 
       if (!typename) {
         throw new Error(
-          `No typename found for field ${fieldName} at model ${typeAliasName}`
+          `prisma-json-types-generator: No typename found for field ${fieldName} at model ${typeAliasName}`
         );
       }
 

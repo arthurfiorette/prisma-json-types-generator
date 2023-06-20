@@ -12,13 +12,13 @@ export async function onGenerate(options: GeneratorOptions) {
 
   if (!prismaClientOptions) {
     throw new Error(
-      'Could not find client generator options, are you using prisma-client-js before prisma-json-types-generator?'
+      'prisma-json-types-generator: Could not find client generator options, are you using prisma-client-js before prisma-json-types-generator?'
     );
   }
 
   if (!prismaClientOptions.output?.value) {
     throw new Error(
-      'prisma client output not found: ' + JSON.stringify(prismaClientOptions, null, 2)
+      'prisma-json-types-generator: prisma client output not found: ' + JSON.stringify(prismaClientOptions, null, 2)
     );
   }
 
