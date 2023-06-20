@@ -51,8 +51,8 @@ export type CreateManyInput<T> =
  */
 export type TypedNestedStringFilter<S extends string> = Prisma.StringFilter & {
   equals?: S;
-  in?: Prisma.Enumerable<S>;
-  notIn?: Prisma.Enumerable<S>;
+  in?: S | S[];
+  notIn?: S | S[];
   not: TypedNestedStringFilter<S> | S
 }
 
@@ -61,8 +61,8 @@ export type TypedNestedStringFilter<S extends string> = Prisma.StringFilter & {
  */
 export type TypedStringFilter<S extends string> = Prisma.StringFilter & {
   equals?: S;
-  in?: Prisma.Enumerable<S>;
-  notIn?: Prisma.Enumerable<S>;
+  in?: S | S[];
+  notIn?: S | S[];
   not: TypedNestedStringFilter<S> | S
 }
 
@@ -71,8 +71,8 @@ export type TypedStringFilter<S extends string> = Prisma.StringFilter & {
  */
 export type TypedNestedStringNullableFilter<S extends string> = Prisma.StringNullableFilter & {
   equals?: S | null;
-  in?: Prisma.Enumerable<S> | null;
-  notIn?: Prisma.Enumerable<S> | null;
+  in?: S | S[] | null;
+  notIn?: S | S[] | null;
   not: TypedNestedStringNullableFilter<S> | S | null
 }
 
@@ -81,8 +81,8 @@ export type TypedNestedStringNullableFilter<S extends string> = Prisma.StringNul
  */
 export type TypedStringNullableFilter<S extends string> = Prisma.StringNullableFilter & {
   equals?: S | null;
-  in?: Prisma.Enumerable<S> | null;
-  notIn?: Prisma.Enumerable<S> | null;
+  in?: S | S[] | null;
+  notIn?: S | S[] | null;
   not: TypedNestedStringNullableFilter<S> | S | null
 }
 
@@ -91,8 +91,8 @@ export type TypedStringNullableFilter<S extends string> = Prisma.StringNullableF
  */
 export type TypedNestedStringWithAggregatesFilter<S extends string> = Prisma.NestedStringWithAggregatesFilter & {
   equals?: S;
-  in?: Prisma.Enumerable<S>;
-  notIn?: Prisma.Enumerable<S>;
+  in?: S | S[];
+  notIn?: S | S[];
   not: TypedNestedStringWithAggregatesFilter<S> | S
 }
 
@@ -101,8 +101,8 @@ export type TypedNestedStringWithAggregatesFilter<S extends string> = Prisma.Nes
  */
 export type TypedStringWithAggregatesFilter<S extends string> = Prisma.StringWithAggregatesFilter & {
   equals?: S;
-  in?: Prisma.Enumerable<S>;
-  notIn?: Prisma.Enumerable<S>;
+  in?: S | S[];
+  notIn?: S | S[];
   not?: TypedNestedStringWithAggregatesFilter<S> | S
 }
 
@@ -111,18 +111,18 @@ export type TypedStringWithAggregatesFilter<S extends string> = Prisma.StringWit
  */
 export type TypedNestedStringNullableWithAggregatesFilter<S extends string> = Prisma.NestedStringNullableWithAggregatesFilter & {
   equals?: S | null;
-  in?: Prisma.Enumerable<S> | null;
-  notIn?: Prisma.Enumerable<S> | null;
+  in?: S | S[] | null;
+  notIn?: S | S[] | null;
   not: TypedNestedStringNullableWithAggregatesFilter<S> | S | null
 }
 
 /**
- * A typed version of tringNullableWithAggregatesFilter, allowing narrowing of string types to discriminated unions.
+ * A typed version of StringNullableWithAggregatesFilter, allowing narrowing of string types to discriminated unions.
  */
 export type TypedStringNullableWithAggregatesFilter<S extends string> = Prisma.StringNullableWithAggregatesFilter & {
   equals?: S | null;
-  in?: Prisma.Enumerable<S> | null;
-  notIn?: Prisma.Enumerable<S> | null;
+  in?: S | S[] | null;
+  notIn?: S | S[] | null;
   not?: TypedNestedStringNullableWithAggregatesFilter<S> | S | null
 }
 
@@ -144,25 +144,25 @@ export type TypedNullableStringFieldUpdateOperationsInput<S extends string> = Pr
  * A typed version of StringNullableListFilter, allowing narrowing of string types to discriminated unions.
  */
 export type TypedStringNullableListFilter<S extends string> = Prisma.StringNullableListFilter & {
-  equals?: Enumerable<S> | null
+  equals?: S | S[] | null
   has?: S | null
-  hasEvery?: Enumerable<S>
-  hasSome?: Enumerable<S>
+  hasEvery?: S | S[]
+  hasSome?: S | S[]
 }
 
 /**
  * A typed version of the input type to update a string[] field, allowing narrowing of string types to discriminated unions.
  */
 export type UpdateStringArrayInput<S extends string> = {
-  set?: Enumerable<S>
-  push?: S | Enumerable<S>
+  set?: S | S[]
+  push?: S | S[]
 }
 
 /**
  * A typed version of the input type to create a string[] field, allowing narrowing of string types to discriminated unions.
  */
 export type CreateStringArrayInput<S extends string> = {
-  set?: Enumerable<S>
+  set?: S | S[]
 }
 
 `.trim();
