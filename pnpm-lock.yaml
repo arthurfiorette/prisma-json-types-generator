@@ -13,8 +13,8 @@ devDependencies:
     specifier: 1.0.9
     version: 1.0.9(prettier@2.8.8)
   '@prisma/client':
-    specifier: 4.16.0
-    version: 4.16.0(prisma@4.16.0)
+    specifier: 4.16.1
+    version: 4.16.1(prisma@4.16.0)
   '@types/node':
     specifier: 20.3.1
     version: 20.3.1
@@ -82,8 +82,8 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@prisma/client@4.16.0(prisma@4.16.0):
-    resolution: {integrity: sha512-CBD+5IdZPiavhLkQokvsz1uz4r9ppixaqY/ajybWs4WXNnsDVMBKEqN3BiPzpSo79jiy22VKj/67pqt4VwIg9w==}
+  /@prisma/client@4.16.1(prisma@4.16.0):
+    resolution: {integrity: sha512-CoDHu7Bt+NuDo40ijoeHP79EHtECsPBTy3yte5Yo3op8TqXt/kV0OT5OrsWewKvQGKFMHhYQ+ePed3zzjYdGAw==}
     engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:
