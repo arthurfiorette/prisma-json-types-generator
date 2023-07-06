@@ -32,7 +32,7 @@
     "@prisma/client": "4.16.2",
     "@types/node": "20.3.3",
     "@types/prettier": "2.7.3",
-    "prettier": "2.8.8",
+    "prettier": "3.0.0",
     "prisma": "4.16.2",
     "typescript": "5.1.3"
   },
