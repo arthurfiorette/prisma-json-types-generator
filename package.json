@@ -30,7 +30,7 @@
   "devDependencies": {
     "@arthurfiorette/prettier-config": "1.0.9",
     "@prisma/client": "4.16.2",
-    "@types/node": "20.3.3",
+    "@types/node": "20.4.7",
     "@types/prettier": "2.7.3",
     "prettier": "2.8.8",
     "prisma": "4.16.2",
