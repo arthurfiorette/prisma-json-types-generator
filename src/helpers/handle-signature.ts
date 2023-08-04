@@ -20,6 +20,21 @@ export function replaceSignature(
     name = `UpdateInput<${name}>`;
   }
 
+  /*
+  console.log(
+    [
+      { "signatureType.getText()": signatureType.getText() },
+      { typename },
+      { nsName },
+      //{ replacer },
+      { fieldName },
+      { modelName },
+      {  typeAliasName },
+      { useType }
+    ]
+  )
+  */
+
   switch (signatureType.getText()) {
     //
     // Normal
@@ -34,11 +49,11 @@ export function replaceSignature(
       break;
 
     // Super complex type that strictly typing will lose functionality
-    case 'JsonWithAggregatesFilter':
+    case `JsonWithAggregatesFilter<"${modelName}">`:
       break;
 
     // Super complex type that strictly typing will lose functionality
-    case 'JsonFilter':
+    case `JsonFilter<"${modelName}">`:
       break;
 
     //
@@ -56,7 +71,7 @@ export function replaceSignature(
       replacer(signatureType.pos, signatureType.end, name);
       break;
 
-    case `StringFilter | string`:
+    case `StringFilter<"${modelName}"> | string`:
       replacer(
         signatureType.pos,
         signatureType.end,
@@ -64,7 +79,7 @@ export function replaceSignature(
       );
       break;
 
-    case `StringNullableFilter | string | null`:
+    case `StringNullableFilter<"${modelName}"> | string | null`:
       replacer(
         signatureType.pos,
         signatureType.end,
@@ -72,7 +87,7 @@ export function replaceSignature(
       );
       break;
 
-    case `StringNullableListFilter`:
+    case `StringNullableListFilter<"${modelName}">`:
       replacer(
         signatureType.pos,
         signatureType.end,
@@ -80,7 +95,7 @@ export function replaceSignature(
       );
       break;
 
-    case `StringWithAggregatesFilter | string`:
+    case `StringWithAggregatesFilter<"${modelName}"> | string`:
       replacer(
         signatureType.pos,
         signatureType.end,
@@ -88,7 +103,7 @@ export function replaceSignature(
       );
       break;
 
-    case `StringNullableWithAggregatesFilter | string | null`:
+    case `StringNullableWithAggregatesFilter<"${modelName}"> | string | null`:
       replacer(
         signatureType.pos,
         signatureType.end,
@@ -112,19 +127,19 @@ export function replaceSignature(
       );
       break;
 
-    case `${modelName}Create${fieldName}Input | Enumerable<string>`:
+    case `${modelName}Create${fieldName}Input | string[]`:
       replacer(
         signatureType.pos,
         signatureType.end,
-        `CreateStringArrayInput<${name}> | Enumerable<${name}>`
+        `CreateStringArrayInput<${name}> | ${name}[]`
       );
       break;
 
-    case `${modelName}Update${fieldName}Input | Enumerable<string>`:
+    case `${modelName}Update${fieldName}Input | string[]`:
       replacer(
         signatureType.pos,
         signatureType.end,
-        `CreateStringArrayInput<${name}> | Enumerable<${name}>`
+        `CreateStringArrayInput<${name}> | ${name}[]`
       );
       break;
 
@@ -146,11 +161,11 @@ export function replaceSignature(
       break;
 
     // Super complex type that strictly typing will lose functionality
-    case 'JsonNullableWithAggregatesFilter':
+    case `JsonNullableWithAggregatesFilter<"${modelName}">`:
       break;
 
     // Super complex type that strictly typing will lose functionality
-    case 'JsonNullableFilter':
+    case `JsonNullableFilter<"${modelName}">`:
       break;
 
     //
@@ -165,21 +180,21 @@ export function replaceSignature(
       replacer(signatureType.pos, signatureType.end, `Enumerable<${name}>`);
       break;
 
-    case 'JsonNullableListFilter':
+    case `JsonNullableListFilter<"${modelName}">`:
       replacer(signatureType.pos, signatureType.end, `NullableListFilter<${name}>`);
       break;
 
-    case `${modelName}Update${fieldName}Input | Enumerable<InputJsonValue>`:
+    case `${modelName}Update${fieldName}Input | InputJsonValue[]`:
       replacer(signatureType.pos, signatureType.end, `UpdateManyInput<${name}>`);
       break;
 
-    case `${modelName}Create${fieldName}Input | Enumerable<InputJsonValue>`:
+    case `${modelName}Create${fieldName}Input | InputJsonValue[]`:
       replacer(signatureType.pos, signatureType.end, `CreateManyInput<${name}>`);
       break;
 
     default:
       console.log(
-        `\x1b[90m✘\x1b[0m Type \x1b[1m${typeAliasName}.${fieldName}\x1b[0m is not supported.`
+        `\x1b[90m✘\x1b[0m Type \x1b[1m${typeAliasName}.${fieldName}\x1b[0m is not supported. (${signatureType.getText()})`
       );
   }
 }
