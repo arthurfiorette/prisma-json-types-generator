@@ -1,19 +1,26 @@
 import type { DMMF } from '@prisma/generator-helper';
-import { JSON_REGEX, regexForPrismaType } from './regex';
+import { JSON_REGEX, createRegexForType } from './regex';
 
-export type ModelWithRegex = DMMF.Model & {
+/** A Prisma DMMF model with the regexes for each field. */
+export interface ModelWithRegex extends DMMF.Model {
   regexps: RegExp[];
-};
+}
 
+/**
+ * Parses the DMMF document and returns a list of models that have at least one field with
+ * typed json and the regexes for each field type.
+ */
 export function parseDmmf(dmmf: DMMF.Document): ModelWithRegex[] {
   return (
     dmmf.datamodel.models
       // All models that have at least one field with typed json
       .filter((m) => m.fields.some((f) => f.documentation?.match(JSON_REGEX)))
-      .map((m) => ({
-        ...m,
-        // Loads all names and subnames regexes for the model
-        regexps: regexForPrismaType(m.name)
-      }))
+      // Define the regexes for each model
+      .map(
+        (model): ModelWithRegex => ({
+          ...model,
+          regexps: createRegexForType(model.name)
+        })
+      )
   );
 }

@@ -9,34 +9,27 @@ declare global {
 export type NullableListFilter<T> = {
   equals?: T | T[] | null;
   has?: T | null;
-  hasEvery?: T | T[];
-  hasSome?: T | T[];
+  hasEvery?: T[];
+  hasSome?: T[];
   isEmpty?: boolean;
 };
 
 /** A type to determine how to update a json field */
 export type UpdateInput<T> = T extends object
-  ? {
-      [P in keyof T]?: UpdateInput<T[P]>;
-    }
+  ? { [P in keyof T]?: UpdateInput<T[P]> }
   : T;
 
 /** A type to determine how to update a json[] field */
 export type UpdateManyInput<T> =
   | T
   | T[]
-  | {
-      set?: T | T[];
-      push?: T | T[];
-    };
+  | { set?: T[]; push?: T[] };
 
 /** A type to determine how to create a json[] input */
 export type CreateManyInput<T> =
   | T
   | T[]
-  | {
-      set?: T | T[];
-    };
+  | { set?: T[] };
 
 /**
  * A typed version of NestedStringFilter, allowing narrowing of string types to
@@ -46,8 +39,8 @@ export type TypedNestedStringFilter<S extends string> =
   //@ts-ignore - When Prisma.StringFilter is not present, this type is not used
   Prisma.StringFilter & {
     equals?: S;
-    in?: S | S[];
-    notIn?: S | S[];
+    in?: S[];
+    notIn?: S[];
     not: TypedNestedStringFilter<S> | S;
   };
 
@@ -59,8 +52,8 @@ export type TypedStringFilter<S extends string> =
   //@ts-ignore - When Prisma.StringFilter is not present, this type is not used
   Prisma.StringFilter & {
     equals?: S;
-    in?: S | S[];
-    notIn?: S | S[];
+    in?: S[];
+    notIn?: S[];
     not: TypedNestedStringFilter<S> | S;
   };
 
@@ -72,8 +65,8 @@ export type TypedNestedStringNullableFilter<S extends string> =
   //@ts-ignore - When Prisma.StringNullableFilter is not present, this type is not used
   Prisma.StringNullableFilter & {
     equals?: S | null;
-    in?: S | S[] | null;
-    notIn?: S | S[] | null;
+    in?: S[] | null;
+    notIn?: S[] | null;
     not: TypedNestedStringNullableFilter<S> | S | null;
   };
 
@@ -85,8 +78,8 @@ export type TypedStringNullableFilter<S extends string> =
   //@ts-ignore - When Prisma.StringNullableFilter is not present, this type is not used
   Prisma.StringNullableFilter & {
     equals?: S | null;
-    in?: S | S[] | null;
-    notIn?: S | S[] | null;
+    in?: S[] | null;
+    notIn?: S[] | null;
     not: TypedNestedStringNullableFilter<S> | S | null;
   };
 
@@ -98,8 +91,8 @@ export type TypedNestedStringWithAggregatesFilter<S extends string> =
   //@ts-ignore - When Prisma.NestedStringWithAggregatesFilter is not present, this type is not used
   Prisma.NestedStringWithAggregatesFilter & {
     equals?: S;
-    in?: S | S[];
-    notIn?: S | S[];
+    in?: S[];
+    notIn?: S[];
     not: TypedNestedStringWithAggregatesFilter<S> | S;
   };
 
@@ -111,8 +104,8 @@ export type TypedStringWithAggregatesFilter<S extends string> =
   //@ts-ignore - When Prisma.StringWithAggregatesFilter is not present, this type is not used
   Prisma.StringWithAggregatesFilter & {
     equals?: S;
-    in?: S | S[];
-    notIn?: S | S[];
+    in?: S[];
+    notIn?: S[];
     not?: TypedNestedStringWithAggregatesFilter<S> | S;
   };
 
@@ -124,8 +117,8 @@ export type TypedNestedStringNullableWithAggregatesFilter<S extends string> =
   //@ts-ignore - When Prisma.NestedStringNullableWithAggregatesFilter is not present, this type is not used
   Prisma.NestedStringNullableWithAggregatesFilter & {
     equals?: S | null;
-    in?: S | S[] | null;
-    notIn?: S | S[] | null;
+    in?: S[] | null;
+    notIn?: S[] | null;
     not: TypedNestedStringNullableWithAggregatesFilter<S> | S | null;
   };
 
@@ -137,8 +130,8 @@ export type TypedStringNullableWithAggregatesFilter<S extends string> =
   //@ts-ignore - When Prisma.StringNullableWithAggregatesFilter is not present, this type is not used
   Prisma.StringNullableWithAggregatesFilter & {
     equals?: S | null;
-    in?: S | S[] | null;
-    notIn?: S | S[] | null;
+    in?: S[] | null;
+    notIn?: S[] | null;
     not?: TypedNestedStringNullableWithAggregatesFilter<S> | S | null;
   };
 
@@ -169,10 +162,10 @@ export type TypedNullableStringFieldUpdateOperationsInput<S extends string> =
 export type TypedStringNullableListFilter<S extends string> =
   //@ts-ignore - When Prisma.StringNullableListFilter is not present, this type is not used
   Prisma.StringNullableListFilter & {
-    equals?: S | S[] | null;
+    equals?: S[] | null;
     has?: S | null;
-    hasEvery?: S | S[];
-    hasSome?: S | S[];
+    hasEvery?: S[];
+    hasSome?: S[];
   };
 
 /**
@@ -180,8 +173,8 @@ export type TypedStringNullableListFilter<S extends string> =
  * string types to discriminated unions.
  */
 export type UpdateStringArrayInput<S extends string> = {
-  set?: S | S[];
-  push?: S | S[];
+  set?: S[];
+  push?: S[];
 };
 
 /**
@@ -189,7 +182,7 @@ export type UpdateStringArrayInput<S extends string> = {
  * string types to discriminated unions.
  */
 export type CreateStringArrayInput<S extends string> = {
-  set?: S | S[];
+  set?: S[];
 };
 
 `.trim();

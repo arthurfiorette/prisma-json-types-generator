@@ -1,38 +1,29 @@
 import type { GeneratorOptions } from '@prisma/generator-helper';
 import ts from 'typescript';
-import { readPrismaDeclarations } from './file/reader';
 import { handleModule } from './handler/module';
-import { handleTypeAlias } from './handler/type-alias';
 import { parseDmmf } from './helpers/dmmf';
+import { DeclarationWriter } from './util/declaration-writer';
+import { PrismaJsonTypesGeneratorError } from './util/error';
+import { findPrismaClientGenerator } from './util/prisma-generator';
 
+/** Runs the generator with the given options. */
 export async function onGenerate(options: GeneratorOptions) {
-  const nsName = options.generator.config.namespace || 'PrismaJson';
+  // Default namespace is `PrismaJson`
+  options.generator.config.namespace ??= 'PrismaJson';
 
-  const prismaClientOptions = options.otherGenerators.find((g) => g.name === 'client');
+  const prismaClient = findPrismaClientGenerator(options.otherGenerators);
 
-  if (!prismaClientOptions) {
-    throw new Error(
-      'prisma-json-types-generator: Could not find client generator options, are you using prisma-client-js before prisma-json-types-generator?'
-    );
-  }
-
-  if (!prismaClientOptions.output?.value) {
-    throw new Error(
-      'prisma-json-types-generator: prisma client output not found: ' +
-        JSON.stringify(prismaClientOptions, null, 2)
-    );
-  }
-
-  const { content, replacer, sourcePath, update } = await readPrismaDeclarations(
-    nsName,
-    prismaClientOptions.output.value,
+  const writer = new DeclarationWriter(
+    prismaClient.output.value,
     options.generator.config.clientOutput,
     options.schemaPath
   );
 
+  await writer.load();
+
   const tsSource = ts.createSourceFile(
-    sourcePath,
-    content,
+    writer.sourcePath,
+    writer.content,
     ts.ScriptTarget.ESNext,
     true,
     ts.ScriptKind.TS
@@ -40,37 +31,30 @@ export async function onGenerate(options: GeneratorOptions) {
 
   const models = parseDmmf(options.dmmf);
 
-  const promises: Promise<void>[] = [];
-
   tsSource.forEachChild((child) => {
-    switch (child.kind) {
-      case ts.SyntaxKind.TypeAliasDeclaration:
-        promises.push(
-          handleTypeAlias(
-            child as ts.TypeAliasDeclaration,
-            replacer,
-            models,
-            nsName,
-            options.generator.config.useType
-          )
-        );
-        break;
-
-      case ts.SyntaxKind.ModuleDeclaration:
-        promises.push(
-          handleModule(
+    try {
+      switch (child.kind) {
+        // Main model type is inside Prisma namespace
+        case ts.SyntaxKind.ModuleDeclaration:
+          return handleModule(
             child as ts.ModuleDeclaration,
-            replacer,
+            writer,
             models,
-            nsName,
+            options.generator.config.namespace!,
             options.generator.config.useType
-          )
-        );
-        break;
+          );
+      }
+    } catch (error) {
+      // This allows some types to be generated even if others may fail
+      // which is good for incremental development/testing
+      if (error instanceof PrismaJsonTypesGeneratorError) {
+        return PrismaJsonTypesGeneratorError.handler(error);
+      }
+
+      // Stops this generator is error thrown is not manually added by our code.
+      throw error;
     }
   });
 
-  await Promise.all(promises);
-
-  await update();
+  await writer.update(options.generator.config.namespace);
 }

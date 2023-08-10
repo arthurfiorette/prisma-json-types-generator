@@ -1,13 +1,14 @@
 import type ts from 'typescript';
-import type { Declaration } from '../file/reader';
-import { isUpdateOne } from './regex';
+import type { DeclarationWriter } from '../util/declaration-writer';
+import { PrismaJsonTypesGeneratorError } from '../util/error';
+import { isUpdateOneType } from './regex';
 
 /** Handles and replaces the signature of a typed field. */
 export function replaceSignature(
   signatureType: ts.TypeNode,
   typename: string,
   nsName: string,
-  replacer: Declaration['replacer'],
+  writer: DeclarationWriter,
   fieldName: string,
   modelName: string,
   typeAliasName: string,
@@ -16,24 +17,9 @@ export function replaceSignature(
   let name = useType ? `${nsName}.${useType}["${typename}"]` : `${nsName}.${typename}`;
 
   // Updates should leave optional fields
-  if (isUpdateOne(modelName)) {
+  if (isUpdateOneType(modelName)) {
     name = `UpdateInput<${name}>`;
   }
-
-  /*
-  console.log(
-    [
-      { "signatureType.getText()": signatureType.getText() },
-      { typename },
-      { nsName },
-      //{ replacer },
-      { fieldName },
-      { modelName },
-      {  typeAliasName },
-      { useType }
-    ]
-  )
-  */
 
   switch (signatureType.getText()) {
     //
@@ -44,7 +30,7 @@ export function replaceSignature(
     case 'InputJsonValue':
     case 'InputJsonValue | InputJsonValue':
     case 'JsonNullValueInput | InputJsonValue':
-      replacer(signatureType.pos, signatureType.end, name);
+      writer.replace(signatureType.pos, signatureType.end, name);
 
       break;
 
@@ -60,19 +46,19 @@ export function replaceSignature(
     // String
     //
     case 'string':
-      replacer(signatureType.pos, signatureType.end, name);
+      writer.replace(signatureType.pos, signatureType.end, name);
       break;
 
     case 'string[]':
-      replacer(signatureType.pos, signatureType.end, `(${name})[]`);
+      writer.replace(signatureType.pos, signatureType.end, `(${name})[]`);
       break;
 
     case 'string | null':
-      replacer(signatureType.pos, signatureType.end, name);
+      writer.replace(signatureType.pos, signatureType.end, name);
       break;
 
     case `StringFilter<"${modelName}"> | string`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `TypedStringFilter<${name}> | ${name}`
@@ -80,7 +66,7 @@ export function replaceSignature(
       break;
 
     case `StringNullableFilter<"${modelName}"> | string | null`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `TypedStringNullableFilter<${name}> | ${name} | null`
@@ -88,7 +74,7 @@ export function replaceSignature(
       break;
 
     case `StringNullableListFilter<"${modelName}">`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `TypedStringNullableListFilter<${name}>`
@@ -96,7 +82,7 @@ export function replaceSignature(
       break;
 
     case `StringWithAggregatesFilter<"${modelName}"> | string`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `TypedStringWithAggregatesFilter<${name}> | ${name}`
@@ -104,7 +90,7 @@ export function replaceSignature(
       break;
 
     case `StringNullableWithAggregatesFilter<"${modelName}"> | string | null`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `TypedStringNullableWithAggregatesFilter<${name}> | ${name}`
@@ -112,7 +98,7 @@ export function replaceSignature(
       break;
 
     case `StringFieldUpdateOperationsInput | string`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `TypedStringFieldUpdateOperationsInput<${name}> | ${name}`
@@ -120,7 +106,7 @@ export function replaceSignature(
       break;
 
     case `NullableStringFieldUpdateOperationsInput | string | null`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `TypedNullableStringFieldUpdateOperationsInput<${name}> | ${name} | null`
@@ -128,7 +114,7 @@ export function replaceSignature(
       break;
 
     case `${modelName}Create${fieldName}Input | string[]`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `CreateStringArrayInput<${name}> | ${name}[]`
@@ -136,7 +122,7 @@ export function replaceSignature(
       break;
 
     case `${modelName}Update${fieldName}Input | string[]`:
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `CreateStringArrayInput<${name}> | ${name}[]`
@@ -148,12 +134,13 @@ export function replaceSignature(
     //
     case 'JsonValue | null':
     case 'Prisma.JsonValue | null':
-      replacer(signatureType.pos, signatureType.end, `${name} | null`);
+      writer.replace(signatureType.pos, signatureType.end, `${name} | null`);
       break;
 
     // differentiates null in column or a json null value
+    case 'JsonNullValueInput | InputJsonValue':
     case 'NullableJsonNullValueInput | InputJsonValue':
-      replacer(
+      writer.replace(
         signatureType.pos,
         signatureType.end,
         `${name} | NullableJsonNullValueInput`
@@ -173,28 +160,30 @@ export function replaceSignature(
     //
     case 'Prisma.JsonValue[]':
     case 'JsonValue[]':
-      replacer(signatureType.pos, signatureType.end, `${name}[]`);
+      writer.replace(signatureType.pos, signatureType.end, `${name}[]`);
       break;
 
     case 'Enumerable<InputJsonValue>':
-      replacer(signatureType.pos, signatureType.end, `Enumerable<${name}>`);
+      writer.replace(signatureType.pos, signatureType.end, `Enumerable<${name}>`);
       break;
 
     case `JsonNullableListFilter<"${modelName}">`:
-      replacer(signatureType.pos, signatureType.end, `NullableListFilter<${name}>`);
+      writer.replace(signatureType.pos, signatureType.end, `NullableListFilter<${name}>`);
       break;
 
     case `${modelName}Update${fieldName}Input | InputJsonValue[]`:
-      replacer(signatureType.pos, signatureType.end, `UpdateManyInput<${name}>`);
+      writer.replace(signatureType.pos, signatureType.end, `UpdateManyInput<${name}>`);
       break;
 
     case `${modelName}Create${fieldName}Input | InputJsonValue[]`:
-      replacer(signatureType.pos, signatureType.end, `CreateManyInput<${name}>`);
+      writer.replace(signatureType.pos, signatureType.end, `CreateManyInput<${name}>`);
       break;
 
     default:
-      console.log(
-        `\x1b[90m✘\x1b[0m Type \x1b[1m${typeAliasName}.${fieldName}\x1b[0m is not supported. (${signatureType.getText()})`
-      );
+      throw new PrismaJsonTypesGeneratorError('Found unsupported required field type', {
+        typeAliasName,
+        fieldName,
+        signatureType: signatureType.getText()
+      });
   }
 }
