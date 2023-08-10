@@ -1,14 +1,16 @@
 import type ts from 'typescript';
-import type { Declaration } from '../file/reader';
+import type { DeclarationWriter } from '../util/declaration-writer';
+import { PrismaJsonTypesGeneratorError } from '../util/error';
 import type { ModelWithRegex } from './dmmf';
 import { replaceSignature } from './handle-signature';
 import { JSON_REGEX } from './regex';
 
+/** Replaces the signature of a typed object. */
 export function replaceObject(
   model: ModelWithRegex,
   object: ts.TypeLiteralNode,
   nsName: string,
-  replacer: Declaration['replacer'],
+  writer: DeclarationWriter,
   typeAliasName: string,
   useType?: string
 ) {
@@ -23,12 +25,12 @@ export function replaceObject(
       }
 
       const typename = field.documentation?.match(JSON_REGEX)?.[1];
-
       const signatureType = (member as ts.PropertySignature).type;
 
       if (!typename || !signatureType) {
-        throw new Error(
-          `prisma-json-types-generator: Could not find typename or signature type for ${field.name}`
+        throw new PrismaJsonTypesGeneratorError(
+          `Could not find typename or signature type`,
+          { type: field.name }
         );
       }
 
@@ -36,7 +38,7 @@ export function replaceObject(
         signatureType,
         typename,
         nsName,
-        replacer,
+        writer,
         fieldName,
         model.name,
         typeAliasName,

@@ -1,11 +1,13 @@
 import ts from 'typescript';
-import type { Declaration } from '../file/reader';
 import type { ModelWithRegex } from '../helpers/dmmf';
 import { replaceObject } from '../helpers/replace-object';
+import type { DeclarationWriter } from '../util/declaration-writer';
+import { PrismaJsonTypesGeneratorError } from '../util/error';
 
-export async function handleModelPayload(
+/** Replacer responsible for the main <model>Payload type. */
+export function handleModelPayload(
   typeAlias: ts.TypeAliasDeclaration,
-  replacer: Declaration['replacer'],
+  writer: DeclarationWriter,
   model: ModelWithRegex,
   nsName: string,
   useType?: string
@@ -13,27 +15,33 @@ export async function handleModelPayload(
   const type = typeAlias.type as ts.TypeLiteralNode;
 
   if (type.kind !== ts.SyntaxKind.TypeLiteral) {
-    throw new Error(
-      `prisma-json-types-generator: Provided model payload is not a type literal: ${type.getText()}`
+    throw new PrismaJsonTypesGeneratorError(
+      'Provided model payload is not a type literal',
+      { type: type.getText() }
     );
   }
 
-  const scalarsField = type.members.find((m) => m.name?.getText() === 'scalars');
+  const scalarsField: any = type.members.find((m) => m.name?.getText() === 'scalars');
 
-  // Besides `scalars` field, the `objects` field also exists, but we don't need to handle it
-  // because it just contains references to other <model>Payloads that we already change separately
+  // Currently, there are 4 possible fields in the <model>Payload type:
+  // - `scalars` field, which is what we mainly change
+  // - `objects` are just references to other fields in which we change separately
+  // - `name` and `composites` we do not have to change
   if (!scalarsField) {
     return;
   }
 
-  const object = ((scalarsField as ts.PropertySignature)?.type as ts.TypeReferenceNode)
-    ?.typeArguments?.[0] as ts.TypeLiteralNode;
+  // Gets the inner object type we should change.
+  // scalars format is: $Extensions.GetResult<OBJECT, ExtArgs["result"]["user"]>
+  // this is the OBJECT part
+  const object = scalarsField?.type?.typeArguments?.[0] as ts.TypeLiteralNode;
 
   if (!object) {
-    throw new Error(
-      `prisma-json-types-generator: Payload scalars could not be resolved: ${type.getText()}`
-    );
+    throw new PrismaJsonTypesGeneratorError('Payload scalars could not be resolved', {
+      type: type.getText()
+    });
   }
 
-  replaceObject(model, object, nsName, replacer, typeAlias.name.getText(), useType);
+
+  return replaceObject(model, object, nsName, writer, typeAlias.name.getText(), useType);
 }
