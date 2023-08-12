@@ -1,14 +1,6 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
 import { Model } from '../target/normal/index';
 
-declare global {
-  export namespace PNormalJson {
-    export type Simple = 1;
-    export type Optional = 2;
-    export type List = 3;
-  }
-}
-
 expectAssignable<Model>({
   id: 0,
   simple: 1,

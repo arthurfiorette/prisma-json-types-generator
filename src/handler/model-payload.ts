@@ -1,16 +1,16 @@
 import ts from 'typescript';
 import type { ModelWithRegex } from '../helpers/dmmf';
-import { replaceObject } from '../helpers/replace-object';
+import { replaceObject } from './replace-object';
+import { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
 
-/** Replacer responsible for the main <model>Payload type. */
+/** Replacer responsible for the main <Model>Payload type. */
 export function handleModelPayload(
   typeAlias: ts.TypeAliasDeclaration,
   writer: DeclarationWriter,
   model: ModelWithRegex,
-  nsName: string,
-  useType?: string
+  config: PrismaJsonTypesGeneratorConfig
 ) {
   const type = typeAlias.type as ts.TypeLiteralNode;
 
@@ -42,6 +42,6 @@ export function handleModelPayload(
     });
   }
 
-
-  return replaceObject(model, object, nsName, writer, typeAlias.name.getText(), useType);
+  // Replaces this object
+  return replaceObject(object,  writer, model, config);
 }

@@ -1,8 +1,8 @@
-export function createNamespace(nsName: string) {
-  return `
+// This file was overwritten by prisma-json-types-generator
+// Report issues to
 
 declare global {
-  namespace ${nsName} {}
+  namespace $$NAMESPACE$$ {}
 }
 
 /** A filter to be used against nullable List types. */
@@ -20,16 +20,10 @@ export type UpdateInput<T> = T extends object
   : T;
 
 /** A type to determine how to update a json[] field */
-export type UpdateManyInput<T> =
-  | T
-  | T[]
-  | { set?: T[]; push?: T[] };
+export type UpdateManyInput<T> = T | T[] | { set?: T[]; push?: T[] };
 
 /** A type to determine how to create a json[] input */
-export type CreateManyInput<T> =
-  | T
-  | T[]
-  | { set?: T[] };
+export type CreateManyInput<T> = T | T[] | { set?: T[] };
 
 /**
  * A typed version of NestedStringFilter, allowing narrowing of string types to
@@ -184,6 +178,3 @@ export type UpdateStringArrayInput<S extends string> = {
 export type CreateStringArrayInput<S extends string> = {
   set?: S[];
 };
-
-`.trim();
-}

@@ -17,12 +17,12 @@ datasource db {
 model Model {
   id Int @id @default(autoincrement())
 
-  /// [Simple]
+  /// [1]
   simple Json
 
-  /// [Optional]
+  /// [2]
   optional Json?
 
-  /// [List]
+  /// [3]
   list Json[]
 }

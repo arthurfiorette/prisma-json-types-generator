@@ -1,16 +1,18 @@
 #/bin/sh
 
-# Gets all files in test/schemas
-FILES=$(ls -l ./test/schemas | awk '{print $9}')
+# Gets all files in test/schemas (Probably there's a better way to do this)
+FILES=$(ls -l test/schemas | awk '{print $9}' | awk -F '.' '{print $1}')
 
-for file in $FILES
-do
+for file in $FILES; do
   # Runs prisma generate hiding stdout
-  pnpm prisma generate --schema ./test/schemas/$file &
+  pnpm prisma generate \
+    --schema test/schemas/$file.prisma &&
+    pnpm tsd \
+      -f test/types/$file.test-d.ts \
+      -t . \
+      --show-diff \
+    &
 done
 
-# Waits for all generations to finish
+# Waits for all tests to finish
 wait
-
-# Runs test
-pnpm tsd -t ./test/types -f ./test/types/**.test-d.ts
