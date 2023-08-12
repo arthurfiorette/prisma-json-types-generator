@@ -1,60 +1,49 @@
 import type { GeneratorOptions } from '@prisma/generator-helper';
 import ts from 'typescript';
-import { handleModule } from './handler/module';
-import { parseDmmf } from './helpers/dmmf';
+import { handlePrismaModule } from './handler/module';
+import { extractPrismaModels } from './helpers/dmmf';
+import { parseConfig } from './util/config';
 import { DeclarationWriter } from './util/declaration-writer';
-import { PrismaJsonTypesGeneratorError } from './util/error';
 import { findPrismaClientGenerator } from './util/prisma-generator';
+import { buildTypesFilePath } from './util/source-path';
 
 /** Runs the generator with the given options. */
 export async function onGenerate(options: GeneratorOptions) {
-  // Default namespace is `PrismaJson`
-  options.generator.config.namespace ??= 'PrismaJson';
-
   const prismaClient = findPrismaClientGenerator(options.otherGenerators);
 
-  const writer = new DeclarationWriter(
+  const config = parseConfig(options.generator.config);
+
+  const clientOutput = buildTypesFilePath(
     prismaClient.output.value,
-    options.generator.config.clientOutput,
+    config.clientOutput,
     options.schemaPath
   );
 
+  const writer = new DeclarationWriter(clientOutput, config);
+
+  // Reads the prisma declaration file content.
   await writer.load();
 
   const tsSource = ts.createSourceFile(
-    writer.sourcePath,
+    writer.filepath,
     writer.content,
     ts.ScriptTarget.ESNext,
     true,
     ts.ScriptKind.TS
   );
 
-  const models = parseDmmf(options.dmmf);
+  const prismaModels = extractPrismaModels(options.dmmf);
 
+  // Handles the prisma namespace.
   tsSource.forEachChild((child) => {
     try {
-      switch (child.kind) {
-        // Main model type is inside Prisma namespace
-        case ts.SyntaxKind.ModuleDeclaration:
-          return handleModule(
-            child as ts.ModuleDeclaration,
-            writer,
-            models,
-            options.generator.config.namespace!,
-            options.generator.config.useType
-          );
+      if (child.kind === ts.SyntaxKind.ModuleDeclaration) {
+        handlePrismaModule(child as ts.ModuleDeclaration, writer, prismaModels, config);
       }
     } catch (error) {
-      // This allows some types to be generated even if others may fail
-      // which is good for incremental development/testing
-      if (error instanceof PrismaJsonTypesGeneratorError) {
-        return PrismaJsonTypesGeneratorError.handler(error);
-      }
-
-      // Stops this generator is error thrown is not manually added by our code.
-      throw error;
+      console.log(error)
     }
   });
 
-  await writer.update(options.generator.config.namespace);
+  await writer.save();
 }

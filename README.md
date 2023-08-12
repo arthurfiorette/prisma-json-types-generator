@@ -32,12 +32,6 @@ generator client {
 /// Always after the prisma-client-js generator
 generator json {
   provider = "prisma-json-types-generator"
-  // namespace = "PrismaJson"
-  // clientOutput = "<finds it automatically>"
-  // (./ -> relative to schema, or an importable path to require() it)
-  // useType = "MyType"
-  // In case you need to use a type, export it inside the namespace and we will add a index signature to it
-  // (e.g.  export namespace PrismaJson { export type MyType = {a: 1, b: 2} }; will generate namespace.MyType["TYPE HERE"])
 }
 
 model Example {
@@ -52,6 +46,9 @@ model Example {
 
   /// [ComplexType]
   complex Json
+
+  /// ![number | string]
+  literal Json
 }
 ```
 
@@ -65,6 +62,7 @@ declare global {
   namespace PrismaJson {
     // you can use typical basic types
     type MyType = boolean;
+
     // or you can use classes, interfaces, object types, etc.
     type ComplexType = {
       foo: string;
@@ -87,6 +85,56 @@ function myFunction(example: Example) {
   // example.optional is now a boolean | null
   // example.array    is now a boolean[]
   // example.complex  is now a { foo: string; bar: number }
+  // example.literal  is now a string | number
+}
+```
+
+### Configuration
+
+```ts
+export interface PrismaJsonTypesGeneratorConfig {
+  /**
+   * The namespace to generate the types in.
+   *
+   * @default 'PrismaJson'
+   */
+  namespace: string;
+
+  /**
+   * The name of the client output type. By default it will try to find it automatically
+   *
+   * (./ -> relative to schema, or an importable path to require() it)
+   *
+   * @default undefined
+   */
+  clientOutput?: string;
+
+  /**
+   * In case you need to use a type, export it inside the namespace and we will add a
+   * index signature to it
+   *
+   * @example
+   *
+   * ```ts
+   * export namespace PrismaJson {
+   *   export type GlobalType = {
+   *     fieldA: string;
+   *     fieldB: MyType;
+   *   };
+   * }
+   * ```
+   *
+   * @default undefined
+   */
+  useType?: string;
+
+  /**
+   * If we should allow untyped JSON fields to be any, otherwise we change them to
+   * unknown.
+   *
+   * @default false
+   */
+  allowAny?: boolean;
 }
 ```
 

@@ -1,32 +1,69 @@
 import fs from 'fs/promises';
-import { createNamespace } from '../helpers/namespace';
-import { buildTypesFilePath } from './source-path';
+import { PrismaJsonTypesGeneratorConfig } from './config';
+import { NAMESPACE_PATH } from './constants';
+import { PrismaJsonTypesGeneratorError } from './error';
+
+/** A changes made in the original file to help adjust any future coordinates of texts */
+export interface TextDiff {
+  start: number;
+  diff: number;
+}
 
 /**
  * A class to help with reading and writing the Prisma Client types file concurrently and
  * converting positions indexes according with previous changes.
  */
 export class DeclarationWriter {
-  constructor(clientOutput: string, overrideTarget?: string, schemaTarget?: string) {
-    this.sourcePath = buildTypesFilePath(clientOutput, overrideTarget, schemaTarget);
-  }
-
-  /** Path to the original index.d.ts file */
-  readonly sourcePath: string;
+  constructor(
+    readonly filepath: string,
+    private readonly options: PrismaJsonTypesGeneratorConfig
+  ) {}
 
   /** The prisma's index.d.ts file content. */
   public content = '';
 
-  /** A list of changes made in the original file to adjust any future coordinates of texts */
-  private changeset: Array<{ start: number; diff: number }> = [];
+  private changeset: TextDiff[] = [];
 
-  async load() {
-    this.content = await fs.readFile(this.sourcePath, 'utf-8');
+  async template() {
+    let namespace = await fs.readFile(NAMESPACE_PATH, 'utf-8');
+
+    // Removes trailing spaces
+    namespace = namespace.trim();
+
+    // Replaces the namespace with the provided namespace
+    namespace = namespace.replace(/\$\$NAMESPACE\$\$/g, this.options.namespace);
+
+    // Includes previous file content
+    return namespace + '\n' + this.content;
   }
 
-  /** Updates the original file of sourcePath with the content's contents */
-  async update(nsName: string) {
-    await fs.writeFile(this.sourcePath, createNamespace(nsName) + this.content);
+  /** Loads the original file of sourcePath into memory. */
+  async load() {
+    if (!(await fs.stat(this.filepath))) {
+      throw new PrismaJsonTypesGeneratorError(
+        'Tried to load a file that does not exist',
+        { filepath: this.filepath }
+      );
+    }
+
+    if (this.changeset.length) {
+      throw new PrismaJsonTypesGeneratorError(
+        'Tried to load a file that has already been changed',
+        { filepath: this.filepath, changeset: this.changeset }
+      );
+    }
+
+    this.content = await fs.readFile(this.filepath, 'utf-8');
+  }
+
+  /** Save the original file of sourcePath with the content's contents */
+  async save() {
+    // Resets current changeset and file content
+    this.content = await this.template();
+    this.changeset = [];
+
+    // Writes it into the disk
+    await fs.writeFile(this.filepath, this.content);
   }
 
   /**

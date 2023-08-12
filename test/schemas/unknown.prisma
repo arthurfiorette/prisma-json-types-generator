@@ -1,12 +1,10 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../target/normal"
+  output   = "../target/unknown"
 }
 
 generator json {
   provider = "node ./index.js"
-  namespace = "PNormalJson"
-  allowAny = true
 }
 
 datasource db {
@@ -17,12 +15,5 @@ datasource db {
 model Model {
   id Int @id @default(autoincrement())
 
-  /// [Simple]
-  simple Json
-
-  /// [Optional]
-  optional Json?
-
-  /// [List]
-  list Json[]
+  field Json
 }

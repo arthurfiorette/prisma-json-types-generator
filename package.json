@@ -1,6 +1,6 @@
 {
   "name": "prisma-json-types-generator",
-  "version": "2.5.0",
+  "version": "3.0.0-beta.1",
   "description": "Changes JsonValues to your custom typescript type",
   "keywords": [
     "prisma",
@@ -14,8 +14,8 @@
   "funding": "https://github.com/ArthurFiorette/prisma-json-types-generator?sponsor=1",
   "license": "MIT",
   "author": "Arthur Fiorette <npm@arthur.place>",
-  "main": "dist/generator.js",
-  "bin": "./dist/bin.js",
+  "main": "./index.js",
+  "bin": "./index.js",
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
@@ -34,6 +34,7 @@
     "@types/prettier": "2.7.3",
     "prettier": "2.8.8",
     "prisma": "^5.1.1",
+    "source-map-support": "^0.5.21",
     "tsd": "^0.28.1",
     "typescript": "5.1.3"
   },
