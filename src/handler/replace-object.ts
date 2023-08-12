@@ -3,9 +3,9 @@ import type { ModelWithRegex } from '../helpers/dmmf';
 import { findNewSignature } from '../helpers/find-signature';
 import { JSON_REGEX } from '../helpers/regex';
 import { PrismaJsonTypesGeneratorConfig } from '../util/config';
+import { createType } from '../util/create-signature';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
-import { createType } from '../util/create-signature';
 
 /** Tries to replace every property of an object */
 export function replaceObject(
@@ -44,7 +44,7 @@ export function replaceObject(
         });
       }
 
-      const newType = createType(field.documentation, config)
+      const newType = createType(field.documentation, config);
 
       const newSignature = findNewSignature(
         signature.getText(),

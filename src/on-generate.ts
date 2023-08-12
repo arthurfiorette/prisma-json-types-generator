@@ -41,7 +41,7 @@ export async function onGenerate(options: GeneratorOptions) {
         handlePrismaModule(child as ts.ModuleDeclaration, writer, prismaModels, config);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   });
 

@@ -1,9 +1,9 @@
 import ts from 'typescript';
 import type { ModelWithRegex } from '../helpers/dmmf';
-import { replaceObject } from './replace-object';
 import { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
+import { replaceObject } from './replace-object';
 
 /** Replacer responsible for the main <Model>Payload type. */
 export function handleModelPayload(
@@ -43,5 +43,5 @@ export function handleModelPayload(
   }
 
   // Replaces this object
-  return replaceObject(object,  writer, model, config);
+  return replaceObject(object, writer, model, config);
 }

@@ -1,9 +1,9 @@
 import ts from 'typescript';
 import type { ModelWithRegex } from '../helpers/dmmf';
-import { replaceObject } from './replace-object';
 import { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { DeclarationWriter } from '../util/declaration-writer';
 import { handleModelPayload } from './model-payload';
+import { replaceObject } from './replace-object';
 
 /**
  * Handles a Prisma namespace statement, can be a model type, a model payload or a model
