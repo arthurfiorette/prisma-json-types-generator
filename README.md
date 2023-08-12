@@ -91,7 +91,7 @@ function myFunction(example: Example) {
 
 ### Configuration
 
-```ts
+````ts
 export interface PrismaJsonTypesGeneratorConfig {
   /**
    * The namespace to generate the types in.
@@ -136,7 +136,7 @@ export interface PrismaJsonTypesGeneratorConfig {
    */
   allowAny?: boolean;
 }
-```
+````
 
 ### How it works
 
