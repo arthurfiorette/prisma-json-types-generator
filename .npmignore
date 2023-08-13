@@ -1,0 +1,11 @@
+# white list approach
+
+*
+
+!LICENSE
+!README.md
+
+!src/**
+!dist/**
+!index.js
+
