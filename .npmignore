@@ -5,6 +5,7 @@
 !LICENSE
 !README.md
 
+!assets/**
 !src/**
 !dist/**
 !index.js
