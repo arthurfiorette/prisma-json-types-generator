@@ -47,7 +47,7 @@ export function replaceObject(
       const newType = createType(field.documentation, config);
 
       // If the created type was defaulted to unknown because no other type annotation was provided
-      const defaultedToUnknown = newType === 'unknown'
+      const defaultedToUnknown = newType === 'unknown';
 
       const newSignature = findNewSignature(
         signature.getText(),
