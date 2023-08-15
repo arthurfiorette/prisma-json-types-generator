@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../target/normal"
+  output   = "../target/literal"
 }
 
 generator json {
@@ -17,12 +17,12 @@ datasource db {
 model Model {
   id Int @id @default(autoincrement())
 
-  /// [1]
+  /// ![1]
   simple Json
 
-  /// [2]
+  /// ![2]
   optional Json?
 
-  /// [3]
+  /// ![3]
   list Json[]
 }

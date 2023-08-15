@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
-import { Model } from '../target/normal/index';
+import { Model } from '../target/literal/index';
 
 expectAssignable<Model>({
   id: 0,

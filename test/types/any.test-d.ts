@@ -1,6 +1,5 @@
 import { expectNotType, expectType } from 'tsd';
-import { Model } from '../target/any/index';
-import { Prisma } from '../target/unknown';
+import { Model, Prisma } from '../target/any/index';
 
 expectType<Model>({
   id: 0,
