@@ -1,10 +1,11 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../target/unknown"
+  output   = "../target/string"
 }
 
 generator json {
   provider = "node ./index.js"
+  namespace = "PStringJson"
 }
 
 datasource db {
@@ -15,7 +16,9 @@ datasource db {
 model Model {
   id Int @id @default(autoincrement())
 
-  field Json
-  str String
-  int Int
+  untyped String
+  /// [WithType]
+  typed String
+  /// !['A' | 'B']
+  literal String
 }
