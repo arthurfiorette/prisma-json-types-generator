@@ -46,6 +46,9 @@ export function replaceObject(
 
       const newType = createType(field.documentation, config);
 
+      // If the created type was defaulted to unknown because no other type annotation was provided
+      const defaultedToUnknown = newType === 'unknown'
+
       const newSignature = findNewSignature(
         signature.getText(),
         // Updates the typename according to the config
@@ -54,7 +57,8 @@ export function replaceObject(
         field.name,
         // We must ignore not found errors when no typename was found but we still
         // are replacing because of allowAny = false
-        newType !== 'unknown'
+        !defaultedToUnknown,
+        !defaultedToUnknown
       );
 
       // This type should be ignored by the generator
