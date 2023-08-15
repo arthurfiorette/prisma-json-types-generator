@@ -7,7 +7,8 @@ export function findNewSignature(
   typeToChange: string,
   model: string,
   field: string,
-  throwOnNotFound = true
+  throwOnNotFound = true,
+  shouldReplaceStrings = true
 ) {
   // Updates should leave optional fields
   if (isUpdateOneType(model)) {
@@ -34,39 +35,87 @@ export function findNewSignature(
     // String
     //
     case 'string':
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return typeToChange;
 
     case 'string[]':
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `(${typeToChange})[]`;
 
     case 'string | null':
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return typeToChange;
 
     case `StringFilter<"${model}"> | string`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `TypedStringFilter<${typeToChange}> | ${typeToChange}`;
 
     case `StringNullableFilter<"${model}"> | string | null`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `TypedStringNullableFilter<${typeToChange}> | ${typeToChange} | null`;
 
     case `StringNullableListFilter<"${model}">`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `TypedStringNullableListFilter<${typeToChange}>`;
 
     case `StringWithAggregatesFilter<"${model}"> | string`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `TypedStringWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
 
     case `StringNullableWithAggregatesFilter<"${model}"> | string | null`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `TypedStringNullableWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
 
     case `StringFieldUpdateOperationsInput | string`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
 
     case `NullableStringFieldUpdateOperationsInput | string | null`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `TypedNullableStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange} | null`;
 
     case `${model}Create${field}Input | string[]`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
 
     case `${model}Update${field}Input | string[]`:
+      if (!shouldReplaceStrings) {
+        return undefined;
+      }
+
       return `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
 
     //
