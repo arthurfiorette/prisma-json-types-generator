@@ -49,6 +49,9 @@ model Example {
 
   /// ![number | string]
   literal Json
+
+  /// !['foo' | 'bar']
+  enum String
 }
 ```
 
@@ -86,57 +89,32 @@ function myFunction(example: Example) {
   // example.array    is now a boolean[]
   // example.complex  is now a { foo: string; bar: number }
   // example.literal  is now a string | number
+  // example.enum     is now a 'foo' | 'bar'
 }
 ```
 
 ### Configuration
 
-````ts
-export interface PrismaJsonTypesGeneratorConfig {
-  /**
-   * The namespace to generate the types in.
-   *
-   * @default 'PrismaJson'
-   */
-  namespace: string;
+```prisma
+generator json {
+  provider = "prisma-json-types-generator"
 
-  /**
-   * The name of the client output type. By default it will try to find it automatically
-   *
-   * (./ -> relative to schema, or an importable path to require() it)
-   *
-   * @default undefined
-   */
-  clientOutput?: string;
+  // The namespace to generate the types in.
+  // namespace = "PrismaJson"
 
-  /**
-   * In case you need to use a type, export it inside the namespace and we will add a
-   * index signature to it
-   *
-   * @example
-   *
-   * ```ts
-   * export namespace PrismaJson {
-   *   export type GlobalType = {
-   *     fieldA: string;
-   *     fieldB: MyType;
-   *   };
-   * }
-   * ```
-   *
-   * @default undefined
-   */
-  useType?: string;
+  // The name of the client output type. By default it will try to find it automatically
+  // (./ -> relative to schema, or an importable path to require() it)
+  // clientOutput = "finds automatically"
 
-  /**
-   * If we should allow untyped JSON fields to be any, otherwise we change them to
-   * unknown.
-   *
-   * @default false
-   */
-  allowAny?: boolean;
+  // In case you need to use a type, export it inside the namespace and we will add a
+  // index signature to it
+  // useType = "PrismaJson.GlobalType"
+
+  // If we should allow untyped JSON fields to be any, otherwise we change them to
+  // unknown.
+  // allowAny = false
 }
-````
+```
 
 ### How it works
 
