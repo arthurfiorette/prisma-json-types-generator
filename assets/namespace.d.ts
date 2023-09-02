@@ -1,5 +1,5 @@
 // This file was overwritten by prisma-json-types-generator
-// Report issues to
+// Report any issues to https://github.com/arthurfiorette/prisma-json-types-generator
 
 declare global {
   namespace $$NAMESPACE$$ {}
