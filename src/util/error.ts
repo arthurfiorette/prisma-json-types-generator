@@ -10,6 +10,6 @@ export class PrismaJsonTypesGeneratorError extends Error {
 
   // TODO: Better handler? investigate how to handle errors in the best way.
   static handler(error: PrismaJsonTypesGeneratorError) {
-    console.log(error);
+    console.error(error);
   }
 }
