@@ -13,49 +13,49 @@ declare global {
 expectAssignable<Model>({
   id: 0,
   simple: 1,
-  optional: 2,
+  optional: 2
 });
 
 expectAssignable<Model>({
   id: 0,
   simple: 1,
-  optional: null,
+  optional: null
 });
 
 expectAssignable<Model>({
   id: 0,
   simple: 1,
-  optional: null,
+  optional: null
 });
 
 expectAssignable<Model>({
   id: 0,
   simple: 1,
-  optional: 2,
+  optional: 2
 });
 
 expectNotAssignable<Model>({
   id: 0,
   simple: '1',
-  optional: 2,
+  optional: 2
 });
 
 expectNotAssignable<Model>({
   id: 0,
   simple: 1,
-  optional: '2',
+  optional: '2'
 });
 
 expectNotAssignable<Model>({
   id: 0,
   simple: 1,
-  optional: 'undefined',
+  optional: 'undefined'
 });
 
 expectNotAssignable<Model>({
   id: 0,
   simple: 1,
-  optional: 2,
+  optional: 2
 });
 
 expectType<Text>({
