@@ -1,33 +1,32 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../target/mongo"
+  output   = "../target/cockroach"
 }
 
 generator json {
   provider  = "node ./index.js"
-  namespace = "PMongoJson"
+  namespace = "PCockroachJson"
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "cockroachdb"
   url      = ""
 }
 
+// Does not support Json[] fields, user have to manually use string[] and do 
+// JSON.parse/JSON.stringify calls
 model Model {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id Int @id
 
   /// [Simple]
   simple Json
 
   /// [Optional]
   optional Json?
-
-  /// [List]
-  list Json[]
 }
 
 model Text {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id Int @id
 
   untyped String
   /// [WithType]
