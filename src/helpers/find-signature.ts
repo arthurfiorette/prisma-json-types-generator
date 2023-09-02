@@ -123,6 +123,8 @@ export function findNewSignature(
     //
     case 'JsonValue | null':
     case 'Prisma.JsonValue | null':
+    case 'InputJsonValue | null':
+    case 'InputJsonValue | InputJsonValue | null':
       return `${typeToChange} | null`;
 
     case 'JsonNullValueInput | InputJsonValue':
