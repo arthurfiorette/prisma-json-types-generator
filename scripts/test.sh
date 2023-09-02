@@ -11,8 +11,7 @@ for file in $FILES; do
       -f test/types/$file.test-d.ts \
       -t . \
       --show-diff &&
-    echo "✅ $file" ||
-    echo "❌ $file" \
+    echo "✅ $file" \
     &
 done
 
