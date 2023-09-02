@@ -105,12 +105,13 @@ generator json {
   // The namespace to generate the types in.
   namespace = "PrismaJson"
 
-  // The name of the client output type. By default it will try to find it automatically
+  // The name of the client output type. By default it will try 
+  // to find it automatically
   // (./ -> relative to schema, or an importable path to require() it)
   clientOutput = "finds automatically"
 
-  // In case you need to use a root type inside PrismaJson, export it inside the namespace and we will add a
-  // index signature to it
+  // In case you need to use a root type inside PrismaJson, export it 
+  // inside the namespace and we will add a index signature to it
   useType = "PrismaJson.GlobalType"
 
   // If untyped JSON fields should be any instead of `unknown`.
