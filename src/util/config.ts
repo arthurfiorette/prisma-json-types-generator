@@ -45,12 +45,19 @@ export interface PrismaJsonTypesGeneratorConfig {
   allowAny?: boolean;
 }
 
-export function parseConfig(config: Dictionary<string>): PrismaJsonTypesGeneratorConfig {
+export function parseConfig(
+  config: Dictionary<string | string[]>
+): PrismaJsonTypesGeneratorConfig {
   return {
-    namespace: config.namespace ?? 'PrismaJson',
+    namespace: config.namespace ? String(config.namespace) : 'PrismaJson',
+
     // This gets overwritten in the generator
-    clientOutput: config.clientOutput!,
-    useType: config.useType,
-    allowAny: config.allowAny ? config.allowAny.toLowerCase().trim() === 'true' : false
+    clientOutput: config.clientOutput ? String(config.clientOutput) : undefined,
+
+    useType: config.useType ? String(config.useType) : undefined,
+
+    allowAny: config.allowAny
+      ? String(config.allowAny).toLowerCase().trim() === 'true'
+      : false
   };
 }
