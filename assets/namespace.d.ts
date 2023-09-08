@@ -2,7 +2,14 @@
 // Report any issues to https://github.com/arthurfiorette/prisma-json-types-generator
 
 declare global {
-  namespace $$NAMESPACE$$ {}
+  namespace $$NAMESPACE$$ {
+    // This namespace will always be empty. Definitions should be done by
+    // you manually, and merged automatically by typescript. Make sure that
+    // your declaration merging file is included in your tsconfig.json
+    //
+    // Learn more: https://github.com/arthurfiorette/prisma-json-types-generator/issues/143
+    // Declaration Merging: https://www.typescriptlang.org/docs/handbook/declaration-merging.html
+  }
 }
 
 /** A filter to be used against nullable List types. */
