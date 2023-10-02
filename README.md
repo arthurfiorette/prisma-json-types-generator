@@ -181,9 +181,9 @@ declare global {
 
 Yes! And it is right! Some complex filter types like `JsonFilter` or
 `JsonWithAggregatesFilter` must not be typed, as we cannot change the object signature,
-only its types, mutating these objects would make the usage less powerfull and
-probably lose functionality. So no, not all types will be converted. However if you find a
-field which is missing types, please open an issue in this repository.
+only its types, mutating these objects would make the usage less powerfull and probably
+lose functionality. So no, not all types will be converted. However if you find a field
+which is missing types, please open an issue in this repository.
 
 <br />
 
