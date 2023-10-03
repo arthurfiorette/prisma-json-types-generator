@@ -28,7 +28,7 @@
     "tslib": "2.6.2"
   },
   "devDependencies": {
-    "@arthurfiorette/prettier-config": "1.0.9",
+    "@arthurfiorette/prettier-config": "1.0.10",
     "@prisma/client": "5.3.1",
     "@types/node": "20.8.2",
     "@types/prettier": "2.7.3",
