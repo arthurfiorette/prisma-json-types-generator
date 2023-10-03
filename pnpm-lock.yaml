@@ -10,8 +10,8 @@ dependencies:
 
 devDependencies:
   '@arthurfiorette/prettier-config':
-    specifier: 1.0.9
-    version: 1.0.9(prettier@2.8.8)
+    specifier: 1.0.10
+    version: 1.0.10(prettier@2.8.8)
   '@prisma/client':
     specifier: 5.3.1
     version: 5.3.1(prisma@5.3.1)
@@ -39,8 +39,8 @@ devDependencies:
 
 packages:
 
-  /@arthurfiorette/prettier-config@1.0.9(prettier@2.8.8):
-    resolution: {integrity: sha512-wL7Ky01CmLMdCgtx6dKMCjNqKp6robmRo5gYNQlxi3lGPmqWCFatksIzKcSTOEeMtylV6ozqUjf1dTw5tKH00A==}
+  /@arthurfiorette/prettier-config@1.0.10(prettier@2.8.8):
+    resolution: {integrity: sha512-TnOWaH3fVwVoAN7YPfZO5iRi0v1AL6ajY5o1msh2dCMNStQfVoqtjrtou5jhNjDtHc2IqBeY+G6tpWTq0aR5PQ==}
     hasBin: true
     dependencies:
       '@types/prettier': 2.7.3
