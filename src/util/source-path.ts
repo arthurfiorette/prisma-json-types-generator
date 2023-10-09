@@ -25,7 +25,7 @@ export function buildTypesFilePath(
     } catch {
       return path.resolve(
         // Complete filename?
-        clientOutput.match(/\.(d?\.?t|j|)sx?/g)
+        clientOutput.match(/\.(?:d\.ts|tsx?|jsx?)$/gm)
           ? // dirname
             path.dirname(clientOutput)
           : // filename
