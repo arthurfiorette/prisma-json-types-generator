@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@prisma/generator-helper':
-    specifier: 5.4.1
-    version: 5.4.1
+    specifier: 5.4.2
+    version: 5.4.2
   tslib:
     specifier: 2.6.2
     version: 2.6.2
@@ -131,8 +131,8 @@ packages:
       prisma: 5.4.1
     dev: true
 
-  /@prisma/debug@5.4.1:
-    resolution: {integrity: sha512-JJkDz43hVj5D/deu6QOlmtTnrTM3OaMQ7RqZVDo+7bpEy/s4W2JkAbOVsHZCCjs0SMMMPOfLlrpG5dREdoqAeQ==}
+  /@prisma/debug@5.4.2:
+    resolution: {integrity: sha512-YRRi7beaX/sAQs0WQ/Y0LndfWynyodJKO0qF0Vj/KQ8aynmllpL7Hahdm4MVEy6eDPeoX7FWu/otkHRGKWmKSQ==}
     dependencies:
       '@types/debug': 4.1.9
       debug: 4.3.4
@@ -150,10 +150,10 @@ packages:
     requiresBuild: true
     dev: true
 
-  /@prisma/generator-helper@5.4.1:
-    resolution: {integrity: sha512-3zYQoBOU0BLPT02xPSRwQRcyjnSzNOPPWSKQINkOr5hid680ajaksV2eBbcmrNu2vltLpKpMgdTnlreUjkZ5tQ==}
+  /@prisma/generator-helper@5.4.2:
+    resolution: {integrity: sha512-UC2W3ZUs87jbdEOCmsQfCyGeuLA0oosAKgS+0vTCoZWnKUPGvMNxMqNPL08rpXTc1vwUFvl09R76ZVC3Zm7PHw==}
     dependencies:
-      '@prisma/debug': 5.4.1
+      '@prisma/debug': 5.4.2
       '@types/cross-spawn': 6.0.3
       cross-spawn: 7.0.3
       kleur: 4.1.5
