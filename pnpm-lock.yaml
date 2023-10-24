@@ -14,7 +14,7 @@ devDependencies:
     version: 1.0.10(prettier@2.8.8)
   '@prisma/client':
     specifier: 5.5.0
-    version: 5.5.0(prisma@5.4.2)
+    version: 5.5.0(prisma@5.5.0)
   '@types/node':
     specifier: 20.8.7
     version: 20.8.7
@@ -26,7 +26,7 @@ devDependencies:
     version: 2.8.8
   prisma:
     specifier: ^5.2.0
-    version: 5.4.2
+    version: 5.5.0
   source-map-support:
     specifier: ^0.5.21
     version: 0.5.21
@@ -117,7 +117,7 @@ packages:
       tslib: 2.6.2
     dev: true
 
-  /@prisma/client@5.5.0(prisma@5.4.2):
+  /@prisma/client@5.5.0(prisma@5.5.0):
     resolution: {integrity: sha512-JiCj/h79PRawWiBVa4Ng4tBaKMrfJgUwuRrZi4NuQRd58gWIP4kEYMqIidpUrab3dU2NM617pWRG2avX+dh+Sg==}
     engines: {node: '>=16.13'}
     requiresBuild: true
@@ -128,7 +128,7 @@ packages:
         optional: true
     dependencies:
       '@prisma/engines-version': 5.5.0-19.475c616176945d72f4330c92801f0c5e6398dc0f
-      prisma: 5.4.2
+      prisma: 5.5.0
     dev: true
 
   /@prisma/debug@5.5.0:
@@ -145,8 +145,8 @@ packages:
     resolution: {integrity: sha512-/1orOUq7I54ISYBJockYB15FmF/VkCBeFzYYkWyLtBl2tLlJWHmA3NEUBM+wSmXGLK78BmuSNHrLbf8bmXkukQ==}
     dev: true
 
-  /@prisma/engines@5.4.2:
-    resolution: {integrity: sha512-fqeucJ3LH0e1eyFdT0zRx+oETLancu5+n4lhiYECyEz6H2RDskPJHJYHkVc0LhkU4Uv7fuEnppKU3nVKNzMh8g==}
+  /@prisma/engines@5.5.0:
+    resolution: {integrity: sha512-WX+8l4sJuWeS3A/5WqJpdBHp32UzUticiKwUWbFggcd6/sqGtCiiaFmXYmNw6Au2O6hjSX37Y07Vu2ZhP9cmWg==}
     requiresBuild: true
     dev: true
 
@@ -1111,13 +1111,13 @@ packages:
       react-is: 18.2.0
     dev: true
 
-  /prisma@5.4.2:
-    resolution: {integrity: sha512-GDMZwZy7mysB2oXU+angQqJ90iaPFdD0rHaZNkn+dio5NRkGLmMqmXs31//tg/qXT3iB0cTQwnGGQNuirhSTZg==}
+  /prisma@5.5.0:
+    resolution: {integrity: sha512-QyMMh1WQiGU07Iz3Q8jd6y5KlomGLDVb4etkMWpQ4EmDAaY+zGgNHmBk2MfRPb0A+un1Ior1nZWZorfnKD6E5A==}
     engines: {node: '>=16.13'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 5.4.2
+      '@prisma/engines': 5.5.0
     dev: true
 
   /queue-microtask@1.2.3:
