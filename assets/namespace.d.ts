@@ -175,7 +175,7 @@ export type TypedStringNullableListFilter<S extends string> =
  */
 export type UpdateStringArrayInput<S extends string> = {
   set?: S[];
-  push?: S[] | S;
+  push?: S | S[];
 };
 
 /**
