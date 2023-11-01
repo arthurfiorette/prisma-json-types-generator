@@ -27,7 +27,7 @@ export type UpdateInput<T> = T extends object
   : T;
 
 /** A type to determine how to update a json[] field */
-export type UpdateManyInput<T> = T | T[] | { set?: T[]; push?: T[] };
+export type UpdateManyInput<T> = T | T[] | { set?: T[]; push?: T | T[] };
 
 /** A type to determine how to create a json[] input */
 export type CreateManyInput<T> = T | T[] | { set?: T[] };
@@ -175,7 +175,7 @@ export type TypedStringNullableListFilter<S extends string> =
  */
 export type UpdateStringArrayInput<S extends string> = {
   set?: S[];
-  push?: S[];
+  push?: S | S[];
 };
 
 /**

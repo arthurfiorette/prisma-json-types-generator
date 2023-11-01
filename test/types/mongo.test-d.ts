@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable, expectNotType, expectType } from 'tsd';
-import { Model, Text } from '../target/mongo/index';
+import { Model, Text, UpdateManyInput } from '../target/mongo/index';
 
 declare global {
   export namespace PMongoJson {
@@ -38,6 +38,34 @@ expectAssignable<Model>({
   list: [3, 3, 3]
 });
 
+expectAssignable<UpdateManyInput<Model['list'][number]>>({
+  push: 3
+});
+
+expectAssignable<UpdateManyInput<Model['list'][number]>>({
+  push: []
+});
+
+expectAssignable<UpdateManyInput<Model['list'][number]>>({
+  push: [3]
+});
+
+expectAssignable<UpdateManyInput<Model['list'][number]>>({
+  push: [3, 3, 3]
+});
+
+expectAssignable<UpdateManyInput<Model['list'][number]>>({
+  set: []
+});
+
+expectAssignable<UpdateManyInput<Model['list'][number]>>({
+  set: [3]
+});
+
+expectAssignable<UpdateManyInput<Model['list'][number]>>({
+  set: [3, 3, 3]
+});
+
 expectNotAssignable<Model>({
   id: '0',
   simple: '1',
@@ -64,6 +92,26 @@ expectNotAssignable<Model>({
   simple: 1,
   optional: 2,
   list: '3,3,3'
+});
+
+expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
+  push: '3'
+});
+
+expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
+  push: ['3']
+});
+
+expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
+  set: 3
+});
+
+expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
+  set: '3'
+});
+
+expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
+  set: ['3,3,3']
 });
 
 expectType<Text>({
