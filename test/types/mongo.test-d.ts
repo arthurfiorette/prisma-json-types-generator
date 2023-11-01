@@ -38,31 +38,31 @@ expectAssignable<Model>({
   list: [3, 3, 3]
 });
 
-expectAssignable<UpdateManyInput<Model["list"][0]>>({
+expectAssignable<UpdateManyInput<Model["list"][number]>>({
   push: 3
 })
 
-expectAssignable<UpdateManyInput<Model["list"][0]>>({
+expectAssignable<UpdateManyInput<Model["list"][number]>>({
   push: []
 })
 
-expectAssignable<UpdateManyInput<Model["list"][0]>>({
+expectAssignable<UpdateManyInput<Model["list"][number]>>({
   push: [3]
 })
 
-expectAssignable<UpdateManyInput<Model["list"][0]>>({
+expectAssignable<UpdateManyInput<Model["list"][number]>>({
   push: [3, 3, 3]
 })
 
-expectAssignable<UpdateManyInput<Model["list"][0]>>({
+expectAssignable<UpdateManyInput<Model["list"][number]>>({
   set: []
 })
 
-expectAssignable<UpdateManyInput<Model["list"][0]>>({
+expectAssignable<UpdateManyInput<Model["list"][number]>>({
   set: [3]
 })
 
-expectAssignable<UpdateManyInput<Model["list"][0]>>({
+expectAssignable<UpdateManyInput<Model["list"][number]>>({
   set: [3, 3, 3]
 })
 
@@ -94,23 +94,23 @@ expectNotAssignable<Model>({
   list: '3,3,3'
 });
 
-expectNotAssignable<UpdateManyInput<Model["list"][0]>>({
+expectNotAssignable<UpdateManyInput<Model["list"][number]>>({
   push: '3',
 })
 
-expectNotAssignable<UpdateManyInput<Model["list"][0]>>({
+expectNotAssignable<UpdateManyInput<Model["list"][number]>>({
   push: ['3'],
 })
 
-expectNotAssignable<UpdateManyInput<Model["list"][0]>>({
+expectNotAssignable<UpdateManyInput<Model["list"][number]>>({
   set: 3
 })
 
-expectNotAssignable<UpdateManyInput<Model["list"][0]>>({
+expectNotAssignable<UpdateManyInput<Model["list"][number]>>({
   set: '3'
 })
 
-expectNotAssignable<UpdateManyInput<Model["list"][0]>>({
+expectNotAssignable<UpdateManyInput<Model["list"][number]>>({
   set: ['3,3,3']
 })
 
