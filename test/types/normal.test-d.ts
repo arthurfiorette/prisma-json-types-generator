@@ -56,9 +56,11 @@ expectAssignable<UpdateManyInput<Model["list"][0]>>({
 expectAssignable<UpdateManyInput<Model["list"][0]>>({
   set: []
 })
+
 expectAssignable<UpdateManyInput<Model["list"][0]>>({
   set: [3]
 })
+
 expectAssignable<UpdateManyInput<Model["list"][0]>>({
   set: [3, 3, 3]
 })
@@ -94,6 +96,7 @@ expectNotAssignable<Model>({
 expectNotAssignable<UpdateManyInput<Model["list"][0]>>({
   push: '3',
 })
+
 expectNotAssignable<UpdateManyInput<Model["list"][0]>>({
   push: ['3'],
 })
