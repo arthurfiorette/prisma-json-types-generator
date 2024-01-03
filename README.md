@@ -1,75 +1,26 @@
 <p align="center">
    <b>Using this package?</b> Please consider <a href="https://github.com/sponsors/arthurfiorette" target="_blank">donating</a> to support my open source work ❤️
-  <br />
-  <sup>
-   Help prisma-json-types-generator grow! Star and share this amazing repository with your friends and co-workers!
-  </sup>
 </p>
 
 <br />
 
-<p align="center">
-  <a title="MIT license" target="_blank" href="https://github.com/arthurfiorette/prisma-json-types-generator/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/arthurfiorette/prisma-json-types-generator"></a>
-  <a title="NPM Package" target="_blank" href="https://www.npmjs.com/package/prisma-json-types-generator"><img alt="Downloads" src="https://img.shields.io/npm/dw/prisma-json-types-generator?style=flat"></a>
-  <a title="Install size" target="_blank" href="https://packagephobia.com/result?p=prisma-json-types-generator@latest"><img alt="Packagephobia" src="https://packagephobia.com/badge?p=prisma-json-types-generator@latest"></a>
-  <a title="Last Commit" target="_blank" href="https://github.com/arthurfiorette/prisma-json-types-generator/commits/main"><img alt="Last commit" src="https://img.shields.io/github/last-commit/arthurfiorette/prisma-json-types-generator"></a>
-  <a title="Blazingly fast" target="_blank" href="https://twitter.com/acdlite/status/974390255393505280"><img src="https://img.shields.io/badge/blazingly-fast-fa3737"/></a>
- 
-</p>
+[![Issues](https://img.shields.io/github/issues/arthurfiorette/prisma-json-types-generator?logo=github&label=Issues)](https://github.com/arthurfiorette/prisma-json-types-generator/issues)
+[![Stars](https://img.shields.io/github/stars/arthurfiorette/prisma-json-types-generator?logo=github&label=Stars)](https://github.com/arthurfiorette/prisma-json-types-generator/stargazers)
+[![License](https://img.shields.io/github/license/arthurfiorette/prisma-json-types-generator?logo=githu&label=License)](https://github.com/arthurfiorette/prisma-json-types-generator/blob/main/LICENSE)
+[![Downloads](https://img.shields.io/npm/dw/prisma-json-types-generator?style=flat)](https://www.npmjs.com/package/prisma-json-types-generator)
+[![Bundlephobia](https://img.shields.io/bundlephobia/minzip/prisma-json-types-generator/latest?style=flat)](https://bundlephobia.com/package/prisma-json-types-generator@latest)
+[![Packagephobia](https://packagephobia.com/badge?p=prisma-json-types-generator@latest)](https://packagephobia.com/result?p=prisma-json-types-generator@latest)
+
+<h1 align=center>
+⚒️ Prisma Json Types Generator
+</h1>
+
+<h3 align=center>
+A generator that changes the Prisma Client output to strongly type Json fields
+</h3>
 
 <br />
 <br />
-
-<h1>Prisma Json Types Generator</h1>
-
-> Generate your prisma client with strict JSON types and String literals!
-
-<br />
-
-- [Using it!](#using-it)
-- [Configuration](#configuration)
-- [Available types](#available-types)
-- [Some types are still JSON?](#some-types-are-still-json)
-- [Usage within monorepos](#usage-within-monorepos)
-- [Limitations](#limitations)
-- [How it works](#how-it-works)
-- [License](#license)
-
-<br />
-<br />
-
-Prisma Json Types Generator is a prisma client generator which changes all json types from
-your `@prisma/client` into the ones you specified. It adds another layer of checking
-within your schema, as you must make typescript happy with your json type before inserting
-it into your DB.
-
-<br />
-
-```prisma
-generator client {
-  provider = "prisma-client-js"
-}
-
-generator json {
-  provider = "prisma-json-types-generator"
-}
-
-model Example {
-  /// [MyType]
-  normal Json
-}
-```
-
-<br />
-
-## Using it!
-
-```sh
-npm install -D prisma-json-types-generator
-```
-
-Include it in your schema and provide your own namespace declarations inside a file
-**included in your tsconfig**.
 
 ```prisma
 // schema.prisma
@@ -81,61 +32,11 @@ generator client {
 /// Always after the prisma-client-js generator
 generator json {
   provider = "prisma-json-types-generator"
-}
-```
-
-```ts
-// types.ts
-
-declare global {
-  namespace PrismaJson {
-    // Insert your types here!
-  }
-}
-```
-
-<br />
-
-## Configuration
-
-```prisma
-generator json {
-  provider = "prisma-json-types-generator"
-
-  // The namespace to generate the types in.
-  namespace = "PrismaJson"
-
-  // The name of the client output type. By default it will try
-  // to find it automatically
+  // namespace = "PrismaJson"
+  // clientOutput = "<finds it automatically>"
   // (./ -> relative to schema, or an importable path to require() it)
-  clientOutput = "finds automatically"
-
-  // In case you need to use a root type inside PrismaJson, export it
-  // inside the namespace and we will add a index signature to it
-  useType = "PrismaJson.GlobalType"
-
-  // If untyped JSON fields should be any instead of `unknown`.
-  allowAny = false
 }
-```
 
-<br />
-
-## Available types
-
-This package adds multiple ways to type a `JSON` or `String` field.
-
-We need to avoid circular dependencies between the prisma schema and your codebase, and
-typescript namespaces are the best way to solve this. As we declare a global namespace,
-any type declared within a normal declaration (`/// [T]`) gets transpiled to `Namespace.T`
-inside the prisma schema.
-
-Sometimes you have a very simple type, like a union literal or some constants, using a
-literal declaration (`/// ![T]`) will probably be better, as it gets transpiled to onlt
-`T` inside the schema. This way, types like `/// ['some' | 'none']` that are only used
-once, are way more easy to write and maintain.
-
-```prisma
 model Example {
   /// [MyType]
   normal Json
@@ -145,97 +46,52 @@ model Example {
 
   /// [MyType]
   array Json[]
-
-  /// [ComplexType]
-  complex Json
-
-  /// !['A' | 'B']
-  literal Json
-
-  /// ![PrismaJson.MyType | 'none']
-  anything Json[]
 }
 ```
 
 ```ts
+// index.ts
+
+import type { Example } from '@prisma/client';
+
 declare global {
-  // you can use typical basic types
-  // or you can use classes, interfaces, object types, etc.
   namespace PrismaJson {
+    // you can use classes, interfaces, types, etc.
     type MyType = boolean;
-    type ComplexType = { foo: string; bar: number };
   }
 }
 
-// Example#normal   is now a boolean
-// Example#optional is now a boolean | null
-// Example#array    is now a boolean[]
-// Example#complex  is now a { foo: string; bar: number }
-// Example#literal  is now a 'A' | 'B'
-// Example#anything is now a boolean | 'none'
-```
-
-<br />
-
-## Some types are still JSON?
-
-Yes! And it is right! Some complex filter types like `JsonFilter` or
-`JsonWithAggregatesFilter` must not be typed, as we cannot change the object signature,
-only its types, mutating these objects would make the usage less powerfull and probably
-lose functionality. So no, not all types will be converted. However if you find a field
-which is missing types, please open an issue in this repository.
-
-<br />
-
-## Usage within monorepos
-
-If you're working with a monorepo, you must make sure the file containing the global
-definition for namespace `PrismaJson` is part of the runtime imports of your application.
-If you don't, the types will silently fall back to any.
-
-```ts
-// package1/src/types.ts
-
-declare global {
-  namespace PrismaJson {
-    // ...
-  }
+function myFunction(example: Example) {
+  // example.normal   is now a boolean
+  // example.optional is now a boolean | null
+  // example.array    is now a boolean[]
 }
 ```
 
-```ts
-// package2/src/client.ts
+### How it works
 
-// Manually import the definition.
-import 'package1/types.ts';
-import { PrismaClient } from '@prisma/client';
-
-export const client = new PrismaClient(...);
-```
-
-<br />
-
-## Limitations
-
-- This project should be a temporary workaround (and possible solution) to
-  [prisma/prisma#3219](https://github.com/prisma/prisma/issues/3219).
-- Json types inside type declarations won't work prior to `4.16.0`. (see
-  [prisma/prisma#13726](https://github.com/prisma/prisma/issues/13726))
-- No more support to prisma v4 is being done. Please migrate to prisma v5+,
-  prisma-json-types-generator v3+
-
-<br />
-
-## How it works
+> ⚠️ **It just changes the declaration files of your generated client, no runtime code is
+> affected!**
 
 By using the Typescript Compiler API, this generator parses the generated client's types
-AST and looks for `Prisma.JsonValue` [_(or related)_](src/helpers/find-signature.ts) types
-and [replaces](src/handler/replace-object.ts) them with their corresponding type.
+AST and looks for `Prisma.JsonValue` types [_(or related)_](src/helpers/regex.ts) and
+replaces them with their corresponding type.
 
-<br />
+### Some types are still json!
 
-## License
+There are some complex json types like `JsonFilter` and `JsonWithAggregatesFilter` that,
+if typed, would impact the usability of the client. So, they are still json.
 
-Licensed under the **MIT**. See [`LICENSE`](LICENSE) for more informations.
+### `declare global` is not working!
 
-<br />
+Using `declare global` in a file that is not a module _(that is contains no
+import/export)_ is an error since everything in such a file is in the global scope anyway.
+You can either remove it or add an empty `export {}` to make it a module.
+
+### Limitations
+
+- This project **should be** a temporary workaround _(and possible solution)_ to
+  https://github.com/prisma/prisma/issues/3219.
+
+- Json types inside `type` declarations won't work. (see
+  https://github.com/prisma/prisma/issues/13726)
