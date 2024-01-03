@@ -32,7 +32,7 @@ devDependencies:
     version: 0.5.21
   tsd:
     specifier: ^0.30.0
-    version: 0.30.2
+    version: 0.30.3
   typescript:
     specifier: 5.3.3
     version: 5.3.3
@@ -1359,8 +1359,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /tsd@0.30.2:
-    resolution: {integrity: sha512-+uZLtEMP6Jsntv5Bvrf+1kc26Aci/sDXeMqRz9Rr7zyK4osOCbv1GOBf86fssWJWoOr1yyvyxnLtxtmbsvubWg==}
+  /tsd@0.30.3:
+    resolution: {integrity: sha512-xoEp6JPqpT9Ti9wGX5qgy7URp0lrmxN7YkbsyphBzdc1SYiXvJYgRXSIVvSZz42+/Wd/R1kBOMbgGC6rtiKxqQ==}
     engines: {node: '>=14.16'}
     hasBin: true
     dependencies:
