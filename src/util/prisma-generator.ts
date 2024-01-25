@@ -6,7 +6,7 @@ import { PrismaJsonTypesGeneratorError } from './error';
  * an error.
  */
 export function findPrismaClientGenerator(generators: GeneratorConfig[]) {
-  const options = generators.find((g) => g.name === 'client');
+  const options = generators.find((g) => g.provider.value === 'prisma-client-js');
 
   if (!options) {
     throw new PrismaJsonTypesGeneratorError(
