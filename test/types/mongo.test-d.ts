@@ -127,3 +127,12 @@ expectNotType<Text>({
   typed: 'D' as string,
   literal: 'D' as string
 });
+
+expectType<Text>({
+  id: '0',
+  untyped: '' as string,
+  typed: {
+    in: ['C'] as PMongoJson.WithType[]
+  },
+  literal: 'A' as 'A' | 'B'
+});
