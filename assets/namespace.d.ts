@@ -42,7 +42,7 @@ export type TypedNestedStringFilter<S extends string> =
     equals?: S;
     in?: S[];
     notIn?: S[];
-    not: TypedNestedStringFilter<S> | S;
+    not?: TypedNestedStringFilter<S> | S;
   };
 
 /**
@@ -55,7 +55,7 @@ export type TypedStringFilter<S extends string> =
     equals?: S;
     in?: S[];
     notIn?: S[];
-    not: TypedNestedStringFilter<S> | S;
+    not?: TypedNestedStringFilter<S> | S;
   };
 
 /**
@@ -68,7 +68,7 @@ export type TypedNestedStringNullableFilter<S extends string> =
     equals?: S | null;
     in?: S[] | null;
     notIn?: S[] | null;
-    not: TypedNestedStringNullableFilter<S> | S | null;
+    not?: TypedNestedStringNullableFilter<S> | S | null;
   };
 
 /**
@@ -81,7 +81,7 @@ export type TypedStringNullableFilter<S extends string> =
     equals?: S | null;
     in?: S[] | null;
     notIn?: S[] | null;
-    not: TypedNestedStringNullableFilter<S> | S | null;
+    not?: TypedNestedStringNullableFilter<S> | S | null;
   };
 
 /**
@@ -94,7 +94,7 @@ export type TypedNestedStringWithAggregatesFilter<S extends string> =
     equals?: S;
     in?: S[];
     notIn?: S[];
-    not: TypedNestedStringWithAggregatesFilter<S> | S;
+    not?: TypedNestedStringWithAggregatesFilter<S> | S;
   };
 
 /**
@@ -120,7 +120,7 @@ export type TypedNestedStringNullableWithAggregatesFilter<S extends string> =
     equals?: S | null;
     in?: S[] | null;
     notIn?: S[] | null;
-    not: TypedNestedStringNullableWithAggregatesFilter<S> | S | null;
+    not?: TypedNestedStringNullableWithAggregatesFilter<S> | S | null;
   };
 
 /**
