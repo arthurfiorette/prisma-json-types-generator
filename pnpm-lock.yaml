@@ -31,8 +31,8 @@ devDependencies:
     specifier: ^0.5.21
     version: 0.5.21
   tsd:
-    specifier: ^0.30.0
-    version: 0.30.7
+    specifier: ^0.31.0
+    version: 0.31.0
   typescript:
     specifier: 5.4.3
     version: 5.4.3
@@ -171,8 +171,8 @@ packages:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
 
-  /@tsd/typescript@5.3.3:
-    resolution: {integrity: sha512-CQlfzol0ldaU+ftWuG52vH29uRoKboLinLy84wS8TQOu+m+tWoaUfk4svL4ij2V8M5284KymJBlHUusKj6k34w==}
+  /@tsd/typescript@5.4.3:
+    resolution: {integrity: sha512-htCVCSQP58wZcLfQaT7ikW9hSjJN7ntIe0HzAfYpBauI0tYoIM0ow4XEZGFwYN266qEsJoOHhlnkNvz/gLrx4Q==}
     engines: {node: '>=14.17'}
     dev: true
 
@@ -1359,12 +1359,12 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /tsd@0.30.7:
-    resolution: {integrity: sha512-oTiJ28D6B/KXoU3ww/Eji+xqHJojiuPVMwA12g4KYX1O72N93Nb6P3P3h2OAhhf92Xl8NIhb/xFmBZd5zw/xUw==}
+  /tsd@0.31.0:
+    resolution: {integrity: sha512-yjBiQ5n8OMv/IZOuhDjBy0ZLCoJ7rky/RxRh5W4sJ0oNNCU/kf6s3puPAkGNi59PptDdkcpUm+RsKSdjR2YbNg==}
     engines: {node: '>=14.16'}
     hasBin: true
     dependencies:
-      '@tsd/typescript': 5.3.3
+      '@tsd/typescript': 5.4.3
       eslint-formatter-pretty: 4.1.0
       globby: 11.1.0
       jest-diff: 29.6.2
