@@ -5,8 +5,8 @@ dependencies:
     specifier: 5.11.0
     version: 5.11.0
   tslib:
-    specifier: 2.6.2
-    version: 2.6.2
+    specifier: 2.6.3
+    version: 2.6.3
 
 devDependencies:
   '@arthurfiorette/prettier-config':
@@ -114,7 +114,7 @@ packages:
       open: 8.4.1
       picocolors: 1.0.0
       tiny-glob: 0.2.9
-      tslib: 2.6.2
+      tslib: 2.6.3
     dev: true
 
   /@prisma/client@5.15.0(prisma@5.15.0):
@@ -1342,7 +1342,7 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     dependencies:
       '@pkgr/utils': 2.3.1
-      tslib: 2.6.2
+      tslib: 2.6.3
     dev: true
 
   /tiny-glob@0.2.9:
@@ -1378,8 +1378,8 @@ packages:
       read-pkg-up: 7.0.1
     dev: true
 
-  /tslib@2.6.2:
-    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
+  /tslib@2.6.3:
+    resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
   /type-fest@0.18.1:
     resolution: {integrity: sha512-OIAYXk8+ISY+qTOwkHtKqzAuxchoMiD9Udx+FSGQDuiRR+PJKJHc2NJAXlbhkGwTt/4/nKZxELY1w3ReWOL8mw==}
