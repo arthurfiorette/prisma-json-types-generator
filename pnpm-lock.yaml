@@ -16,8 +16,8 @@ devDependencies:
     specifier: 5.15.0
     version: 5.15.0(prisma@5.15.1)
   '@types/node':
-    specifier: 20.14.2
-    version: 20.14.2
+    specifier: 20.14.5
+    version: 20.14.5
   '@types/prettier':
     specifier: 2.7.3
     version: 2.7.3
@@ -216,8 +216,8 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
-  /@types/node@20.14.2:
-    resolution: {integrity: sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==}
+  /@types/node@20.14.5:
+    resolution: {integrity: sha512-aoRR+fJkZT2l0aGOJhuA8frnCSoNX6W7U2mpNq63+BxBIj5BQFt8rHy627kijCmm63ijdSdwvGgpUsU6MBsZZA==}
     dependencies:
       undici-types: 5.26.5
     dev: true
