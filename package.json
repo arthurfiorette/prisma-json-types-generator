@@ -24,7 +24,7 @@
     "test": "sh ./scripts/test.sh"
   },
   "dependencies": {
-    "@prisma/generator-helper": "5.11.0",
+    "@prisma/generator-helper": "5.16.1",
     "tslib": "2.6.3"
   },
   "devDependencies": {
