@@ -13,8 +13,8 @@ devDependencies:
     specifier: 1.0.10
     version: 1.0.10(prettier@2.8.8)
   '@prisma/client':
-    specifier: 5.16.0
-    version: 5.16.0(prisma@5.16.1)
+    specifier: 5.16.1
+    version: 5.16.1(prisma@5.16.1)
   '@types/node':
     specifier: 20.14.9
     version: 20.14.9
@@ -117,8 +117,8 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /@prisma/client@5.16.0(prisma@5.16.1):
-    resolution: {integrity: sha512-8NOQSzgrSgpU2YcNm4MsPR4/vNvZdUBPuyX89PwWlClSKZeDjPSZ8+eds/ffu1Ttrjnm8V8D0hjgqpyc6wyqDg==}
+  /@prisma/client@5.16.1(prisma@5.16.1):
+    resolution: {integrity: sha512-wM9SKQjF0qLxdnOZIVAIMKiz6Hu7vDt4FFAih85K1dk/Rr2mdahy6d3QP41K62N9O0DJJA//gUDA3Mp49xsKIg==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
