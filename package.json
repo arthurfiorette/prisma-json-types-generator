@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@prisma/generator-helper": "5.11.0",
-    "tslib": "2.6.3"
+    "tslib": "2.7.0"
   },
   "devDependencies": {
     "@arthurfiorette/prettier-config": "1.0.10",
