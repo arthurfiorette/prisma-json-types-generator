@@ -3,7 +3,7 @@
  *
  * @example `[TYPE] comment...`
  */
-export const JSON_REGEX = /^\s*!?\[(.*?)\]/m;
+export const JSON_REGEX = /^\s*!?\[([^\]]+]|.*?)\]/m;
 export const LITERAL_REGEX = /^\s*!/m;
 
 /**
