@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@prisma/generator-helper':
-    specifier: 5.11.0
-    version: 5.11.0
+    specifier: 5.20.0
+    version: 5.20.0
   tslib:
     specifier: 2.7.0
     version: 2.7.0
@@ -130,13 +130,8 @@ packages:
       prisma: 5.20.0
     dev: true
 
-  /@prisma/debug@5.11.0:
-    resolution: {integrity: sha512-N6yYr3AbQqaiUg+OgjkdPp3KPW1vMTAgtKX6+BiB/qB2i1TjLYCrweKcUjzOoRM5BriA4idrkTej9A9QqTfl3A==}
-    dev: false
-
   /@prisma/debug@5.20.0:
     resolution: {integrity: sha512-oCx79MJ4HSujokA8S1g0xgZUGybD4SyIOydoHMngFYiwEwYDQ5tBQkK5XoEHuwOYDKUOKRn/J0MEymckc4IgsQ==}
-    dev: true
 
   /@prisma/engines-version@5.20.0-12.06fc58a368dc7be9fbbbe894adf8d445d208c284:
     resolution: {integrity: sha512-Lg8AS5lpi0auZe2Mn4gjuCg081UZf88k3cn0RCwHgR+6cyHHpttPZBElJTHf83ZGsRNAmVCZCfUGA57WB4u4JA==}
@@ -160,10 +155,10 @@ packages:
       '@prisma/get-platform': 5.20.0
     dev: true
 
-  /@prisma/generator-helper@5.11.0:
-    resolution: {integrity: sha512-oK25sTb2q2TPN7OipiU5xkCpDPNvdWvmFgU9UmmPr8uEt2CdwDjxiWonULgwd6YfqnCOLNpLq0wBIONjelaVMg==}
+  /@prisma/generator-helper@5.20.0:
+    resolution: {integrity: sha512-37Aibw0wVRQgQVtCdNAIN71YFnSQfvetok7vd95KKkYkQRbEx94gsvPDpyN9Mw7p3IwA3nFgPfLc3jBRztUkKw==}
     dependencies:
-      '@prisma/debug': 5.11.0
+      '@prisma/debug': 5.20.0
     dev: false
 
   /@prisma/get-platform@5.20.0:
