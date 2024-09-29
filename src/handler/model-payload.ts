@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import type { ModelWithRegex } from '../helpers/dmmf';
+import type { PrismaEntity } from '../helpers/dmmf';
 import { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
@@ -9,7 +9,7 @@ import { replaceObject } from './replace-object';
 export function handleModelPayload(
   typeAlias: ts.TypeAliasDeclaration,
   writer: DeclarationWriter,
-  model: ModelWithRegex,
+  model: PrismaEntity,
   config: PrismaJsonTypesGeneratorConfig
 ) {
   const type = typeAlias.type as ts.TypeLiteralNode;
@@ -34,7 +34,9 @@ export function handleModelPayload(
   // Gets the inner object type we should change.
   // scalars format is: $Extensions.GetResult<OBJECT, ExtArgs["result"]["user"]>
   // this is the OBJECT part
-  const object = scalarsField?.type?.typeArguments?.[0] as ts.TypeLiteralNode;
+  const object = (
+    model.type === 'model' ? scalarsField?.type?.typeArguments?.[0] : scalarsField?.type
+  ) as ts.TypeLiteralNode;
 
   if (!object) {
     throw new PrismaJsonTypesGeneratorError('Payload scalars could not be resolved', {

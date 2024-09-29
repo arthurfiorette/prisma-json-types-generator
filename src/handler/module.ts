@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import type { ModelWithRegex } from '../helpers/dmmf';
+import type { PrismaEntity } from '../helpers/dmmf';
 import { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { PRISMA_NAMESPACE_NAME } from '../util/constants';
 import { DeclarationWriter } from '../util/declaration-writer';
@@ -10,7 +10,7 @@ import { handleStatement } from './statement';
 export function handlePrismaModule(
   child: ts.ModuleDeclaration,
   writer: DeclarationWriter,
-  models: ModelWithRegex[],
+  models: PrismaEntity[],
   config: PrismaJsonTypesGeneratorConfig
 ) {
   const name = child
