@@ -24,6 +24,8 @@ model Model {
 
   /// [List]
   list Json[]
+
+  nested Nested
 }
 
 model Text {
@@ -34,4 +36,15 @@ model Text {
   typed   String
   /// !['A' | 'B']
   literal String
+}
+
+type Nested {
+  /// [Simple]
+  simple Json
+
+  /// [Optional]
+  optional Json?
+
+  /// [List]
+  list Json[]
 }
