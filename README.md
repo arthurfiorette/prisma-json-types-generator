@@ -68,6 +68,15 @@ function myFunction(example: Example) {
 }
 ```
 
+You can also declare the type on the spot using the following syntax:
+
+```prisma
+model Example {
+  /// ![Record<string, string>]
+  map Json
+}
+```
+
 ### How it works
 
 > ⚠️ **It just changes the declaration files of your generated client, no runtime code is
