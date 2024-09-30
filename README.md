@@ -21,7 +21,7 @@
 <br />
 
 <p align="center">
-  <img src="./images/logo.png" width="80%"/>
+  <img src="https://raw.githubusercontent.com/arthurfiorette/prisma-json-types-generator/refs/heads/main/images/logo.png" />
 </p>
 
 <h1>Prisma Json Types Generator</h1>
