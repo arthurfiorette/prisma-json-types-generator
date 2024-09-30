@@ -20,6 +20,10 @@
 <br />
 <br />
 
+<p align="center">
+  <img src="./images/logo.png" width="80%"/>
+</p>
+
 <h1>Prisma Json Types Generator</h1>
 
 > Generate your prisma client with strict JSON types and String literals!
