@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import type { ModelWithRegex } from '../helpers/dmmf';
+import type { PrismaEntity } from '../helpers/dmmf';
 import { findNewSignature } from '../helpers/find-signature';
 import { JSON_REGEX } from '../helpers/regex';
 import { PrismaJsonTypesGeneratorConfig } from '../util/config';
@@ -11,7 +11,7 @@ import { PrismaJsonTypesGeneratorError } from '../util/error';
 export function replaceObject(
   object: ts.TypeLiteralNode,
   writer: DeclarationWriter,
-  model: ModelWithRegex,
+  model: PrismaEntity,
   config: PrismaJsonTypesGeneratorConfig
 ) {
   for (const field of model.fields) {

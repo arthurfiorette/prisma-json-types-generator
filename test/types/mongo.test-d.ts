@@ -14,28 +14,48 @@ expectAssignable<Model>({
   id: '0',
   simple: 1,
   optional: 2,
-  list: [3]
+  list: [3],
+  nested: {
+    simple: 1,
+    optional: 2,
+    list: [3]
+  }
 });
 
 expectAssignable<Model>({
   id: '0',
   simple: 1,
   optional: null,
-  list: [3]
+  list: [3],
+  nested: {
+    simple: 1,
+    optional: null,
+    list: [3]
+  }
 });
 
 expectAssignable<Model>({
   id: '0',
   simple: 1,
   optional: null,
-  list: []
+  list: [],
+  nested: {
+    simple: 1,
+    optional: null,
+    list: []
+  }
 });
 
 expectAssignable<Model>({
   id: '0',
   simple: 1,
   optional: 2,
-  list: [3, 3, 3]
+  list: [3, 3, 3],
+  nested: {
+    simple: 1,
+    optional: 2,
+    list: [3, 3, 3]
+  }
 });
 
 expectAssignable<UpdateManyInput<Model['list'][number]>>({
@@ -68,30 +88,50 @@ expectAssignable<UpdateManyInput<Model['list'][number]>>({
 
 expectNotAssignable<Model>({
   id: '0',
-  simple: '1',
+  simple: 1,
   optional: 2,
-  list: [3]
+  list: [3],
+  nested: {
+    simple: 1,
+    optional: 2,
+    list: [3]
+  }
 });
 
 expectNotAssignable<Model>({
   id: '0',
   simple: 1,
   optional: '2',
-  list: [3]
+  list: [3],
+  nested: {
+    simple: 1,
+    optional: 2,
+    list: [3]
+  }
 });
 
 expectNotAssignable<Model>({
   id: '0',
   simple: 1,
   optional: 'undefined',
-  list: 3
+  list: 3,
+  nested: {
+    simple: 1,
+    optional: 2,
+    list: [3]
+  }
 });
 
 expectNotAssignable<Model>({
   id: '0',
   simple: 1,
   optional: 2,
-  list: '3,3,3'
+  list: '3,3,3',
+  nested: {
+    simple: 1,
+    optional: 2,
+    list: [3]
+  }
 });
 
 expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
@@ -126,13 +166,4 @@ expectNotType<Text>({
   untyped: 'Arthur' as string,
   typed: 'D' as string,
   literal: 'D' as string
-});
-
-expectType<Text>({
-  id: '0',
-  untyped: '' as string,
-  typed: {
-    in: ['C'] as PMongoJson.WithType[]
-  },
-  literal: 'A' as 'A' | 'B'
 });

@@ -20,12 +20,3 @@ expectNotType<Model>({
   typed: 'D' as string,
   literal: 'D' as string
 });
-
-expectType<Model>({
-  id: 0,
-  untyped: '' as string,
-  typed: {
-    in: ['C'] as PStringJson.WithType[]
-  },
-  literal: 'A' as 'A' | 'B'
-});

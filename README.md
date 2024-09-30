@@ -68,6 +68,15 @@ function myFunction(example: Example) {
 }
 ```
 
+You can also declare the type on the spot using the following syntax:
+
+```prisma
+model Example {
+  /// ![Record<string, string>]
+  map Json
+}
+```
+
 ### How it works
 
 > ⚠️ **It just changes the declaration files of your generated client, no runtime code is
@@ -92,6 +101,3 @@ You can either remove it or add an empty `export {}` to make it a module.
 
 - This project **should be** a temporary workaround _(and possible solution)_ to
   https://github.com/prisma/prisma/issues/3219.
-
-- Json types inside `type` declarations won't work. (see
-  https://github.com/prisma/prisma/issues/13726)

@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import type { ModelWithRegex } from '../helpers/dmmf';
+import type { PrismaEntity } from '../helpers/dmmf';
 import { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { DeclarationWriter } from '../util/declaration-writer';
 import { handleModelPayload } from './model-payload';
@@ -12,7 +12,7 @@ import { replaceObject } from './replace-object';
 export function handleStatement(
   statement: ts.Statement,
   writer: DeclarationWriter,
-  models: ModelWithRegex[],
+  models: PrismaEntity[],
   config: PrismaJsonTypesGeneratorConfig
 ) {
   if (statement.kind !== ts.SyntaxKind.TypeAliasDeclaration) {
