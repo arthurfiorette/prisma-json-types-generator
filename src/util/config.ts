@@ -44,7 +44,7 @@ export interface PrismaJsonTypesGeneratorConfig {
 }
 
 export function parseConfig(
-  config: Record<string, string | string[]>
+  config: Record<string, string | string[] | undefined>
 ): PrismaJsonTypesGeneratorConfig {
   return {
     namespace: config.namespace ? String(config.namespace) : 'PrismaJson',
