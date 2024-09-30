@@ -1,5 +1,5 @@
 import { expectNotType, expectType } from 'tsd';
-import { Text } from '../target/sqlite/index';
+import type { Text } from '../target/sqlite/index';
 
 declare global {
   export namespace PSqliteJson {

@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable, expectNotType, expectType } from 'tsd';
-import { Model, Text } from '../target/mysql/index';
+import type { Model, Text } from '../target/mysql/index';
 
 declare global {
   export namespace PMysqlJson {

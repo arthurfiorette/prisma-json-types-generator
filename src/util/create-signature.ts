@@ -1,5 +1,5 @@
 import { JSON_REGEX, LITERAL_REGEX } from '../helpers/regex';
-import { PrismaJsonTypesGeneratorConfig } from './config';
+import type { PrismaJsonTypesGeneratorConfig } from './config';
 
 /** Creates the new signature for the provided type. */
 export function createType(

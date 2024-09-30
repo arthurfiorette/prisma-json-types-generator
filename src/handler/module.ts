@@ -1,8 +1,8 @@
 import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
-import { PrismaJsonTypesGeneratorConfig } from '../util/config';
+import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { PRISMA_NAMESPACE_NAME } from '../util/constants';
-import { DeclarationWriter } from '../util/declaration-writer';
+import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
 import { handleStatement } from './statement';
 
@@ -27,9 +27,7 @@ export function handlePrismaModule(
     .find((n): n is ts.ModuleBlock => n.kind === ts.SyntaxKind.ModuleBlock);
 
   if (!content || !content.statements.length) {
-    throw new PrismaJsonTypesGeneratorError(
-      'Prisma namespace content could not be found'
-    );
+    throw new PrismaJsonTypesGeneratorError('Prisma namespace content could not be found');
   }
 
   // Loops through all statements in the prisma namespace

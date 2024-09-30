@@ -90,14 +90,14 @@ export function findNewSignature(
 
       return `TypedStringNullableWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
 
-    case `StringFieldUpdateOperationsInput | string`:
+    case 'StringFieldUpdateOperationsInput | string':
       if (!shouldReplaceStrings) {
         return undefined;
       }
 
       return `TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
 
-    case `NullableStringFieldUpdateOperationsInput | string | null`:
+    case 'NullableStringFieldUpdateOperationsInput | string | null':
       if (!shouldReplaceStrings) {
         return undefined;
       }
@@ -127,7 +127,6 @@ export function findNewSignature(
     case 'InputJsonValue | InputJsonValue | null':
       return `${typeToChange} | null`;
 
-    case 'JsonNullValueInput | InputJsonValue':
     case 'NullableJsonNullValueInput | InputJsonValue':
       // differentiates null in column or a json null value
       return `${typeToChange} | NullableJsonNullValueInput`;

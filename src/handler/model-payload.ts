@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
-import { PrismaJsonTypesGeneratorConfig } from '../util/config';
+import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
 import { replaceObject } from './replace-object';
@@ -15,10 +15,9 @@ export function handleModelPayload(
   const type = typeAlias.type as ts.TypeLiteralNode;
 
   if (type.kind !== ts.SyntaxKind.TypeLiteral) {
-    throw new PrismaJsonTypesGeneratorError(
-      'Provided model payload is not a type literal',
-      { type: type.getText() }
-    );
+    throw new PrismaJsonTypesGeneratorError('Provided model payload is not a type literal', {
+      type: type.getText()
+    });
   }
 
   const scalarsField: any = type.members.find((m) => m.name?.getText() === 'scalars');

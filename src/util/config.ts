@@ -54,8 +54,6 @@ export function parseConfig(
 
     useType: config.useType ? String(config.useType) : undefined,
 
-    allowAny: config.allowAny
-      ? String(config.allowAny).toLowerCase().trim() === 'true'
-      : false
+    allowAny: config.allowAny ? String(config.allowAny).toLowerCase().trim() === 'true' : false
   };
 }

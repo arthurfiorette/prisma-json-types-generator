@@ -1,4 +1,4 @@
-import { GeneratorConfig } from '@prisma/generator-helper';
+import type { GeneratorConfig } from '@prisma/generator-helper';
 import { PrismaJsonTypesGeneratorError } from './error';
 
 /**
@@ -15,10 +15,7 @@ export function findPrismaClientGenerator(generators: GeneratorConfig[]) {
   }
 
   if (!options.output?.value) {
-    throw new PrismaJsonTypesGeneratorError(
-      '`prisma-client-js` output not found',
-      options
-    );
+    throw new PrismaJsonTypesGeneratorError('`prisma-client-js` output not found', options);
   }
 
   return options as GeneratorConfig & { output: { value: string } };

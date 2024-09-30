@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
-import { Model, UpdateManyInput } from '../target/literal/index';
+import type { Model, UpdateManyInput } from '../target/literal/index';
 
 expectAssignable<Model>({
   id: 0,

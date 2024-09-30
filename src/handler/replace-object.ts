@@ -2,7 +2,7 @@ import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import { findNewSignature } from '../helpers/find-signature';
 import { JSON_REGEX } from '../helpers/regex';
-import { PrismaJsonTypesGeneratorConfig } from '../util/config';
+import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { createType } from '../util/create-signature';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
@@ -39,7 +39,7 @@ export function replaceObject(
       const signature = (member as ts.PropertySignature).type;
 
       if (!signature) {
-        throw new PrismaJsonTypesGeneratorError(`Could not find signature type`, {
+        throw new PrismaJsonTypesGeneratorError('Could not find signature type', {
           type: field.name
         });
       }

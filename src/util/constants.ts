@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 /** Name of the namespace in the type declaration */
 export const PRISMA_NAMESPACE_NAME = 'Prisma';

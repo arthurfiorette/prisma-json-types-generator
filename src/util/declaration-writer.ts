@@ -1,5 +1,5 @@
-import fs from 'fs/promises';
-import { PrismaJsonTypesGeneratorConfig } from './config';
+import fs from 'node:fs/promises';
+import type { PrismaJsonTypesGeneratorConfig } from './config';
 import { NAMESPACE_PATH } from './constants';
 import { PrismaJsonTypesGeneratorError } from './error';
 
@@ -34,16 +34,15 @@ export class DeclarationWriter {
     namespace = namespace.replace(/\$\$NAMESPACE\$\$/g, this.options.namespace);
 
     // Includes previous file content
-    return namespace + '\n' + this.content;
+    return `${namespace}\n${this.content}`;
   }
 
   /** Loads the original file of sourcePath into memory. */
   async load() {
     if (!(await fs.stat(this.filepath))) {
-      throw new PrismaJsonTypesGeneratorError(
-        'Tried to load a file that does not exist',
-        { filepath: this.filepath }
-      );
+      throw new PrismaJsonTypesGeneratorError('Tried to load a file that does not exist', {
+        filepath: this.filepath
+      });
     }
 
     if (this.changeset.length) {
@@ -87,7 +86,7 @@ export class DeclarationWriter {
   replace(start: number, end: number, text: string) {
     // Adds a trailing space
     if (text[0] !== ' ') {
-      text = ' ' + text;
+      text = ` ${text}`;
     }
 
     // Maps the coordinates to the previous changes to adjust the position for the new text
