@@ -2,46 +2,38 @@
   "name": "prisma-json-types-generator",
   "version": "3.1.0",
   "description": "Changes JsonValues to your custom typescript type",
-  "keywords": [
-    "prisma",
-    "prisma2",
-    "generator",
-    "json"
-  ],
+  "keywords": ["prisma", "prisma2", "generator", "json"],
   "homepage": "https://arthur.run/prisma-json-types-generator",
   "bugs": "https://github.com/arthurfiorette/prisma-json-types-generator/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arthurfiorette/prisma-json-types-generator.git"
   },
-  "funding": "https://github.com/ArthurFiorette/prisma-json-types-generator?sponsor=1",
+  "funding": "https://github.com/arthurfiorette/prisma-json-types-generator?sponsor=1",
   "license": "MIT",
   "author": "Arthur Fiorette <npm@arthur.place>",
   "main": "./index.js",
   "bin": {
     "prisma-json-types-generator": "index.js"
   },
-  "files": [
-    "dist",
-    "assets",
-    "LICENSE",
-    "README.md",
-    "index.js",
-    "package.json"
-  ],
+  "files": ["dist", "assets", "LICENSE", "README.md", "index.js", "package.json"],
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "format": "prettier --write .",
     "start": "node dist/bin.js",
-    "test": "sh ./scripts/test.sh"
+    "test": "sh ./scripts/test.sh",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write --unsafe .",
+    "lint:ci": "biome ci ."
   },
   "dependencies": {
     "@prisma/generator-helper": "5.20.0",
     "tslib": "2.7.0"
   },
   "devDependencies": {
-    "@arthurfiorette/prettier-config": "1.0.12",
+    "@arthurfiorette/biomejs-config": "^1.0.5",
+    "@biomejs/biome": "1.9.2",
     "@prisma/client": "5.20.0",
     "@types/node": "22.7.4",
     "prettier": "3.3.3",
