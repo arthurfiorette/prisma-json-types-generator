@@ -21,6 +21,14 @@
   "bin": {
     "prisma-json-types-generator": "index.js"
   },
+  "files": [
+    "dist",
+    "assets",
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
