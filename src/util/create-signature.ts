@@ -21,7 +21,7 @@ export function createType(
 
   // If we should use a type as global type map
   if (config.useType) {
-    return `${config.namespace}.${config.useType}['${JSON.stringify(type)}']`;
+    return `${config.namespace}.${config.useType}[${JSON.stringify(type)}]`;
   }
 
   // Just return the type
