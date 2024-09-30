@@ -1,5 +1,3 @@
-import { Dictionary } from '@prisma/generator-helper';
-
 export interface PrismaJsonTypesGeneratorConfig {
   /**
    * The namespace to generate the types in.
@@ -46,7 +44,7 @@ export interface PrismaJsonTypesGeneratorConfig {
 }
 
 export function parseConfig(
-  config: Dictionary<string | string[]>
+  config: Record<string, string | string[]>
 ): PrismaJsonTypesGeneratorConfig {
   return {
     namespace: config.namespace ? String(config.namespace) : 'PrismaJson',
