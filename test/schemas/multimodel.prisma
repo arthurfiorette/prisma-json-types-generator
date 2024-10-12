@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../target/multimodel"
+}
+
+generator json {
+  provider = "node ./index.js"
+  namespace = "PStringJson"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = ""
+}
+
+model FirstModel {
+  id Int @id @default(autoincrement())
+
+  untyped String
+  /// [TypeOne]
+  typed1 String
+  /// !['A' | 'B']
+  literal String
+}
+
+model SecondModel {
+  id Int @id @default(autoincrement())
+
+  untyped String
+  /// [TypeTwo]
+  typed2 String
+  /// !['C' | 'D']
+  literal String
+}

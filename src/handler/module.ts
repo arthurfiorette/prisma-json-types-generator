@@ -35,14 +35,13 @@ export function handlePrismaModule(
     try {
       handleStatement(statement, writer, models, config);
     } catch (error) {
-      // This allows some types to be generated even if others may fail
-      // which is good for incremental development/testing
       if (error instanceof PrismaJsonTypesGeneratorError) {
-        return PrismaJsonTypesGeneratorError.handler(error);
+        console.error('PrismaJsonTypesGeneratorError:', error);
+      } else {
+        console.error('Unexpected error:', error);
       }
-
-      // Stops this generator is error thrown is not manually added by our code.
-      throw error;
+      // Continue processing other statements
+      continue;
     }
   }
 }
