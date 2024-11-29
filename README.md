@@ -243,8 +243,8 @@ model Example {
 
 - This project should be a temporary workaround (and possible solution) to
   [prisma/prisma#3219](https://github.com/prisma/prisma/issues/3219).
-- No more support to prisma v4 is being done. Please migrate to prisma v5+,
-  prisma-json-types-generator v3+
+- No more support to prisma v5 is being done. Please migrate to prisma v6+,
+  prisma-json-types-generator v4+
 
 <br />
 
