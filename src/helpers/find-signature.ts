@@ -1,3 +1,4 @@
+import { PRISMA_SKIP } from '../util/constants';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
 import { isUpdateOneType } from './regex';
 
@@ -15,6 +16,21 @@ export function findNewSignature(
     typeToChange = `UpdateInput<${typeToChange}>`;
   }
 
+  let result: string | undefined;
+
+  const hasSkip = signature.indexOf(PRISMA_SKIP);
+
+  // removes skip from the search
+  if (hasSkip !== -1) {
+    console.log({
+      hasSkip,
+      signature,model,PRISMA_SKIP
+    })
+    signature = (
+      signature.slice(0, hasSkip) + signature.slice(hasSkip + PRISMA_SKIP.length)
+    ).trim();
+  }
+
   switch (signature) {
     //
     // Normal
@@ -24,99 +40,112 @@ export function findNewSignature(
     case 'InputJsonValue':
     case 'InputJsonValue | InputJsonValue':
     case 'JsonNullValueInput | InputJsonValue':
-      return typeToChange;
+      result = typeToChange;
+      break;
 
     // Super complex type that strictly typing will lose functionality
     case `JsonWithAggregatesFilter<"${model}">`:
     case `JsonFilter<"${model}">`:
-      return undefined;
+      break;
 
     //
     // String
     //
     case 'string':
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return typeToChange;
+      result = typeToChange;
+      break;
 
     case 'string[]':
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `(${typeToChange})[]`;
+      result = `(${typeToChange})[]`;
+      break;
 
     case 'string | null':
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return typeToChange;
+      result = typeToChange;
+      break;
 
     case `StringFilter<"${model}"> | string`:
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `TypedStringFilter<${typeToChange}> | ${typeToChange}`;
+      result = `TypedStringFilter<${typeToChange}> | ${typeToChange}`;
+      break;
 
     case `StringNullableFilter<"${model}"> | string | null`:
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `TypedStringNullableFilter<${typeToChange}> | ${typeToChange} | null`;
+      result = `TypedStringNullableFilter<${typeToChange}> | ${typeToChange} | null`;
+      break;
 
     case `StringNullableListFilter<"${model}">`:
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `TypedStringNullableListFilter<${typeToChange}>`;
+      result = `TypedStringNullableListFilter<${typeToChange}>`;
+      break;
 
     case `StringWithAggregatesFilter<"${model}"> | string`:
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `TypedStringWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
+      result = `TypedStringWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
+      break;
 
     case `StringNullableWithAggregatesFilter<"${model}"> | string | null`:
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `TypedStringNullableWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
+      result = `TypedStringNullableWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
+      break;
 
     case 'StringFieldUpdateOperationsInput | string':
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
+      result = `TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
+      break;
 
     case 'NullableStringFieldUpdateOperationsInput | string | null':
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `TypedNullableStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange} | null`;
+      result = `TypedNullableStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange} | null`;
+      break;
 
     case `${model}Create${field}Input | string[]`:
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
+      result = `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
+      break;
 
     case `${model}Update${field}Input | string[]`:
       if (!shouldReplaceStrings) {
-        return undefined;
+        break;
       }
 
-      return `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
+      result = `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
+      break;
 
     //
     // Nullable
@@ -125,16 +154,18 @@ export function findNewSignature(
     case 'Prisma.JsonValue | null':
     case 'InputJsonValue | null':
     case 'InputJsonValue | InputJsonValue | null':
-      return `${typeToChange} | null`;
+      result = `${typeToChange} | null`;
+      break;
 
     case 'NullableJsonNullValueInput | InputJsonValue':
       // differentiates null in column or a json null value
-      return `${typeToChange} | NullableJsonNullValueInput`;
+      result = `${typeToChange} | NullableJsonNullValueInput`;
+      break;
 
     // Super complex type that strictly typing will lose functionality
     case `JsonNullableWithAggregatesFilter<"${model}">`:
     case `JsonNullableFilter<"${model}">`:
-      return undefined;
+      break;
 
     //
     // Array
@@ -143,16 +174,20 @@ export function findNewSignature(
     case 'JsonValue[]':
     case 'InputJsonValue[]':
     case `${model}CreatelistInput | InputJsonValue[]`:
-      return `${typeToChange}[]`;
+      result = `${typeToChange}[]`;
+      break;
 
     case `JsonNullableListFilter<"${model}">`:
-      return `NullableListFilter<${typeToChange}>`;
+      result = `NullableListFilter<${typeToChange}>`;
+      break;
 
     case `${model}Update${field}Input | InputJsonValue[]`:
-      return `UpdateManyInput<${typeToChange}>`;
+      result = `UpdateManyInput<${typeToChange}>`;
+      break;
 
     case `${model}Create${field}Input | InputJsonValue[]`:
-      return `CreateManyInput<${typeToChange}>`;
+      result = `CreateManyInput<${typeToChange}>`;
+      break;
 
     //
     // Unknown types, its safe to throw an error here because each field does not conflict with other fields generation.
@@ -168,6 +203,13 @@ export function findNewSignature(
         });
       }
 
-      return undefined;
+      break;
   }
+
+  // Add it back later
+  if (result && hasSkip !== -1) {
+    result += PRISMA_SKIP;
+  }
+
+  return result;
 }

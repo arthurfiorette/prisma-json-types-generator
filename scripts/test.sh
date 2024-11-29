@@ -1,11 +1,19 @@
 #/bin/sh
 
 # Gets all files in test/schemas (Probably there's a better way to do this)
-FILES=$(ls -l test/schemas | awk '{print $9}' | awk -F '.' '{print $1}')
+if [ "$#" -eq 0 ]; then
+  FILES=$(ls -l test/schemas | awk '{print $9}' | awk -F '.' '{print $1}')
+else
+  FILES="$@"
+fi
 
 # Generates each prisma schema
 for file in $FILES; do
-  pnpm prisma generate --schema test/schemas/$file.prisma > /dev/null &
+  if [ "$#" -eq 0 ]; then
+    pnpm prisma generate --schema test/schemas/$file.prisma > /dev/null &
+  else
+    pnpm prisma generate --schema test/schemas/$file.prisma
+  fi
 done
 
 # Waits for generation
