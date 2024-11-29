@@ -15,9 +15,7 @@ expectAssignable<Prisma.XOR<Prisma.ModelCreateInput, Prisma.ModelUncheckedCreate
   list: [3]
 });
 
-expectNotAssignable<
-  Prisma.XOR<Prisma.ModelCreateInput, Prisma.ModelUncheckedCreateInput>
->({
+expectNotAssignable<Prisma.XOR<Prisma.ModelCreateInput, Prisma.ModelUncheckedCreateInput>>({
   simple: 1,
   list: [3]
 });

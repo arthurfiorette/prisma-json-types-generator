@@ -22,10 +22,6 @@ export function findNewSignature(
 
   // removes skip from the search
   if (hasSkip !== -1) {
-    console.log({
-      hasSkip,
-      signature,model,PRISMA_SKIP
-    })
     signature = (
       signature.slice(0, hasSkip) + signature.slice(hasSkip + PRISMA_SKIP.length)
     ).trim();
