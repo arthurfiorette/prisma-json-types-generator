@@ -31,8 +31,8 @@
 <br />
 
 - [Using it!](#using-it)
-- [Configuration](#configuration)
 - [Available types](#available-types)
+- [Configuration](#configuration)
 - [Some types are still JSON?](#some-types-are-still-json)
 - [Usage within monorepos](#usage-within-monorepos)
 - [Limitations](#limitations)
@@ -100,35 +100,6 @@ declare global {
 
 <br />
 
-## Configuration
-
-```prisma
-generator json {
-  provider = "prisma-json-types-generator"
-
-  // The namespace to generate the types in.
-  //
-  // namespace = "PrismaJson"
-
-  // The name of the client output type. By default it will try
-  // to find it automatically
-  // (./ -> relative to schema, or an importable path to require() it)
-  //
-  // clientOutput = "finds automatically"
-
-  // In case you need to use a root type inside PrismaJson, export it
-  // inside the namespace and we will add a index signature to it
-  //
-  // useType = "PrismaJson.GlobalType"
-
-  // If untyped JSON fields should be any instead of `unknown`.
-  //
-  // allowAny = false
-}
-```
-
-<br />
-
 ## Available types
 
 This package adds multiple ways to type a `JSON` or `String` field.
@@ -148,6 +119,9 @@ model Example {
   /// [MyType]
   normal Json
 
+  /// [MyType] comments are allowed after the initial type definition!
+  comment Json
+
   /// [MyType]
   optional Json?
 
@@ -159,6 +133,9 @@ model Example {
 
   /// !['A' | 'B']
   literal Json
+
+  /// ![[('A' | 'B')[], number[][][][]]]
+  literalArray Json
 
   /// ![PrismaJson.MyType | 'none']
   anything Json[]
@@ -187,6 +164,37 @@ import type { Example } from '@prisma/client';
 // example.complex  is now a { foo: string; bar: number }
 // example.literal  is now a 'A' | 'B'
 // example.anything is now a boolean | 'none'
+```
+
+<br />
+
+## Configuration
+
+```prisma
+generator json {
+  provider = "prisma-json-types-generator"
+
+  // The namespace to generate the types in.
+  //
+  // namespace = "PrismaJson"
+
+  // The name of the client output type. By default it will try
+  // to find it automatically
+  // (./ -> relative to schema, or an importable path to require() it)
+  //
+  // clientOutput = "finds automatically"
+
+  // In case you need to use a root type inside PrismaJson, export it
+  // inside the namespace and we will add a index signature to it
+  //
+  // Ends up as PrismaJson.GlobalType.Something
+  //
+  // useType = "GlobalType"
+
+  // If untyped JSON fields should be any instead of `unknown`.
+  //
+  // allowAny = false
+}
 ```
 
 <br />
