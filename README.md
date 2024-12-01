@@ -30,79 +30,79 @@
 
 <br />
 
-- [Using it!](#using-it)
-- [Available types](#available-types)
-- [Configuration](#configuration)
-- [Some types are still JSON?](#some-types-are-still-json)
-- [Usage within monorepos](#usage-within-monorepos)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Typing JSON Fields](#typing-json-fields)
+  - [Example Schema](#example-schema)
+  - [Example Type Declarations](#example-type-declarations)
+  - [Resulting Type Inference](#resulting-type-inference)
+- [Configuration Options](#configuration-options)
 - [Limitations](#limitations)
-- [How it works](#how-it-works)
+- [Advanced Usage](#advanced-usage)
+  - [Monorepos](#monorepos)
+  - [Inline Type Declarations](#inline-type-declarations)
+- [How It Works](#how-it-works)
 - [License](#license)
 
 <br />
 <br />
 
-Prisma Json Types Generator is a prisma client generator which changes all json types from
-your `@prisma/client` into the ones you specified. It adds another layer of checking
-within your schema, as you must make typescript happy with your json type before inserting
-it into your DB.
+Prisma JSON Types Generator enhances your `@prisma/client` by replacing all JSON types with your specified TypeScript types. This ensures a stricter type-checking layer, requiring your JSON types to conform to TypeScript rules before insertion into the database.
 
 <br />
 
-## Using it!
+## Installation
 
-```sh
+Install the package as a development dependency:
+
+```bash
 npm install -D prisma-json-types-generator
 ```
 
-Include it in your schema and provide your own namespace declarations inside a file
-**included in your tsconfig**.
+<br />
 
-```prisma
-// schema.prisma
+## Usage
 
-generator client {
-  provider = "prisma-client-js"
-}
+1. **Add the generator to your Prisma schema**:
+   Place the generator below the `prisma-client-js` generator in your `schema.prisma`:
 
-/// Always after the prisma-client-js generator
-generator json {
-  provider = "prisma-json-types-generator"
-}
-```
+   ```prisma
+   generator client {
+     provider = "prisma-client-js"
+   }
 
-```ts
-// types.ts
+   generator json {
+     provider = "prisma-json-types-generator"
+   }
+   ```
 
-declare global {
-  namespace PrismaJson {
-    // Insert your types here!
-  }
-}
-```
+2. **Define your JSON types**:
+   Create a TypeScript file containing the type declarations. This file must be included in your `tsconfig`.
+
+   ```ts
+   // types.ts
+
+   declare global {
+     namespace PrismaJson {
+       // Define your custom types here!
+     }
+   }
+   ```
 
 <br />
 
-## Available types
+## Typing JSON Fields
 
-This package adds multiple ways to type a `JSON` or `String` field.
+This generator allows multiple approaches to type `Json` or `String` fields, avoiding circular dependencies between the Prisma schema and your codebase. Global namespaces (`PrismaJson`) provide a centralized location for your type definitions.
 
-We need to avoid circular dependencies between the prisma schema and your codebase, and
-typescript namespaces are the best way to solve this. As we declare a global namespace,
-any type declared within a normal declaration (`/// [T]`) gets transpiled to `Namespace.T`
-inside the prisma schema.
-
-Sometimes you have a very simple type, like a union literal or some constants, using a
-literal declaration (`/// ![T]`) will probably be better, as it gets transpiled to onlt
-`T` inside the schema. This way, types like `/// ['some' | 'none']` that are only used
-once, are way more easy to write and maintain.
+### Example Schema
 
 ```prisma
 model Example {
   /// [MyType]
   normal Json
 
-  /// [MyType] comments are allowed after the initial type definition!
+  /// [MyType] comments are allowed after the type definition!
   comment Json
 
   /// [MyType]
@@ -125,10 +125,10 @@ model Example {
 }
 ```
 
+### Example Type Declarations
+
 ```ts
 declare global {
-  // you can use typical basic types
-  // or you can use classes, interfaces, object types, etc.
   namespace PrismaJson {
     type MyType = boolean;
     type ComplexType = { foo: string; bar: number };
@@ -136,77 +136,65 @@ declare global {
 }
 ```
 
-And now, your types are correctly typed:
+### Resulting Type Inference
 
 ```ts
 import type { Example } from '@prisma/client';
 
-// example.normal   is now a boolean
-// example.optional is now a boolean | null
-// example.array    is now a boolean[]
-// example.complex  is now a { foo: string; bar: number }
-// example.literal  is now a 'A' | 'B'
-// example.anything is now a boolean | 'none'
+// example.normal   -> boolean
+// example.optional -> boolean | null
+// example.array    -> boolean[]
+// example.complex  -> { foo: string; bar: number }
+// example.literal  -> 'A' | 'B'
+// example.anything -> PrismaJson.MyType | 'none'
 ```
 
 <br />
 
-## Configuration
+## Configuration Options
 
 ```prisma
 generator json {
   provider = "prisma-json-types-generator"
 
-  // The namespace to generate the types in.
-  //
+  // Specify the namespace for type generation.
+  // Default: "PrismaJson"
   // namespace = "PrismaJson"
 
-  // The name of the client output type. By default it will try
-  // to find it automatically
-  // (./ -> relative to schema, or an importable path to require() it)
-  //
-  // clientOutput = "finds automatically"
+  // Define the client output path.
+  // Default: Automatically determined.
+  // clientOutput = "automatic"
 
-  // In case you need to use a root type inside PrismaJson, export it
-  // inside the namespace and we will add a index signature to it
-  //
-  // Ends up as PrismaJson.GlobalType.Something
-  //
+  // Add an index signature to a root type for dynamic JSON fields.
   // useType = "GlobalType"
 
-  // If untyped JSON fields should be any instead of `unknown`.
-  //
+  // Use `any` instead of `unknown` for untyped JSON fields.
   // allowAny = false
 }
 ```
 
 <br />
 
-## Some types are still JSON?
+## Limitations
 
-Yes! And it is right!
-
-Complex filter types like `JsonFilter` or `JsonWithAggregatesFilter` must not be typed. As
-we cannot change the object signature, _(only its types)_ mutating these objects would
-make the usage less powerful and probably lose functionality.
-
-So no, not all types will be converted. However if you find a field which is missing
-types, please open an issue in this repository.
+- **Complex Filters**: Types like `JsonFilter` and `JsonWithAggregatesFilter` remain untyped to preserve functionality.
+- **Prisma v4 Support**: Only Prisma v5+ and generator v3+ are supported.
+- **Known Gaps**: If some JSON fields are missing types, open an issue in the repository.
 
 <br />
 
-## Usage within monorepos
+## Advanced Usage
 
-If you're working with a monorepo, you must make sure the file containing the global
-definition for namespace `PrismaJson` is part of the runtime imports of your application.
-If you don't, the types will silently fall back to any.
+### Monorepos
+
+In monorepos, ensure the file containing the `PrismaJson` namespace is part of the runtime imports. Otherwise, types will default to `any`.
 
 ```ts
 // package1/src/types.ts
 
 declare global {
   namespace PrismaJson {
-    // ...
+    // Define types here
   }
 }
 ```
@@ -214,14 +202,16 @@ declare global {
 ```ts
 // package2/src/client.ts
 
-// Manually import the definition.
+// Import the type definitions
 import 'package1/types.ts';
 import { PrismaClient } from '@prisma/client';
 
-export const client = new PrismaClient(...);
+export const client = new PrismaClient();
 ```
 
-You can also declare the type on the spot using the following syntax:
+### Inline Type Declarations
+
+Directly declare types in the schema:
 
 ```prisma
 model Example {
@@ -230,20 +220,11 @@ model Example {
 }
 ```
 
-## Limitations
-
-- This project should be a temporary workaround (and possible solution) to
-  [prisma/prisma#3219](https://github.com/prisma/prisma/issues/3219).
-- No more support to prisma v4 is being done. Please migrate to prisma v5+,
-  prisma-json-types-generator v3+
-
 <br />
 
-## How it works
+## How It Works
 
-By using the Typescript Compiler API, this generator parses the generated client's types
-AST and looks for `Prisma.JsonValue` [_(or related)_](src/helpers/find-signature.ts) types
-and [replaces](src/handler/replace-object.ts) them with their corresponding type.
+This generator leverages the TypeScript Compiler API to analyze the client's type definitions. It identifies `Prisma.JsonValue` (or related) types and replaces them with the specified types using AST transformations. For details, see the [implementation](src/handler/replace-object.ts).
 
 <br />
 
