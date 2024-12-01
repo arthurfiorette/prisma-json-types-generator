@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../target/array"
+}
+
+generator json {
+  provider  = "node ./index.js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = ""
+}
+
+model Model {
+  id Int @id @default(autoincrement())
+
+  /// ![[number[]][]]
+  array Json[]
+}

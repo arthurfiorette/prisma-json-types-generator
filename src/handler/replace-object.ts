@@ -1,11 +1,11 @@
 import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import { findNewSignature } from '../helpers/find-signature';
-import { JSON_REGEX } from '../helpers/regex';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { createType } from '../util/create-signature';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
+import { parseTypeSyntax } from '../helpers/type-parser';
 
 /** Tries to replace every property of an object */
 export function replaceObject(
@@ -15,10 +15,10 @@ export function replaceObject(
   config: PrismaJsonTypesGeneratorConfig
 ) {
   for (const field of model.fields) {
-    const match = field.documentation?.match(JSON_REGEX);
+    const parsed = parseTypeSyntax(field.documentation);
 
-    // Not annotated with JSON comment, or we should let it be any
-    if (!match && config.allowAny) {
+    // Not annotated with JSON comment and we should let it be any
+    if (!parsed && config.allowAny) {
       continue;
     }
 
