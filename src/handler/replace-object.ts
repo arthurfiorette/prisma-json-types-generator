@@ -1,11 +1,11 @@
 import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import { findNewSignature } from '../helpers/find-signature';
+import { parseTypeSyntax } from '../helpers/type-parser';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { createType } from '../util/create-signature';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
-import { parseTypeSyntax } from '../helpers/type-parser';
 
 /** Tries to replace every property of an object */
 export function replaceObject(
