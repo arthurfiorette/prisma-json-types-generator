@@ -49,23 +49,6 @@ it into your DB.
 
 <br />
 
-```prisma
-generator client {
-  provider = "prisma-client-js"
-}
-
-generator json {
-  provider = "prisma-json-types-generator"
-}
-
-model Example {
-  /// [MyType]
-  normal Json
-}
-```
-
-<br />
-
 ## Using it!
 
 ```sh
