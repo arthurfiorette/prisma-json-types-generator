@@ -34,7 +34,7 @@
   "devDependencies": {
     "@arthurfiorette/biomejs-config": "^1.0.6",
     "@biomejs/biome": "1.9.4",
-    "@prisma/client": "6.0.0",
+    "@prisma/client": "6.0.1",
     "@types/node": "22.10.1",
     "prettier": "3.4.1",
     "source-map-support": "0.5.21",
