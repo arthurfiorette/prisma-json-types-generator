@@ -1,0 +1,8 @@
+services:
+  postgres:
+    image: postgres:alpine
+    ports:
+      - 55432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+ 

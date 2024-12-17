@@ -9,10 +9,14 @@ fi
 
 # Generates each prisma schema
 for file in $FILES; do
+  if [ "$file" = "typedsql" ]; then
+    pnpm prisma migrate dev --schema test/schemas/$file.prisma --name init --skip-generate --skip-seed
+  fi
+
   if [ "$#" -eq 0 ]; then
-    pnpm prisma generate --schema test/schemas/$file.prisma > /dev/null &
+    pnpm prisma generate --schema test/schemas/$file.prisma --sql > /dev/null &
   else
-    pnpm prisma generate --schema test/schemas/$file.prisma
+    pnpm prisma generate --schema test/schemas/$file.prisma --sql
   fi
 done
 
