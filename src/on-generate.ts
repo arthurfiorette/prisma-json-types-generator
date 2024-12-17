@@ -6,6 +6,7 @@ import { parseConfig } from './util/config';
 import { DeclarationWriter } from './util/declaration-writer';
 import { findPrismaClientGenerator } from './util/prisma-generator';
 import { buildTypesFilePath } from './util/source-path';
+import { writeFileSync } from 'node:fs';
 
 /** Runs the generator with the given options. */
 export async function onGenerate(options: GeneratorOptions) {
@@ -32,6 +33,10 @@ export async function onGenerate(options: GeneratorOptions) {
       true,
       ts.ScriptKind.TS
     );
+
+      writeFileSync('/home/hazork/dev/prisma-json-types-generator/dmmf.json', JSON.stringify(options.dmmf, null, 2), 'utf8');
+
+    // console.dir(options.dmmf, { depth: 10 });
 
     const prismaModels = extractPrismaModels(options.dmmf);
 
