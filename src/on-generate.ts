@@ -34,7 +34,7 @@ export async function onGenerate(options: GeneratorOptions) {
       ts.ScriptKind.TS
     );
 
-      writeFileSync('/home/hazork/dev/prisma-json-types-generator/dmmf.json', JSON.stringify(options.dmmf, null, 2), 'utf8');
+      writeFileSync('dmmf.json', JSON.stringify(options.dmmf, null, 2), 'utf8');
 
     // console.dir(options.dmmf, { depth: 10 });
 
