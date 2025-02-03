@@ -25,8 +25,8 @@ importers:
         specifier: 1.9.4
         version: 1.9.4
       '@prisma/client':
-        specifier: 6.2.1
-        version: 6.2.1(prisma@5.22.0)
+        specifier: 6.3.0
+        version: 6.3.0(prisma@5.22.0)(typescript@5.7.3)
       '@types/node':
         specifier: 22.10.10
         version: 22.10.10
@@ -129,13 +129,16 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@prisma/client@6.2.1':
-    resolution: {integrity: sha512-msKY2iRLISN8t5X0Tj7hU0UWet1u0KuxSPHWuf3IRkB4J95mCvGpyQBfQ6ufcmvKNOMQSq90O2iUmJEN2e5fiA==}
+  '@prisma/client@6.3.0':
+    resolution: {integrity: sha512-BY3Fi28PUSk447Bpv22LhZp4HgNPo7NsEN+EteM1CLDnLjig5863jpW+3c3HHLFmml+nB/eJv1CjSriFZ8z7Cg==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
+      typescript: '>=5.1.0'
     peerDependenciesMeta:
       prisma:
+        optional: true
+      typescript:
         optional: true
 
   '@prisma/debug@5.22.0':
@@ -705,9 +708,10 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  '@prisma/client@6.2.1(prisma@5.22.0)':
+  '@prisma/client@6.3.0(prisma@5.22.0)(typescript@5.7.3)':
     optionalDependencies:
       prisma: 5.22.0
+      typescript: 5.7.3
 
   '@prisma/debug@5.22.0': {}
 
