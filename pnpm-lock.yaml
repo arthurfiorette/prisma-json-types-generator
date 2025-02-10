@@ -20,7 +20,7 @@ importers:
     devDependencies:
       '@arthurfiorette/biomejs-config':
         specifier: ^1.0.6
-        version: 1.0.6
+        version: 1.0.7
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
@@ -45,8 +45,8 @@ importers:
 
 packages:
 
-  '@arthurfiorette/biomejs-config@1.0.6':
-    resolution: {integrity: sha512-dWdFeeOlaDCUM+jP6BmhxhTsaVTOr3VGj2YjCAgsMNjje6NB0kUSfRu+Wu11KKrOHza8ZA3TV9+tlJiY5ZRysQ==}
+  '@arthurfiorette/biomejs-config@1.0.7':
+    resolution: {integrity: sha512-kdu5fIdtrlHwO5iSQDpzIA+uHioX/5Avo8dZoy3W0mvLcGNP2Ei9F3BfsBDm+AwnxT3oQ5X/eKIDjWswNfk0FA==}
 
   '@babel/code-frame@7.22.10':
     resolution: {integrity: sha512-/KKIMG4UEL35WmI9OlvMhurwtytjvXoFcGNrOvyG9zIzA8YmPjVtIZUf7b05+TPO7G7/GEmLHDaoCgACHl9hhA==}
@@ -642,7 +642,7 @@ packages:
 
 snapshots:
 
-  '@arthurfiorette/biomejs-config@1.0.6': {}
+  '@arthurfiorette/biomejs-config@1.0.7': {}
 
   '@babel/code-frame@7.22.10':
     dependencies:
