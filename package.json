@@ -36,7 +36,7 @@
     "@biomejs/biome": "1.9.4",
     "@prisma/client": "6.3.1",
     "@types/node": "22.13.5",
-    "prettier": "3.5.1",
+    "prettier": "3.5.2",
     "source-map-support": "0.5.21",
     "tsd": "0.31.2",
     "typescript": "5.7.3"
