@@ -16,7 +16,6 @@ export function createType(
       '[CustomizationType]'
     So we need to find the correct line to parse
   */
-  // Find the last line that starts with [
   const lines = description.split('\n');
   let parsed = null;
   for (const line of lines) {
