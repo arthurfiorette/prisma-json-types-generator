@@ -6,7 +6,22 @@ export function createType(
   description: string | undefined,
   config: PrismaJsonTypesGeneratorConfig
 ) {
-  const parsed = parseTypeSyntax(description);
+  if (!description) {
+    return 'unknown';
+  }
+
+  // Description can be a multi-line string like:
+  //   '@DtoCastType(Customization, ../../types, Customization)\n' +
+  //   '[CustomizationType]'
+  // So we need to find the correct line to parse
+  const lines = description.split('\n');
+  let parsed = null;
+  for (const line of lines) {
+    parsed = parseTypeSyntax(line);
+    if (parsed) {
+      break;
+    }
+  }
 
   // Defaults to unknown always, config.allowAny is handled before this function
   if (!parsed) {
