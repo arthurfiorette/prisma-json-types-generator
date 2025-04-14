@@ -38,7 +38,7 @@
     "@types/node": "22.14.1",
     "prettier": "3.5.3",
     "source-map-support": "0.5.21",
-    "tsd": "0.31.2",
+    "tsd": "0.32.0",
     "typescript": "5.8.3"
   },
   "peerDependencies": {
