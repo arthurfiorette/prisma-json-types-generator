@@ -9,7 +9,6 @@ export function onManifest(): GeneratorManifest {
     // TODO: We should change this to the real output of the generator in some way. But we cannot get its real output here
     // because we need to await the prisma client to be generated first.
     defaultOutput: './',
-    prettyName: 'Prisma Json Types Generator',
-    requiresGenerators: ['prisma-client-js']
+    prettyName: 'Prisma Json Types Generator'
   };
 }
