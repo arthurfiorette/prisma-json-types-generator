@@ -14,7 +14,8 @@ export async function onGenerate(options: GeneratorOptions) {
 
     const config = parseConfig(options.generator.config);
 
-    const clientOutput = buildTypesFilePath(
+    let isNewClient = (prismaClient.provider.fromEnvVar || prismaClient.provider.value) == 'prisma-client';
+    const clientOutput = isNewClient ? `${prismaClient.output.value}/client.ts` : buildTypesFilePath(
       prismaClient.output.value,
       config.clientOutput,
       options.schemaPath
