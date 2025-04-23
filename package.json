@@ -1,6 +1,6 @@
 {
   "name": "prisma-json-types-generator",
-  "version": "3.2.3",
+  "version": "3.3.0",
   "description": "Changes JsonValues to your custom typescript type",
   "keywords": ["prisma", "prisma2", "generator", "json"],
   "homepage": "https://arthur.run/prisma-json-types-generator",
