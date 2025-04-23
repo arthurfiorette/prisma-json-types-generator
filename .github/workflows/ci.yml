@@ -6,10 +6,19 @@ on:
 
 jobs:
   build:
-    name: Build and test code
-    runs-on: ubuntu-latest
+    name: CI ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
+      - name: Uses LF line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - name: Checkout
         uses: actions/checkout@v4
 
