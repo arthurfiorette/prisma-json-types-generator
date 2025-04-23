@@ -2,7 +2,10 @@ name: Code CI
 
 on:
   push:
-  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -35,7 +38,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm lint:ci
 
       - name: Build code
         run: pnpm build
