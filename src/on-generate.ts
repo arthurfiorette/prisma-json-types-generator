@@ -1,6 +1,6 @@
+import { join } from 'node:path';
 import type { GeneratorOptions } from '@prisma/generator-helper';
 import ts from 'typescript';
-import { join } from 'node:path';
 import { handlePrismaModule } from './handler/module';
 import { extractPrismaModels } from './helpers/dmmf';
 import { parseConfig } from './util/config';
@@ -15,12 +15,11 @@ export async function onGenerate(options: GeneratorOptions) {
 
     const config = parseConfig(options.generator.config);
 
-    let isNewClient = (prismaClient.provider.fromEnvVar || prismaClient.provider.value) == 'prisma-client';
-    const clientOutput = isNewClient ? join(prismaClient.output.value, 'client.ts') : buildTypesFilePath(
-      prismaClient.output.value,
-      config.clientOutput,
-      options.schemaPath
-    );
+    const isNewClient =
+      (prismaClient.provider.fromEnvVar || prismaClient.provider.value) === 'prisma-client';
+    const clientOutput = isNewClient
+      ? join(prismaClient.output.value, 'client.ts')
+      : buildTypesFilePath(prismaClient.output.value, config.clientOutput, options.schemaPath);
 
     const writer = new DeclarationWriter(clientOutput, config);
 

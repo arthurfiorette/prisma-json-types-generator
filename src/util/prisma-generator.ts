@@ -6,7 +6,9 @@ import { PrismaJsonTypesGeneratorError } from './error';
  * an error.
  */
 export function findPrismaClientGenerator(generators: GeneratorConfig[]) {
-  const options = generators.find((g) => ['prisma-client-js', 'prisma-client'].includes(g.provider.value as string));
+  const options = generators.find(
+    (g) => g.provider.value === 'prisma-client-js' || g.provider.value === 'prisma-client'
+  );
 
   if (!options) {
     throw new PrismaJsonTypesGeneratorError(
@@ -15,7 +17,10 @@ export function findPrismaClientGenerator(generators: GeneratorConfig[]) {
   }
 
   if (!options.output?.value) {
-    throw new PrismaJsonTypesGeneratorError('`prisma-client-js` or `prisma-client` output not found', options);
+    throw new PrismaJsonTypesGeneratorError(
+      '`prisma-client-js` or `prisma-client` output not found',
+      options
+    );
   }
 
   return options as GeneratorConfig & { output: { value: string } };
