@@ -10,14 +10,11 @@ fi
 # Generates each prisma schema
 for file in $FILES; do
   if [ "$#" -eq 0 ]; then
-    pnpm prisma generate --schema test/schemas/$file.prisma > /dev/null &
+    pnpm prisma generate --schema test/schemas/$file.prisma > /dev/null
   else
     pnpm prisma generate --schema test/schemas/$file.prisma
   fi
 done
-
-# Waits for generation
-wait
 
 # Runs tests sequentially
 for file in $FILES; do
