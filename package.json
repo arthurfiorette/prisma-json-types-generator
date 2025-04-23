@@ -2,7 +2,12 @@
   "name": "prisma-json-types-generator",
   "version": "3.2.3",
   "description": "Changes JsonValues to your custom typescript type",
-  "keywords": ["prisma", "prisma2", "generator", "json"],
+  "keywords": [
+    "prisma",
+    "prisma2",
+    "generator",
+    "json"
+  ],
   "homepage": "https://arthur.run/prisma-json-types-generator",
   "bugs": "https://github.com/arthurfiorette/prisma-json-types-generator/issues",
   "repository": {
@@ -32,7 +37,7 @@
     "tslib": "2.8.1"
   },
   "devDependencies": {
-    "@arthurfiorette/biomejs-config": "^1.0.6",
+    "@arthurfiorette/biomejs-config": "^1.0.8",
     "@biomejs/biome": "1.9.4",
     "@prisma/client": "6.6.0",
     "@types/node": "22.14.1",
