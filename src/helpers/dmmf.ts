@@ -1,4 +1,4 @@
-import type { DMMF } from '@prisma/generator-helper';
+import type DMMF from '@prisma/dmmf';
 import { createRegexForType } from './regex';
 
 /** A Prisma DMMF model/type with the regexes for each field. */

@@ -1,4 +1,4 @@
-import type { GeneratorManifest } from '@prisma/generator-helper';
+import type { GeneratorManifest } from '@prisma/generator';
 
 const { version } = require('../package.json');
 
