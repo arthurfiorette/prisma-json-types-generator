@@ -1,5 +1,5 @@
-import type { GeneratorOptions } from '@prisma/generator';
 import { join } from 'node:path';
+import type { GeneratorOptions } from '@prisma/generator';
 import ts from 'typescript';
 import { handlePrismaModule } from './handler/module';
 import { extractPrismaModels } from './helpers/dmmf';
