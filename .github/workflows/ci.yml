@@ -3,6 +3,10 @@ name: Code CI
 on:
   push:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: CI ${{ matrix.os }}
