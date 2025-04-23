@@ -45,7 +45,8 @@ export function buildTypesFilePath(
     // schemaTarget is the full path of the Prisma schema - we need the directory
     path.dirname(schemaTarget!),
     overrideTarget,
-    // the original path may not be called index.
-    overrideTarget.endsWith('.d.ts') ? '' : 'index.d.ts'
+    // Works with `prisma-client` or `prisma-client-js`. the original path may not be called index.
+    // If it ends with .ts, we don't need to add index.d.ts because it's use `prisma-client`
+    overrideTarget.endsWith('.ts') ? '' : 'index.d.ts'
   );
 }
