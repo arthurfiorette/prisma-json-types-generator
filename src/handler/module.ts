@@ -10,7 +10,9 @@ import { handleStatement } from './statement';
 export function handlePrismaModule(
   child: ts.ModuleDeclaration,
   writer: DeclarationWriter,
-  models: PrismaEntity[],
+  modelMap: Map<string, PrismaEntity>,
+  knownNoOps: Set<string>,
+  typeToNameMap: Map<string, string>,
   config: PrismaJsonTypesGeneratorConfig
 ) {
   const name = child
@@ -33,7 +35,7 @@ export function handlePrismaModule(
   // Loops through all statements in the prisma namespace
   for (const statement of content.statements) {
     try {
-      handleStatement(statement, writer, models, config);
+      handleStatement(statement, writer, modelMap, typeToNameMap, knownNoOps, config);
     } catch (error) {
       // This allows some types to be generated even if others may fail
       // which is good for incremental development/testing

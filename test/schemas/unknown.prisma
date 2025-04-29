@@ -16,6 +16,8 @@ model Model {
   id Int @id @default(autoincrement())
 
   field Json
+  fieldArray Json[]
+  fieldOptional Json?
   str String
   int Int
 }
