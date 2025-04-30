@@ -26,10 +26,12 @@ export class DeclarationWriter {
   private changeset: TextDiff[] = [];
 
   async template() {
+    const modifiedHeader = `// This file was overwritten by prisma-json-types-generator
+// Report any issues to https://github.com/arthurfiorette/prisma-json-types-generator`;
     if (this.multifile) {
-      return `import type * as PJTG from '../pjtg';\n${this.content}`;
+      return `${modifiedHeader}\nimport type * as PJTG from '../pjtg';\n${this.content}`;
     }
-    return `${await getNamespacePrelude(this.options.namespace)}\n${this.content}`;
+    return `${modifiedHeader}\n${await getNamespacePrelude(this.options.namespace)}\n${this.content}`;
   }
 
   /** Loads the original file of sourcePath into memory. */
