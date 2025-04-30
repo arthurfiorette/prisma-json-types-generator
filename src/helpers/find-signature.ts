@@ -32,9 +32,11 @@ export function findNewSignature(
     // Normal
     //
     case 'JsonValue':
+    case 'runtime.JsonValue':
     case 'Prisma.JsonValue':
     case 'InputJsonValue':
     case 'InputJsonValue | InputJsonValue':
+    case 'Prisma.JsonNullValueInput | runtime.InputJsonValue':
     case 'JsonNullValueInput | InputJsonValue':
       result = typeToChange;
       break;
@@ -147,6 +149,7 @@ export function findNewSignature(
     // Nullable
     //
     case 'JsonValue | null':
+    case 'runtime.JsonValue | null':
     case 'Prisma.JsonValue | null':
     case 'InputJsonValue | null':
     case 'InputJsonValue | InputJsonValue | null':
@@ -154,8 +157,9 @@ export function findNewSignature(
       break;
 
     case 'NullableJsonNullValueInput | InputJsonValue':
+    case 'Prisma.NullableJsonNullValueInput | runtime.InputJsonValue':
       // differentiates null in column or a json null value
-      result = `${typeToChange} | NullableJsonNullValueInput`;
+      result = `${typeToChange} | ${signature.startsWith('Prisma.') ? 'Prisma.' : ''}NullableJsonNullValueInput`;
       break;
 
     // Super complex type that strictly typing will lose functionality
@@ -166,21 +170,26 @@ export function findNewSignature(
     //
     // Array
     //
+    case 'runtime.JsonValue[]':
     case 'Prisma.JsonValue[]':
     case 'JsonValue[]':
     case 'InputJsonValue[]':
+    case `Prisma.${model}CreatelistInput | runtime.InputJsonValue[]`:
     case `${model}CreatelistInput | InputJsonValue[]`:
       result = `${typeToChange}[]`;
       break;
 
+    case `Prisma.JsonNullableListFilter<"${model}">`:
     case `JsonNullableListFilter<"${model}">`:
       result = `NullableListFilter<${typeToChange}>`;
       break;
 
+    case `Prisma.${model}Update${field}Input | runtime.InputJsonValue[]`:
     case `${model}Update${field}Input | InputJsonValue[]`:
       result = `UpdateManyInput<${typeToChange}>`;
       break;
 
+    case `Prisma.${model}Create${field}Input | runtime.InputJsonValue[]`:
     case `${model}Create${field}Input | InputJsonValue[]`:
       result = `CreateManyInput<${typeToChange}>`;
       break;
