@@ -9,11 +9,12 @@ export function findNewSignature(
   model: string,
   field: string,
   throwOnNotFound = true,
-  shouldReplaceStrings = true
+  shouldReplaceStrings = true,
+  libNamespace = ''
 ) {
   // Updates should leave optional fields
   if (isUpdateOneType(model)) {
-    typeToChange = `UpdateInput<${typeToChange}>`;
+    typeToChange = `${libNamespace}UpdateInput<${typeToChange}>`;
   }
 
   let result: string | undefined;
@@ -78,7 +79,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringFilter<${typeToChange}> | ${typeToChange}`;
+      result = `${libNamespace}TypedStringFilter<${typeToChange}> | ${typeToChange}`;
       break;
 
     case `StringNullableFilter<"${model}"> | string | null`:
@@ -86,7 +87,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringNullableFilter<${typeToChange}> | ${typeToChange} | null`;
+      result = `${libNamespace}TypedStringNullableFilter<${typeToChange}> | ${typeToChange} | null`;
       break;
 
     case `StringNullableListFilter<"${model}">`:
@@ -94,7 +95,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringNullableListFilter<${typeToChange}>`;
+      result = `${libNamespace}TypedStringNullableListFilter<${typeToChange}>`;
       break;
 
     case `StringWithAggregatesFilter<"${model}"> | string`:
@@ -102,7 +103,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
+      result = `${libNamespace}TypedStringWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
       break;
 
     case `StringNullableWithAggregatesFilter<"${model}"> | string | null`:
@@ -110,7 +111,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringNullableWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
+      result = `${libNamespace}TypedStringNullableWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
       break;
 
     case 'StringFieldUpdateOperationsInput | string':
@@ -118,7 +119,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
+      result = `${libNamespace}TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
       break;
 
     case 'NullableStringFieldUpdateOperationsInput | string | null':
@@ -126,7 +127,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedNullableStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange} | null`;
+      result = `${libNamespace}TypedNullableStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange} | null`;
       break;
 
     case `${model}Create${field}Input | string[]`:
@@ -134,7 +135,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
+      result = `${libNamespace}CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
       break;
 
     case `${model}Update${field}Input | string[]`:
@@ -142,7 +143,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
+      result = `${libNamespace}CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
       break;
 
     //
@@ -181,17 +182,17 @@ export function findNewSignature(
 
     case `Prisma.JsonNullableListFilter<"${model}">`:
     case `JsonNullableListFilter<"${model}">`:
-      result = `NullableListFilter<${typeToChange}>`;
+      result = `${libNamespace}NullableListFilter<${typeToChange}>`;
       break;
 
     case `Prisma.${model}Update${field}Input | runtime.InputJsonValue[]`:
     case `${model}Update${field}Input | InputJsonValue[]`:
-      result = `UpdateManyInput<${typeToChange}>`;
+      result = `${libNamespace}UpdateManyInput<${typeToChange}>`;
       break;
 
     case `Prisma.${model}Create${field}Input | runtime.InputJsonValue[]`:
     case `${model}Create${field}Input | InputJsonValue[]`:
-      result = `CreateManyInput<${typeToChange}>`;
+      result = `${libNamespace}CreateManyInput<${typeToChange}>`;
       break;
 
     //

@@ -6,7 +6,7 @@ import { handlePrismaModule } from './handler/module';
 import { handleStatement } from './handler/statement';
 import { extractPrismaModels } from './helpers/dmmf';
 import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config';
-import { DeclarationWriter } from './util/declaration-writer';
+import { DeclarationWriter, getNamespacePrelude } from './util/declaration-writer';
 import { findPrismaClientGenerator } from './util/prisma-generator';
 import { buildTypesFilePath } from './util/source-path';
 
@@ -26,8 +26,13 @@ export async function onGenerate(options: GeneratorOptions) {
         if (stat.isDirectory()) {
           // Models are split into multiple files starting in prisma@6.7
           for (const modelFile of await fs.readdir(modelsFolder)) {
-            await handleDeclarationFile(join(modelsFolder, modelFile), config, options, false);
+            await handleDeclarationFile(join(modelsFolder, modelFile), config, options, true);
           }
+
+          await fs.writeFile(
+            join(prismaClient.output.value, 'pjtg.ts'),
+            await getNamespacePrelude(config.namespace)
+          );
           return;
         }
       } catch {}
@@ -46,9 +51,9 @@ async function handleDeclarationFile(
   filepath: string,
   config: PrismaJsonTypesGeneratorConfig,
   options: GeneratorOptions,
-  expectingNamespace = true
+  multifile = false
 ) {
-  const writer = new DeclarationWriter(filepath, config);
+  const writer = new DeclarationWriter(filepath, config, multifile);
 
   // Reads the prisma declaration file content.
   await writer.load();
@@ -66,7 +71,7 @@ async function handleDeclarationFile(
   // Handles the prisma namespace.
   tsSource.forEachChild((child) => {
     try {
-      if (expectingNamespace) {
+      if (!multifile) {
         if (child.kind === ts.SyntaxKind.ModuleDeclaration) {
           handlePrismaModule(
             child as ts.ModuleDeclaration,
