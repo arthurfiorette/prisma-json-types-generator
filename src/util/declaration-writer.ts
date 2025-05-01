@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import type { PrismaJsonTypesGeneratorConfig } from './config';
-import { NAMESPACE_PATH } from './constants';
+import { MODIFIED_HEADER, NAMESPACE_PATH } from './constants';
 import { PrismaJsonTypesGeneratorError } from './error';
 
 /** A changes made in the original file to help adjust any future coordinates of texts */
@@ -26,12 +26,10 @@ export class DeclarationWriter {
   private changeset: TextDiff[] = [];
 
   async template() {
-    const modifiedHeader = `// This file was overwritten by prisma-json-types-generator
-// Report any issues to https://github.com/arthurfiorette/prisma-json-types-generator`;
     if (this.multifile) {
-      return `${modifiedHeader}\nimport type * as PJTG from '../pjtg';\n${this.content}`;
+      return `${MODIFIED_HEADER}\nimport type * as PJTG from '../pjtg';\n${this.content}`;
     }
-    return `${modifiedHeader}\n${await getNamespacePrelude(this.options.namespace)}\n${this.content}`;
+    return `${MODIFIED_HEADER}\n${await getNamespacePrelude(this.options.namespace)}\n${this.content}`;
   }
 
   /** Loads the original file of sourcePath into memory. */
