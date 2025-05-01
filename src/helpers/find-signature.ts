@@ -19,13 +19,16 @@ export function findNewSignature(
 
   let result: string | undefined;
 
-  const hasSkip = signature.indexOf(PRISMA_SKIP);
-
-  // removes skip from the search
-  if (hasSkip !== -1) {
-    signature = (
-      signature.slice(0, hasSkip) + signature.slice(hasSkip + PRISMA_SKIP.length)
-    ).trim();
+  let skipVar: string | undefined;
+  for (const skipVariant of PRISMA_SKIP) {
+    const hasSkip = signature.indexOf(skipVariant);
+    // removes skip from the search
+    if (hasSkip !== -1) {
+      signature = (
+        signature.slice(0, hasSkip) + signature.slice(hasSkip + skipVariant.length)
+      ).trim();
+      skipVar = skipVariant;
+    }
   }
 
   switch (signature) {
@@ -213,8 +216,8 @@ export function findNewSignature(
   }
 
   // Add it back later
-  if (result && hasSkip !== -1) {
-    result += PRISMA_SKIP;
+  if (result && skipVar) {
+    result += skipVar;
   }
 
   return result;
