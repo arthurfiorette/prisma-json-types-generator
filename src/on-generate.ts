@@ -26,7 +26,11 @@ export async function onGenerate(options: GeneratorOptions) {
         if (stat.isDirectory()) {
           // Models are split into multiple files starting in prisma@6.7
           for (const modelFile of await fs.readdir(modelsFolder)) {
-            await handleDeclarationFile(join(modelsFolder, modelFile), config, options, true);
+            try {
+              await handleDeclarationFile(join(modelsFolder, modelFile), config, options, true);
+            } catch (error) {
+              console.error(error);
+            }
           }
 
           await fs.writeFile(
