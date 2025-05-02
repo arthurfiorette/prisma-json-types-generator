@@ -4,6 +4,8 @@ import type { Model } from '../target/unknown/index';
 expectType<Model>({
   id: 0,
   field: {} as unknown,
+  fieldArray: [] as unknown[],
+  fieldOptional: {} as unknown,
   str: '' as string,
   int: 0 as number
 });

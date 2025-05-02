@@ -1,5 +1,6 @@
 import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
+import { extractBaseNameFromRelationType } from '../helpers/regex';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { handleModelPayload } from './model-payload';
@@ -12,7 +13,9 @@ import { replaceObject } from './replace-object';
 export function handleStatement(
   statement: ts.Statement,
   writer: DeclarationWriter,
-  models: PrismaEntity[],
+  modelMap: Map<string, PrismaEntity>,
+  typeToNameMap: Map<string, string>,
+  knownNoOps: Set<string>,
   config: PrismaJsonTypesGeneratorConfig
 ) {
   if (statement.kind !== ts.SyntaxKind.TypeAliasDeclaration) {
@@ -26,22 +29,31 @@ export function handleStatement(
     return;
   }
 
-  const name = type.name.getText();
+  // Skip the type if it belongs to a model without Json or a type comment
+  if (knownNoOps.has(type.name.getText())) {
+    return;
+  }
 
-  // Goes through each model and checks if the type name matches any of the regexps
-  for (const model of models) {
-    // If this is the main model payload type
-    if (name === `$${model.name}Payload`) {
-      return handleModelPayload(type, writer, model, config);
+  const typeName = type.name.getText();
+
+  const modelName = typeToNameMap.get(typeName);
+  // Extract the name of the model from the type name
+  if (modelName) {
+    const model = modelMap.get(modelName);
+    if (model) {
+      if (typeName === `$${modelName}Payload`) {
+        return handleModelPayload(type, writer, model, config);
+      }
+      return replaceObject(type.type as ts.TypeLiteralNode, writer, model, config);
     }
-
-    // If this statement matches some create/update/where input/output type
-    for (const regexp of model.regexps) {
-      if (regexp.test(name)) {
+  } else {
+    // If the type name isn't constant, match the model name using a regex, then do the lookup
+    const baseName = extractBaseNameFromRelationType(typeName);
+    if (baseName) {
+      const model = modelMap.get(baseName);
+      if (model) {
         return replaceObject(type.type as ts.TypeLiteralNode, writer, model, config);
       }
     }
-
-    // No model found for this statement, just ignore this type.
   }
 }

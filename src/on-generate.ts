@@ -34,13 +34,20 @@ export async function onGenerate(options: GeneratorOptions) {
       ts.ScriptKind.TS
     );
 
-    const prismaModels = extractPrismaModels(options.dmmf);
+    const { typeToNameMap, modelMap, knownNoOps } = extractPrismaModels(options.dmmf);
 
     // Handles the prisma namespace.
     tsSource.forEachChild((child) => {
       try {
         if (child.kind === ts.SyntaxKind.ModuleDeclaration) {
-          handlePrismaModule(child as ts.ModuleDeclaration, writer, prismaModels, config);
+          handlePrismaModule(
+            child as ts.ModuleDeclaration,
+            writer,
+            modelMap,
+            knownNoOps,
+            typeToNameMap,
+            config
+          );
         }
       } catch (error) {
         console.error(error);
