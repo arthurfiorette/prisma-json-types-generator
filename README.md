@@ -87,6 +87,9 @@ npm install -D prisma-json-types-generator
        // Define your custom types here!
      }
    }
+
+   // The file MUST be a module! 
+   export {};
    ```
 
 <br />
