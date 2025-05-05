@@ -32,7 +32,7 @@ importers:
         version: 6.6.0
       '@prisma/generator':
         specifier: ^6.6.0
-        version: 6.6.0
+        version: 6.7.0
       '@types/node':
         specifier: ^22.14.1
         version: 22.15.3
@@ -316,6 +316,9 @@ packages:
 
   '@prisma/generator@6.6.0':
     resolution: {integrity: sha512-UO1PFYd8Qh0LZoN/9wwAukgoDs8chLqGPho7ZBZejVKv1UpaEJvxgwS+LwlmkQ3Ay0GdsL6mjN8QxEi91xIomQ==}
+
+  '@prisma/generator@6.7.0':
+    resolution: {integrity: sha512-wCsD7QJn1JBKJfv5uOMhwBCvZPGerPJ3EC2HocFPFaHSzVIXLi/zNb/8gpBxervOXTbQRJ2dpqvMsJnwAnPi8A==}
 
   '@prisma/get-platform@6.6.0':
     resolution: {integrity: sha512-3qCwmnT4Jh5WCGUrkWcc6VZaw0JY7eWN175/pcb5Z6FiLZZ3ygY93UX0WuV41bG51a6JN/oBH0uywJ90Y+V5eA==}
@@ -980,6 +983,8 @@ snapshots:
       '@prisma/generator': 6.6.0
 
   '@prisma/generator@6.6.0': {}
+
+  '@prisma/generator@6.7.0': {}
 
   '@prisma/get-platform@6.6.0':
     dependencies:
