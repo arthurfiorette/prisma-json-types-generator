@@ -9,22 +9,26 @@ export function findNewSignature(
   model: string,
   field: string,
   throwOnNotFound = true,
-  shouldReplaceStrings = true
+  shouldReplaceStrings = true,
+  libNamespace = ''
 ) {
   // Updates should leave optional fields
   if (isUpdateOneType(model)) {
-    typeToChange = `UpdateInput<${typeToChange}>`;
+    typeToChange = `${libNamespace}UpdateInput<${typeToChange}>`;
   }
 
   let result: string | undefined;
 
-  const hasSkip = signature.indexOf(PRISMA_SKIP);
-
-  // removes skip from the search
-  if (hasSkip !== -1) {
-    signature = (
-      signature.slice(0, hasSkip) + signature.slice(hasSkip + PRISMA_SKIP.length)
-    ).trim();
+  let skipVar: string | undefined;
+  for (const skipVariant of PRISMA_SKIP) {
+    const hasSkip = signature.indexOf(skipVariant);
+    // removes skip from the search
+    if (hasSkip !== -1) {
+      signature = (
+        signature.slice(0, hasSkip) + signature.slice(hasSkip + skipVariant.length)
+      ).trim();
+      skipVar = skipVariant;
+    }
   }
 
   switch (signature) {
@@ -32,9 +36,11 @@ export function findNewSignature(
     // Normal
     //
     case 'JsonValue':
+    case 'runtime.JsonValue':
     case 'Prisma.JsonValue':
     case 'InputJsonValue':
     case 'InputJsonValue | InputJsonValue':
+    case 'Prisma.JsonNullValueInput | runtime.InputJsonValue':
     case 'JsonNullValueInput | InputJsonValue':
       result = typeToChange;
       break;
@@ -76,7 +82,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringFilter<${typeToChange}> | ${typeToChange}`;
+      result = `${libNamespace}TypedStringFilter<${typeToChange}> | ${typeToChange}`;
       break;
 
     case `StringNullableFilter<"${model}"> | string | null`:
@@ -84,7 +90,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringNullableFilter<${typeToChange}> | ${typeToChange} | null`;
+      result = `${libNamespace}TypedStringNullableFilter<${typeToChange}> | ${typeToChange} | null`;
       break;
 
     case `StringNullableListFilter<"${model}">`:
@@ -92,7 +98,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringNullableListFilter<${typeToChange}>`;
+      result = `${libNamespace}TypedStringNullableListFilter<${typeToChange}>`;
       break;
 
     case `StringWithAggregatesFilter<"${model}"> | string`:
@@ -100,7 +106,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
+      result = `${libNamespace}TypedStringWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
       break;
 
     case `StringNullableWithAggregatesFilter<"${model}"> | string | null`:
@@ -108,7 +114,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringNullableWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
+      result = `${libNamespace}TypedStringNullableWithAggregatesFilter<${typeToChange}> | ${typeToChange}`;
       break;
 
     case 'StringFieldUpdateOperationsInput | string':
@@ -116,7 +122,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
+      result = `${libNamespace}TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
       break;
 
     case 'NullableStringFieldUpdateOperationsInput | string | null':
@@ -124,7 +130,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `TypedNullableStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange} | null`;
+      result = `${libNamespace}TypedNullableStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange} | null`;
       break;
 
     case `${model}Create${field}Input | string[]`:
@@ -132,7 +138,7 @@ export function findNewSignature(
         break;
       }
 
-      result = `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
+      result = `${libNamespace}CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
       break;
 
     case `${model}Update${field}Input | string[]`:
@@ -140,13 +146,14 @@ export function findNewSignature(
         break;
       }
 
-      result = `CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
+      result = `${libNamespace}CreateStringArrayInput<${typeToChange}> | ${typeToChange}[]`;
       break;
 
     //
     // Nullable
     //
     case 'JsonValue | null':
+    case 'runtime.JsonValue | null':
     case 'Prisma.JsonValue | null':
     case 'InputJsonValue | null':
     case 'InputJsonValue | InputJsonValue | null':
@@ -154,8 +161,9 @@ export function findNewSignature(
       break;
 
     case 'NullableJsonNullValueInput | InputJsonValue':
+    case 'Prisma.NullableJsonNullValueInput | runtime.InputJsonValue':
       // differentiates null in column or a json null value
-      result = `${typeToChange} | NullableJsonNullValueInput`;
+      result = `${typeToChange} | ${signature.startsWith('Prisma.') ? 'Prisma.' : ''}NullableJsonNullValueInput`;
       break;
 
     // Super complex type that strictly typing will lose functionality
@@ -166,23 +174,28 @@ export function findNewSignature(
     //
     // Array
     //
+    case 'runtime.JsonValue[]':
     case 'Prisma.JsonValue[]':
     case 'JsonValue[]':
     case 'InputJsonValue[]':
+    case `Prisma.${model}CreatelistInput | runtime.InputJsonValue[]`:
     case `${model}CreatelistInput | InputJsonValue[]`:
       result = `${typeToChange}[]`;
       break;
 
+    case `Prisma.JsonNullableListFilter<"${model}">`:
     case `JsonNullableListFilter<"${model}">`:
-      result = `NullableListFilter<${typeToChange}>`;
+      result = `${libNamespace}NullableListFilter<${typeToChange}>`;
       break;
 
+    case `Prisma.${model}Update${field}Input | runtime.InputJsonValue[]`:
     case `${model}Update${field}Input | InputJsonValue[]`:
-      result = `UpdateManyInput<${typeToChange}>`;
+      result = `${libNamespace}UpdateManyInput<${typeToChange}>`;
       break;
 
+    case `Prisma.${model}Create${field}Input | runtime.InputJsonValue[]`:
     case `${model}Create${field}Input | InputJsonValue[]`:
-      result = `CreateManyInput<${typeToChange}>`;
+      result = `${libNamespace}CreateManyInput<${typeToChange}>`;
       break;
 
     //
@@ -203,8 +216,8 @@ export function findNewSignature(
   }
 
   // Add it back later
-  if (result && hasSkip !== -1) {
-    result += PRISMA_SKIP;
+  if (result && skipVar) {
+    result += skipVar;
   }
 
   return result;

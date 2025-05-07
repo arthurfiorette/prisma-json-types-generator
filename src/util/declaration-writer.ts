@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import type { PrismaJsonTypesGeneratorConfig } from './config';
-import { NAMESPACE_PATH } from './constants';
+import { MODIFIED_HEADER, NAMESPACE_PATH } from './constants';
 import { PrismaJsonTypesGeneratorError } from './error';
 
 /** A changes made in the original file to help adjust any future coordinates of texts */
@@ -16,7 +16,8 @@ export interface TextDiff {
 export class DeclarationWriter {
   constructor(
     readonly filepath: string,
-    private readonly options: PrismaJsonTypesGeneratorConfig
+    private readonly options: PrismaJsonTypesGeneratorConfig,
+    public readonly multifile = false
   ) {}
 
   /** The prisma's index.d.ts file content. */
@@ -25,16 +26,10 @@ export class DeclarationWriter {
   private changeset: TextDiff[] = [];
 
   async template() {
-    let namespace = await fs.readFile(NAMESPACE_PATH, 'utf-8');
-
-    // Removes trailing spaces
-    namespace = namespace.trim();
-
-    // Replaces the namespace with the provided namespace
-    namespace = namespace.replace(/\$\$NAMESPACE\$\$/g, this.options.namespace);
-
-    // Includes previous file content
-    return `${namespace}\n${this.content}`;
+    if (this.multifile) {
+      return `${MODIFIED_HEADER}\nimport type * as PJTG from '../pjtg';\n${this.content}`;
+    }
+    return `${MODIFIED_HEADER}\n${await getNamespacePrelude(this.options.namespace)}\n${this.content}`;
   }
 
   /** Loads the original file of sourcePath into memory. */
@@ -107,4 +102,16 @@ export class DeclarationWriter {
       diff: start - end + text.length
     });
   }
+}
+
+export async function getNamespacePrelude(namespace: string) {
+  let prelude = await fs.readFile(NAMESPACE_PATH, 'utf-8');
+
+  // Removes trailing spaces
+  prelude = prelude.trim();
+
+  // Replaces the namespace with the provided namespace
+  prelude = prelude.replace(/\$\$NAMESPACE\$\$/g, namespace);
+
+  return prelude;
 }

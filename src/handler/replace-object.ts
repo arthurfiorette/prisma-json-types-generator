@@ -58,7 +58,8 @@ export function replaceObject(
         // We must ignore not found errors when no typename was found but we still
         // are replacing because of allowAny = false
         !defaultedToUnknown,
-        !defaultedToUnknown
+        !defaultedToUnknown,
+        writer.multifile ? 'PJTG.' : ''
       );
 
       // This type should be ignored by the generator
