@@ -27,7 +27,7 @@ export class DeclarationWriter {
 
   async template() {
     if (this.multifile) {
-      return `${MODIFIED_HEADER}\nimport type * as PJTG from '../pjtg';\n${this.content}`;
+      return `${MODIFIED_HEADER}\n// @ts-nocheck\nimport type * as PJTG from '../pjtg.ts';\n${this.content}`;
     }
     return `${MODIFIED_HEADER}\n${await getNamespacePrelude(this.options.namespace)}\n${this.content}`;
   }
