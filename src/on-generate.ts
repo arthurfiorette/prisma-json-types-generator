@@ -27,11 +27,7 @@ export async function onGenerate(options: GeneratorOptions) {
         if (stat.isDirectory()) {
           // Models are split into multiple files starting in prisma@6.7
           for (const modelFile of await fs.readdir(modelsFolder)) {
-            try {
-              await handleDeclarationFile(join(modelsFolder, modelFile), config, options, true);
-            } catch (error) {
-              console.error(error);
-            }
+            await handleDeclarationFile(join(modelsFolder, modelFile), config, options, true);
           }
 
           await fs.writeFile(
@@ -40,7 +36,12 @@ export async function onGenerate(options: GeneratorOptions) {
           );
           return;
         }
-      } catch {}
+      } catch (e: any) {
+        // Ignore ENOENT since that likely means the `models` folder could not be found, indicating a <= v6.6 file structure
+        if (!('code' in e) || e.code !== 'ENOENT') {
+          console.error(e);
+        }
+      }
     }
 
     const clientOutput = isNewClient
