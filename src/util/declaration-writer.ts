@@ -17,7 +17,7 @@ export class DeclarationWriter {
   constructor(
     readonly filepath: string,
     private readonly options: PrismaJsonTypesGeneratorConfig,
-    private readonly multifile: boolean,
+    readonly multifile: boolean,
     private readonly importFileExtension: string | undefined
   ) {}
 
