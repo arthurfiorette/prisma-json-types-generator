@@ -17,7 +17,8 @@ export class DeclarationWriter {
   constructor(
     readonly filepath: string,
     private readonly options: PrismaJsonTypesGeneratorConfig,
-    public readonly multifile = false
+    private readonly multifile: boolean,
+    private readonly importFileExtension: string | undefined
   ) {}
 
   /** The prisma's index.d.ts file content. */
@@ -27,9 +28,13 @@ export class DeclarationWriter {
 
   async template() {
     if (this.multifile) {
-      return `${MODIFIED_HEADER}\nimport type * as PJTG from '../pjtg';\n${this.content}`;
+      const ext = this.importFileExtension ? `.${this.importFileExtension}` : '';
+      return `${MODIFIED_HEADER}\nimport type * as PJTG from '../pjtg${ext}';\n${this.content}`;
     }
-    return `${MODIFIED_HEADER}\n${await getNamespacePrelude(this.options.namespace)}\n${this.content}`;
+
+    return `${MODIFIED_HEADER}\n${await getNamespacePrelude(this.options.namespace)}\n${
+      this.content
+    }`;
   }
 
   /** Loads the original file of sourcePath into memory. */

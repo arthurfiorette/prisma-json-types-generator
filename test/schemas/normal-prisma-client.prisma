@@ -1,6 +1,7 @@
 generator client {
   provider = "prisma-client"
   output   = "../target/normal-prisma-client"
+  importFileExtension = "js"
 }
 
 generator json {

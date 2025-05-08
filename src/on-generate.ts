@@ -20,34 +20,43 @@ export async function onGenerate(options: GeneratorOptions) {
 
     const isNewClient =
       (prismaClient.provider.fromEnvVar || prismaClient.provider.value) === 'prisma-client';
-    if (isNewClient) {
-      try {
-        const modelsFolder = join(prismaClient.output.value, 'models');
-        const stat = await fs.stat(modelsFolder);
-        if (stat.isDirectory()) {
-          // Models are split into multiple files starting in prisma@6.7
-          for (const modelFile of await fs.readdir(modelsFolder)) {
-            await handleDeclarationFile(join(modelsFolder, modelFile), config, options, true);
-          }
 
-          await fs.writeFile(
-            join(prismaClient.output.value, 'pjtg.ts'),
-            `${LIB_HEADER}\n${await getNamespacePrelude(config.namespace)}`
+    if (isNewClient) {
+      const modelsFolder = join(prismaClient.output.value, 'models');
+      const stat = await fs.stat(modelsFolder).catch(() => null);
+
+      // Models are split into multiple files starting in prisma@6.7
+      if (stat?.isDirectory()) {
+        for (const modelFile of await fs.readdir(modelsFolder)) {
+          await handleDeclarationFile(
+            join(modelsFolder, modelFile),
+            config,
+            options,
+            prismaClient.config.importFileExtension?.toString(),
+            true
           );
-          return;
         }
-      } catch (e: any) {
-        // Ignore ENOENT since that likely means the `models` folder could not be found, indicating a <= v6.6 file structure
-        if (!('code' in e) || e.code !== 'ENOENT') {
-          console.error(e);
-        }
+
+        await fs.writeFile(
+          join(prismaClient.output.value, 'pjtg.ts'),
+          `${LIB_HEADER}\n${await getNamespacePrelude(config.namespace)}`
+        );
+
+        return;
       }
     }
 
     const clientOutput = isNewClient
       ? join(prismaClient.output.value, 'client.ts')
       : buildTypesFilePath(prismaClient.output.value, config.clientOutput, options.schemaPath);
-    await handleDeclarationFile(clientOutput, config, options);
+
+    await handleDeclarationFile(
+      clientOutput,
+      config,
+      options,
+      prismaClient.config.importFileExtension?.toString(),
+      false
+    );
   } catch (error) {
     console.error(error);
   }
@@ -57,9 +66,10 @@ async function handleDeclarationFile(
   filepath: string,
   config: PrismaJsonTypesGeneratorConfig,
   options: GeneratorOptions,
-  multifile = false
+  importFileExtension: string | undefined,
+  multifile: boolean
 ) {
-  const writer = new DeclarationWriter(filepath, config, multifile);
+  const writer = new DeclarationWriter(filepath, config, multifile, importFileExtension);
 
   // Reads the prisma declaration file content.
   await writer.load();
