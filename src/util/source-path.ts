@@ -50,3 +50,40 @@ export function buildTypesFilePath(
     overrideTarget.endsWith('.ts') ? '' : 'index.d.ts'
   );
 }
+
+export function findFirstCodeIndex(source: string) {
+  let inBlockComment = false;
+  let i = 0;
+
+  while (i < source.length) {
+    // Skip whitespace
+    while (/\s/.test(source[i]!)) i++;
+
+    // Handle line comments
+    if (source.startsWith('//', i)) {
+      while (i < source.length && source[i] !== '\n') i++;
+      continue;
+    }
+
+    // Handle block comments
+    if (source.startsWith('/*', i)) {
+      inBlockComment = true;
+      i += 2;
+      while (inBlockComment && i < source.length) {
+        if (source.startsWith('*/', i)) {
+          inBlockComment = false;
+          i += 2;
+          break;
+        }
+        i++;
+      }
+      continue;
+    }
+
+    // If not in a comment, return current index
+    return i;
+  }
+
+  // no code found, return 0
+  return 0;
+}

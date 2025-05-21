@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises';
 import type { PrismaJsonTypesGeneratorConfig } from './config';
-import { MODIFIED_HEADER, NAMESPACE_PATH } from './constants';
+import { NAMESPACE_PATH } from './constants';
 import { PrismaJsonTypesGeneratorError } from './error';
+import { findFirstCodeIndex } from './source-path';
 
 /** A changes made in the original file to help adjust any future coordinates of texts */
 export interface TextDiff {
@@ -27,14 +28,25 @@ export class DeclarationWriter {
   private changeset: TextDiff[] = [];
 
   async template() {
+    let header: string;
+
+    // Appends PJTG import statement
     if (this.multifile) {
       const ext = this.importFileExtension ? `.${this.importFileExtension}` : '';
-      return `${MODIFIED_HEADER}\nimport type * as PJTG from '../pjtg${ext}';\n${this.content}`;
+      header = `import type * as PJTG from '../pjtg${ext}';`;
+    } else {
+      header = await getNamespacePrelude(this.options.namespace);
     }
 
-    return `${MODIFIED_HEADER}\n${await getNamespacePrelude(this.options.namespace)}\n${
-      this.content
-    }`;
+    // wraps into extra lines to visually split our code from the rest
+    header = `\n${header}\n`;
+
+    const firstNonCommentLine = findFirstCodeIndex(this.content);
+
+    // Appends after all initial comments to preserve comments like `@ts-nocheck`
+    return (
+      this.content.slice(0, firstNonCommentLine) + header + this.content.slice(firstNonCommentLine)
+    );
   }
 
   /** Loads the original file of sourcePath into memory. */
