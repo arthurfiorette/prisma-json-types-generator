@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises';
 import type { PrismaJsonTypesGeneratorConfig } from './config';
-import { MODIFIED_HEADER, NAMESPACE_PATH } from './constants';
+import { NAMESPACE_PATH } from './constants';
 import { PrismaJsonTypesGeneratorError } from './error';
+import { findFirstCodeIndex } from './source-path';
 
 /** A changes made in the original file to help adjust any future coordinates of texts */
 export interface TextDiff {
@@ -27,14 +28,21 @@ export class DeclarationWriter {
   private changeset: TextDiff[] = [];
 
   async template() {
-    if (this.multifile) {
-      const ext = this.importFileExtension ? `.${this.importFileExtension}` : '';
-      return `${MODIFIED_HEADER}\nimport type * as PJTG from '../pjtg${ext}';\n${this.content}`;
+    if (!this.multifile) {
+      return this.content;
     }
 
-    return `${MODIFIED_HEADER}\n${await getNamespacePrelude(this.options.namespace)}\n${
-      this.content
-    }`;
+    // Appends PJTG import statement
+    const ext = this.importFileExtension ? `.${this.importFileExtension}` : '';
+    const firstNonCommentLine = findFirstCodeIndex(this.content);
+    const importLine = `\nimport type * as PJTG from '../pjtg${ext}';\n`;
+
+    // Appends after all initial comments to preserve comments like `@ts-nocheck`
+    return (
+      this.content.slice(0, firstNonCommentLine) +
+      importLine +
+      this.content.slice(firstNonCommentLine)
+    );
   }
 
   /** Loads the original file of sourcePath into memory. */

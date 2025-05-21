@@ -6,7 +6,6 @@ import { handlePrismaModule } from './handler/module';
 import { handleStatement } from './handler/statement';
 import { extractPrismaModels } from './helpers/dmmf';
 import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config';
-import { LIB_HEADER } from './util/constants';
 import { DeclarationWriter, getNamespacePrelude } from './util/declaration-writer';
 import { findPrismaClientGenerator } from './util/prisma-generator';
 import { buildTypesFilePath } from './util/source-path';
@@ -39,7 +38,7 @@ export async function onGenerate(options: GeneratorOptions) {
 
         await fs.writeFile(
           join(prismaClient.output.value, 'pjtg.ts'),
-          `${LIB_HEADER}\n${await getNamespacePrelude(config.namespace)}`
+          await getNamespacePrelude(config.namespace)
         );
 
         return;
