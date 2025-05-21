@@ -28,20 +28,24 @@ export class DeclarationWriter {
   private changeset: TextDiff[] = [];
 
   async template() {
-    if (!this.multifile) {
-      return this.content;
-    }
+    let header: string;
 
     // Appends PJTG import statement
-    const ext = this.importFileExtension ? `.${this.importFileExtension}` : '';
+    if (this.multifile) {
+      const ext = this.importFileExtension ? `.${this.importFileExtension}` : '';
+      header = `import type * as PJTG from '../pjtg${ext}';`;
+    } else {
+      header = await getNamespacePrelude(this.options.namespace);
+    }
+
+    // wraps into extra lines to visually split our code from the rest
+    header = `\n${header}\n`;
+
     const firstNonCommentLine = findFirstCodeIndex(this.content);
-    const importLine = `\nimport type * as PJTG from '../pjtg${ext}';\n`;
 
     // Appends after all initial comments to preserve comments like `@ts-nocheck`
     return (
-      this.content.slice(0, firstNonCommentLine) +
-      importLine +
-      this.content.slice(firstNonCommentLine)
+      this.content.slice(0, firstNonCommentLine) + header + this.content.slice(firstNonCommentLine)
     );
   }
 
