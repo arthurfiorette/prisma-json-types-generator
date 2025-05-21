@@ -29,7 +29,7 @@ importers:
         version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
       '@prisma/dmmf':
         specifier: ^6.7.0
-        version: 6.7.0
+        version: 6.8.2
       '@prisma/generator':
         specifier: ^6.7.0
         version: 6.8.2
@@ -301,9 +301,6 @@ packages:
 
   '@prisma/debug@6.8.2':
     resolution: {integrity: sha512-4muBSSUwJJ9BYth5N8tqts8JtiLT8QI/RSAzEogwEfpbYGFo9mYsInsVo8dqXdPO2+Rm5OG5q0qWDDE3nyUbVg==}
-
-  '@prisma/dmmf@6.7.0':
-    resolution: {integrity: sha512-Nabzf5H7KUwYV/1u8R5gTQ7x3ffdPIhtxVJsjhnLOjeuem8YzVu39jOgQbiOlfOvjU4sPYkV9wEXc5tIHumdUw==}
 
   '@prisma/dmmf@6.8.2':
     resolution: {integrity: sha512-okGJF/7hQZam/2wt+Y0hPyNxyY5S+L0FzAgtL932Q3YxUWHusRllrN39bCV45oF3QWY992g7rTWYdL2Rynt1qg==}
@@ -963,8 +960,6 @@ snapshots:
   '@prisma/debug@6.7.0': {}
 
   '@prisma/debug@6.8.2': {}
-
-  '@prisma/dmmf@6.7.0': {}
 
   '@prisma/dmmf@6.8.2': {}
 
