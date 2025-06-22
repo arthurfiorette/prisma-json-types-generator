@@ -39,7 +39,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm lint:ci
+        run: pnpm lint-ci
 
       - name: Build code
         run: pnpm build
