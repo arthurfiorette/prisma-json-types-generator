@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
-import type { Model } from '../target/normal-prisma-client/index';
+import type { Model } from '../target/normal-prisma-client/client';
 import type { UpdateManyInput } from '../target/normal-prisma-client/pjtg';
 
 declare global {
