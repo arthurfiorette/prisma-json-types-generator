@@ -7,8 +7,10 @@
  */
 
 // Allows error stack traces to be readable if available
-if (process.sourceMapsEnabled === false) {
-  process.setSourceMapsEnabled(true);
-}
+try {
+  if (process.sourceMapsEnabled === false) {
+    process.setSourceMapsEnabled(true);
+  }
+} catch {}
 
 require('./dist/generator.js');
