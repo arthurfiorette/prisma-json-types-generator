@@ -35,7 +35,7 @@ importers:
         version: 2.0.6
       '@prisma/dmmf':
         specifier: ^6.11.0
-        version: 6.11.0
+        version: 6.11.1
       '@prisma/generator':
         specifier: ^6.11.0
         version: 6.11.0
@@ -154,6 +154,9 @@ packages:
 
   '@prisma/dmmf@6.11.0':
     resolution: {integrity: sha512-7eI7tYqFLD8o4HRAXpYRfNR7G684MqOrVsAU2KpH66Zi1s48YS0G//bC0i+gExXG7UweEfxHydostbOlRXhmfw==}
+
+  '@prisma/dmmf@6.11.1':
+    resolution: {integrity: sha512-EwPSlhz7Qt5msepoxlKIGjtGP6fUEFQyxrYx6f0IdvQ8l0rLSJEqBrTiMpNhgKQFeR8kuiQTv+xzHk/l8mV+Xw==}
 
   '@prisma/engines-version@6.11.0-18.9c30299f5a0ea26a96790e13f796dc6094db3173':
     resolution: {integrity: sha512-M3vbyDICFIA1oJl0cFkM0omD4HsJZjFi0hu0f0UxyPABH8KEcZyUd5BToCrNl4B8lUeQn+L5+gfaQleOKp6Lrg==}
@@ -702,6 +705,8 @@ snapshots:
   '@prisma/debug@6.11.0': {}
 
   '@prisma/dmmf@6.11.0': {}
+
+  '@prisma/dmmf@6.11.1': {}
 
   '@prisma/engines-version@6.11.0-18.9c30299f5a0ea26a96790e13f796dc6094db3173': {}
 
