@@ -43,7 +43,7 @@
     "@biomejs/biome": "^2.0.4",
     "@prisma/dmmf": "^6.11.0",
     "@prisma/generator": "^6.11.0",
-    "@types/node": "^22",
+    "@types/node": "^24",
     "@types/semver": "^7.7.0",
     "husky": "^9.1.7",
     "tsd": "^0.32.0"
