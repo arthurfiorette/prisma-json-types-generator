@@ -46,7 +46,7 @@
     "@types/node": "^22",
     "@types/semver": "^7.7.0",
     "husky": "^9.1.7",
-    "tsd": "^0.32.0"
+    "tsd": "^0.33.0"
   },
   "peerDependencies": {
     "@prisma/client": "~6.11",
