@@ -53,6 +53,7 @@ export function findNewSignature(
     //
     // String
     //
+    case 'Prisma.StringFieldUpdateOperationsInput | string':
     case 'string':
       if (!shouldReplaceStrings) {
         break;

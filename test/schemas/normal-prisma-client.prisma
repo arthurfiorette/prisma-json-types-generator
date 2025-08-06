@@ -27,3 +27,11 @@ model Model {
   /// [List]
   list Json[]
 }
+
+model pages {
+  id         String   @id
+  /// [pages.pay_provider] 
+  pay_provider    String 
+  /// [pages.ats_config] 
+  ats_config          Json?
+}
