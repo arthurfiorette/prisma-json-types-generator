@@ -53,8 +53,8 @@ export function findNewSignature(
     //
     // String
     //
-    case 'Prisma.StringFieldUpdateOperationsInput | string':
     case 'string':
+    case 'Prisma.StringFieldUpdateOperationsInput | string':
       if (!shouldReplaceStrings) {
         break;
       }
@@ -68,6 +68,37 @@ export function findNewSignature(
       }
 
       result = `(${typeToChange})[]`;
+      break;
+
+    case 'number':
+    case 'Prisma.IntFieldUpdateOperationsInput | number':
+    case 'Prisma.FloatFieldUpdateOperationsInput | number':
+      if (!shouldReplaceStrings) {
+        break;
+      }
+
+      result = typeToChange;
+      break;
+
+    case `Prisma.${model}Update${field}Input | string[]`:
+    case `Prisma.${model}Create${field}Input | string[]`:
+    case `Prisma.${model}Update${field}Input | number[]`:
+    case `Prisma.${model}Create${field}Input | number[]`:
+      if (!shouldReplaceStrings) {
+        break;
+      }
+
+      result = `(${typeToChange})[]`;
+      break;
+
+    case `Prisma.NullableIntFieldUpdateOperationsInput | number | null`:
+    case `Prisma.NullableFloatFieldUpdateOperationsInput | number | null`:
+    case `Prisma.NullableStringFieldUpdateOperationsInput | string | null`:
+      if (!shouldReplaceStrings) {
+        break;
+      }
+
+      result = `${typeToChange} | null`;
       break;
 
     case 'string | null':
