@@ -38,7 +38,7 @@ export async function onGenerate(options: GeneratorOptions) {
 
         await fs.writeFile(
           join(prismaClient.output.value, 'pjtg.ts'),
-          await getNamespacePrelude(config.namespace)
+          await getNamespacePrelude(config.namespace, true)
         );
 
         return;
