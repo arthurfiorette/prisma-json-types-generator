@@ -46,3 +46,6 @@ jobs:
 
       - name: Test
         run: pnpm test
+        env:
+          # Prisma breaks when running tests in parallel
+          PJTG_SEQUENTIAL_TESTS: true

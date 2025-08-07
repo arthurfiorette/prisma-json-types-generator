@@ -26,13 +26,21 @@ else
   FILES="$@"
 fi
 
-# Run all tests in parallel
-for file in $FILES; do
-  test_file "$file" &
-done
+# Run tests (parallel by default, sequential if PJTG_SEQUENTIAL_TESTS=1)
+if [ "${PJTG_SEQUENTIAL_TESTS:-0}" = "1" ]; then
+  # Run tests sequentially
+  for file in $FILES; do
+    test_file "$file"
+  done
+else
+  # Run all tests in parallel
+  for file in $FILES; do
+    test_file "$file" &
+  done
 
-# Wait for all background jobs to finish
-wait
+  # Wait for all background jobs to finish
+  wait
+fi
 
 # Check exit statuses
 if grep -q "^1$" "$TMP_EXIT_FILE"; then
