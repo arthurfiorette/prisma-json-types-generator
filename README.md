@@ -31,11 +31,12 @@
 <br />
 
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [Quick Start](#quick-start)
 - [Typing `String` Fields (Enums)](#typing-string-fields-enums)
 - [Advanced Typing](#advanced-typing)
   - [Examples](#examples)
-- [Configuration](#configuration)
+- [Sharing Types with Zod](#sharing-types-with-zod)
 - [Limitations](#limitations)
 - [How It Works](#how-it-works)
 - [License](#license)
@@ -66,6 +67,28 @@ Install the package as a development dependency in your project.
 ```bash
 npm install -D prisma-json-types-generator
 ```
+
+<br />
+
+## Configuration
+
+You can configure the generator in your `schema.prisma` file.
+
+```prisma
+generator json {
+  provider  = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+  allowAny  = false
+  // etc...
+}
+```
+
+| Option         | Description                                                                                                                                                              | Default         |
+| :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------- |
+| `namespace`    | The global namespace where your custom types are defined.                                                                                                                | `"PrismaJson"`  |
+| `clientOutput` | Path to the `@prisma/client` output directory. The generator usually finds this automatically, but you can specify it if needed (e.g., in complex monorepos).            | (auto-detected) |
+| `allowAny`     | If `true`, untyped `Json` fields will resolve to `any`. If `false`, they will resolve to `unknown` for stricter type safety.                                             | `false`         |
+| `useType`      | Specifies a root type within your namespace to use as a fallback for all untyped `Json` fields. This adds an index signature `[key: string]: any` to the specified type. | `undefined`     |
 
 <br />
 
@@ -217,25 +240,49 @@ declare global {
 
 <br />
 
-## Configuration
+## Sharing Types with Zod
 
-You can configure the generator in your `schema.prisma` file.
+This generator provides compile-time type safety, not runtime validation. You can, however, share types from a runtime validation library like Zod to create a single source of truth for your data structures.
+
+The principle is simple:
+
+1.  Define your schema using Zod.
+2.  Infer the static TypeScript type from that schema.
+3.  Expose the inferred type within the `PrismaJson` namespace.
+
+This pattern gives you both runtime validation and compile-time type safety from a single definition.
+
+First, define your model in `schema.prisma`.
 
 ```prisma
-generator json {
-  provider  = "prisma-json-types-generator"
-  namespace = "PrismaJson"
-  allowAny  = false
-  // etc...
+model User {
+  id          Int    @id @default(autoincrement())
+
+  /// [UserPreferences]
+  preferences Json
 }
 ```
 
-| Option         | Description                                                                                                                                                              | Default         |
-| :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------- |
-| `namespace`    | The global namespace where your custom types are defined.                                                                                                                | `"PrismaJson"`  |
-| `clientOutput` | Path to the `@prisma/client` output directory. The generator usually finds this automatically, but you can specify it if needed (e.g., in complex monorepos).            | (auto-detected) |
-| `allowAny`     | If `true`, untyped `Json` fields will resolve to `any`. If `false`, they will resolve to `unknown` for stricter type safety.                                             | `false`         |
-| `useType`      | Specifies a root type within your namespace to use as a fallback for all untyped `Json` fields. This adds an index signature `[key: string]: any` to the specified type. | `undefined`     |
+Then, define the Zod schema and expose its inferred type in your TypeScript definitions file.
+
+```typescript
+import { z } from 'zod';
+
+// 1. Define the Zod schema as the source of truth.
+export const UserPreferencesSchema = z.object({
+  theme: z.enum(['light', 'dark']),
+  language: z.string().optional()
+});
+
+// 2. Expose the inferred type to Prisma.
+declare global {
+  namespace PrismaJson {
+    type UserPreferences = z.infer<typeof UserPreferencesSchema>;
+  }
+}
+```
+
+This same principle can be applied to other validation libraries like TypeBox or Yup that allow for static type inference.
 
 <br />
 
