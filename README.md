@@ -36,7 +36,7 @@
 - [Typing `String` Fields (Enums)](#typing-string-fields-enums)
 - [Advanced Typing](#advanced-typing)
   - [Examples](#examples)
-- [Sharing Types with Zod](#sharing-types-with-zod)
+- [Validating Types at Runtime](#validating-types-at-runtime)
 - [Limitations](#limitations)
 - [How It Works](#how-it-works)
 - [License](#license)
@@ -240,7 +240,7 @@ declare global {
 
 <br />
 
-## Sharing Types with Zod
+## Validating Types at Runtime
 
 This generator provides compile-time type safety, not runtime validation. You can, however, share types from a runtime validation library like Zod to create a single source of truth for your data structures.
 
