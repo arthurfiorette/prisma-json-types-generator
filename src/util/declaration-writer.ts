@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import type { PrismaJsonTypesGeneratorConfig } from './config';
-import { IMPORTS_PATH, NAMESPACE_PATH } from './constants';
+import { NAMESPACE_PATH } from './constants';
 import { PrismaJsonTypesGeneratorError } from './error';
 import { findFirstCodeIndex } from './source-path';
 
@@ -131,12 +131,7 @@ export async function getNamespacePrelude(namespace: string, isNewClient = false
   prelude = prelude.replace(/\$\$NAMESPACE\$\$/g, namespace);
 
   if (isNewClient) {
-    const imports = await fs.readFile(IMPORTS_PATH, 'utf-8');
-
-    // Removes trailing spaces
-    prelude = prelude.trim();
-
-    prelude = `${imports}\n${prelude}`;
+    prelude = `import * as Prisma from './internal/prismaNamespace';\n${prelude}`;
   }
 
   return prelude;
