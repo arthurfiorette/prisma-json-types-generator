@@ -34,27 +34,27 @@
     "test": "sh ./scripts/test.sh"
   },
   "dependencies": {
-    "@prisma/generator-helper": "^6.13.0",
+    "@prisma/generator-helper": "^6.14.0",
     "semver": "^7.7.2",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@arthurfiorette/biomejs-config": "^2.0.1",
     "@biomejs/biome": "^2.1.3",
-    "@prisma/dmmf": "^6.13.0",
-    "@prisma/generator": "^6.13.0",
+    "@prisma/dmmf": "^6.14.0",
+    "@prisma/generator": "^6.14.0",
     "@types/node": "^24.2.0",
     "@types/semver": "^7.7.0",
     "husky": "^9.1.7",
-    "prisma": "^6.13.0",
+    "prisma": "^6.14.0",
     "tsd": "^0.33.0"
   },
   "peerDependencies": {
-    "@prisma/client": "~6.13",
-    "prisma": "~6.13",
+    "@prisma/client": "~6.14",
+    "prisma": "~6.14",
     "typescript": "^5.8"
   },
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
   "engines": {
     "node": ">=14.0"
   }
