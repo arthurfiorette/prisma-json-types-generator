@@ -20,6 +20,11 @@
 <br />
 <br />
 
+> [!IMPORTANT]  
+> **Maintenance Status Update:** This project's maintenance approach has changed. Please see [this issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues/542) for details about what this means for users and the project's future.
+
+<br />
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/arthurfiorette/prisma-json-types-generator/refs/heads/main/images/logo.png" />
 </p>

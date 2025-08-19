@@ -8,11 +8,11 @@ export function onManifest(): GeneratorManifest {
 
   try {
     const pkg = require('../package.json');
-    version = pkg.version;
     const prismaPeerVersion = pkg.peerDependencies?.prisma;
     const prismaVersion = require('prisma/package.json').version;
+    version = pkg.version;
 
-    if (!semverSatisfies(prismaVersion, prismaPeerVersion)) {
+    if (prismaVersion && prismaPeerVersion && !semverSatisfies(prismaVersion, prismaPeerVersion)) {
       console.log(
         styleText(
           'red',
