@@ -30,12 +30,17 @@ export class DeclarationWriter {
   async template() {
     let header: string;
 
+    const dotExt = this.importFileExtension ? `.${this.importFileExtension}` : '';
+
     // Appends PJTG import statement
     if (this.multifile) {
-      const ext = this.importFileExtension ? `.${this.importFileExtension}` : '';
-      header = `import type * as PJTG from '../pjtg${ext}';`;
+      header = `import type * as PJTG from '../pjtg${dotExt}';`;
     } else {
-      header = await getNamespacePrelude(this.options.namespace, false);
+      header = await getNamespacePrelude({
+        namespace: this.options.namespace,
+        isNewClient: false,
+        dotExt
+      });
     }
 
     // wraps into extra lines to visually split our code from the rest
@@ -121,7 +126,15 @@ export class DeclarationWriter {
   }
 }
 
-export async function getNamespacePrelude(namespace: string, isNewClient = false) {
+export async function getNamespacePrelude({
+  namespace,
+  isNewClient,
+  dotExt
+}: {
+  namespace: string;
+  isNewClient: boolean;
+  dotExt: string;
+}) {
   let prelude = await fs.readFile(NAMESPACE_PATH, 'utf-8');
 
   // Removes trailing spaces
@@ -131,7 +144,7 @@ export async function getNamespacePrelude(namespace: string, isNewClient = false
   prelude = prelude.replace(/\$\$NAMESPACE\$\$/g, namespace);
 
   if (isNewClient) {
-    prelude = `import * as Prisma from './internal/prismaNamespace';\n${prelude}`;
+    prelude = `import * as Prisma from './internal/prismaNamespace${dotExt}';\n${prelude}`;
   }
 
   return prelude;
