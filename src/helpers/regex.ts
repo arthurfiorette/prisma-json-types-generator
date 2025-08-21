@@ -34,6 +34,7 @@ export function extractBaseNameFromRelationType(typeName: string): string | null
   const createWithoutRegex = /^(.+?)(?:Unchecked)?CreateWithout(?:\w+?)Input$/m;
   const createManyRegex = /^(.+?)(?:Unchecked)?CreateMany(?:\w+?)Input$/m;
   const updateWithoutRegex = /^(.+?)(?:Unchecked)?UpdateWithout(?:\w+?)Input$/m;
+  const updateManyWithoutRegex = /^(.+?)(?:Unchecked)?UpdateManyWithout(?:\w+?)Input$/m;
 
   let match = typeName.match(createWithoutRegex);
   if (match?.[1]) {
@@ -46,6 +47,11 @@ export function extractBaseNameFromRelationType(typeName: string): string | null
   }
 
   match = typeName.match(updateWithoutRegex);
+  if (match?.[1]) {
+    return match[1];
+  }
+
+  match = typeName.match(updateManyWithoutRegex);
   if (match?.[1]) {
     return match[1];
   }
