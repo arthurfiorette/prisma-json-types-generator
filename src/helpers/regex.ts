@@ -26,7 +26,8 @@ export function createRegexForType(name: string) {
     // new RegExp(`^${name}(?:Unchecked)?UpdateInput$`, 'm'),
     // new RegExp(`^${name}(?:Unchecked)?UpdateManyInput$`, 'm'),
     // new RegExp(`^${name}(?:Unchecked)?UpdateManyMutationInput$`, 'm'),
-    new RegExp(`^${name}(?:Unchecked)?UpdateWithout(?:\\w+?)Input$`, 'm')
+    new RegExp(`^${name}(?:Unchecked)?UpdateWithout(?:\\w+?)Input$`, 'm'),
+    new RegExp(`^${name}(?:Unchecked)?UpdateManyWithout(?:\\w+?)Input$`, 'm')
   ];
 }
 
@@ -34,6 +35,7 @@ export function extractBaseNameFromRelationType(typeName: string): string | null
   const createWithoutRegex = /^(.+?)(?:Unchecked)?CreateWithout(?:\w+?)Input$/m;
   const createManyRegex = /^(.+?)(?:Unchecked)?CreateMany(?:\w+?)Input$/m;
   const updateWithoutRegex = /^(.+?)(?:Unchecked)?UpdateWithout(?:\w+?)Input$/m;
+  const updateManyWithoutRegex = /^(.+?)(?:Unchecked)?UpdateManyWithout(?:\w+?)Input$/m;
 
   let match = typeName.match(createWithoutRegex);
   if (match?.[1]) {
@@ -50,12 +52,21 @@ export function extractBaseNameFromRelationType(typeName: string): string | null
     return match[1];
   }
 
+  match = typeName.match(updateManyWithoutRegex);
+  if (match?.[1]) {
+    return match[1];
+  }
+
   return null;
 }
 
 /** If the provided type is a update one variant */
 export function isUpdateOneType(type: string) {
-  return type.match(/UpdateInput$/m) || type.match(/UpdateWithout(?:\w+?)Input$/m);
+  return (
+    type.match(/UpdateInput$/m) ||
+    type.match(/UpdateWithout(?:\w+?)Input$/m) ||
+    type.match(/UpdateManyWithout(?:\w+?)Input$/m)
+  );
 }
 
 /**

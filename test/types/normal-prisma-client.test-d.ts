@@ -1,5 +1,6 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
 import type { Model } from '../target/normal-prisma-client/client';
+import type { SubModelUncheckedUpdateManyWithoutModelInput } from '../target/normal-prisma-client/models';
 import type { UpdateManyInput } from '../target/normal-prisma-client/pjtg';
 
 declare global {
@@ -66,6 +67,8 @@ expectAssignable<UpdateManyInput<Model['list'][number]>>({
   set: [3, 3, 3]
 });
 
+expectAssignable<SubModelUncheckedUpdateManyWithoutModelInput['simple']>(1);
+
 expectNotAssignable<Model>({
   id: 0,
   simple: '1',
@@ -113,3 +116,5 @@ expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
 expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
   set: ['3,3,3']
 });
+
+expectNotAssignable<SubModelUncheckedUpdateManyWithoutModelInput['simple']>(2);

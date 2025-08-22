@@ -26,4 +26,16 @@ model Model {
 
   /// [List]
   list Json[]
+
+  models SubModel[]
+}
+
+model SubModel {
+  id Int @id @default(autoincrement())
+
+  /// [Simple]
+  simple Json
+
+  modelId Int
+  model   Model @relation(fields: [modelId], references: [id])
 }
