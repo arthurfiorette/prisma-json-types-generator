@@ -75,20 +75,11 @@ export class DeclarationWriter {
 
   /** Save the original file of sourcePath with the content's contents */
   async save() {
-    const startSort = Date.now();
-
     const sortedChangeSet = [...this.changeset].sort(
       (changeA, changeB) => changeA.start - changeB.start
     );
 
-    console.log('sort changes', Date.now() - startSort);
-
-    const startReplace = Date.now();
-
-    // Optimized string replacement using array-based approach
-    const content = this.applyChangesOptimized(this.content, sortedChangeSet);
-
-    console.log('replace changes', Date.now() - startReplace);
+    const content = this.applyChanges(this.content, sortedChangeSet);
 
     this.content = content;
     this.changeset = [];
@@ -104,7 +95,7 @@ export class DeclarationWriter {
    * Optimized method to apply multiple text changes efficiently.
    * Uses array-based approach to avoid quadratic string concatenation.
    */
-  private applyChangesOptimized(originalContent: string, sortedChanges: TextDiff[]): string {
+  private applyChanges(originalContent: string, sortedChanges: TextDiff[]): string {
     if (sortedChanges.length === 0) {
       return originalContent;
     }
@@ -135,22 +126,7 @@ export class DeclarationWriter {
   }
 
   /**
-   * Replaces the coordinates with the provided text, adjusting the coords to previous
-   * changes.
-   *
-   * @example
-   *
-   * ```txt
-   *  a 1   1 a
-   *  s 2   2 s
-   *  d 3   3 s <- (start: 1, end: 3, text: `s`) changed `s` to `ss` (start: 1, wide: 2)
-   *    4   4 d
-   *    5   5
-   *  a 6   6
-   *  s 7   7 a
-   *  d 8   8 s
-   *    9   9 d
-   * ```
+   * Stack change to be applied before declaration save
    */
   replace(start: number, end: number, text: string) {
     // Adds the change to the list
