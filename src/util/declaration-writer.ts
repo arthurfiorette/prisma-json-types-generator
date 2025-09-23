@@ -7,7 +7,8 @@ import { findFirstCodeIndex } from './source-path';
 /** A changes made in the original file to help adjust any future coordinates of texts */
 export interface TextDiff {
   start: number;
-  diff: number;
+  end: number;
+  replacementText: string;
 }
 
 /**
@@ -74,12 +75,63 @@ export class DeclarationWriter {
 
   /** Save the original file of sourcePath with the content's contents */
   async save() {
-    // Resets current changeset and file content
-    this.content = await this.template();
+    const startSort = Date.now();
+
+    const sortedChangeSet = [...this.changeset].sort(
+      (changeA, changeB) => changeA.start - changeB.start
+    );
+
+    console.log('sort changes', Date.now() - startSort);
+
+    const startReplace = Date.now();
+
+    // Optimized string replacement using array-based approach
+    const content = this.applyChangesOptimized(this.content, sortedChangeSet);
+
+    console.log('replace changes', Date.now() - startReplace);
+
+    this.content = content;
     this.changeset = [];
+
+    // Apply template after all changes
+    this.content = await this.template();
 
     // Writes it into the disk
     await fs.writeFile(this.filepath, this.content);
+  }
+
+  /**
+   * Optimized method to apply multiple text changes efficiently.
+   * Uses array-based approach to avoid quadratic string concatenation.
+   */
+  private applyChangesOptimized(originalContent: string, sortedChanges: TextDiff[]): string {
+    if (sortedChanges.length === 0) {
+      return originalContent;
+    }
+
+    const segments: string[] = [];
+    let lastEnd = 0;
+
+    for (const change of sortedChanges) {
+      // Add the unchanged content before this change
+      if (change.start > lastEnd) {
+        segments.push(originalContent.substring(lastEnd, change.start));
+      }
+
+      // Add the replacement text
+      segments.push(change.replacementText);
+
+      // Update the position for the next iteration
+      lastEnd = change.end;
+    }
+
+    // Add any remaining content after the last change
+    if (lastEnd < originalContent.length) {
+      segments.push(originalContent.substring(lastEnd));
+    }
+
+    // Join all segments once at the end
+    return segments.join('');
   }
 
   /**
@@ -101,27 +153,11 @@ export class DeclarationWriter {
    * ```
    */
   replace(start: number, end: number, text: string) {
-    // Adds a trailing space
-    if (text[0] !== ' ') {
-      text = ` ${text}`;
-    }
-
-    // Maps the coordinates to the previous changes to adjust the position for the new text
-    for (const change of this.changeset) {
-      if (start > change.start) {
-        start += change.diff;
-        end += change.diff;
-      }
-    }
-
-    // Replaces the file content at the correct position
-    this.content = this.content.slice(0, start) + text + this.content.slice(end);
-
     // Adds the change to the list
     this.changeset.push({
       start,
-      // The difference between the old text and the new text
-      diff: start - end + text.length
+      end,
+      replacementText: text
     });
   }
 }
