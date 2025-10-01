@@ -38,7 +38,7 @@ importers:
         version: 6.16.1
       '@types/node':
         specifier: ^24.4.0
-        version: 24.6.0
+        version: 24.6.1
       '@types/semver':
         specifier: ^7.7.1
         version: 7.7.1
@@ -195,8 +195,8 @@ packages:
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
 
-  '@types/node@24.6.0':
-    resolution: {integrity: sha512-F1CBxgqwOMc4GKJ7eY22hWhBVQuMYTtqI8L0FcszYcpYX0fzfDGpez22Xau8Mgm7O9fI+zA/TYIdq3tGWfweBA==}
+  '@types/node@24.6.1':
+    resolution: {integrity: sha512-ljvjjs3DNXummeIaooB4cLBKg2U6SPI6Hjra/9rRIy7CpM0HpLtG9HptkMKAb4HYWy5S7HUvJEuWgr/y0U8SHw==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -842,7 +842,7 @@ snapshots:
 
   '@types/minimist@1.2.5': {}
 
-  '@types/node@24.6.0':
+  '@types/node@24.6.1':
     dependencies:
       undici-types: 7.13.0
 
