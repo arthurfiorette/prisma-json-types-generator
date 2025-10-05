@@ -3,12 +3,7 @@ import type { PrismaJsonTypesGeneratorConfig } from './config';
 import { NAMESPACE_PATH } from './constants';
 import { PrismaJsonTypesGeneratorError } from './error';
 import { findFirstCodeIndex } from './source-path';
-
-/** A changes made in the original file to help adjust any future coordinates of texts */
-export interface TextDiff {
-  start: number;
-  diff: number;
-}
+import { applyTextChanges, type TextDiff } from './text-changes';
 
 /**
  * A class to help with reading and writing the Prisma Client types file concurrently and
@@ -17,7 +12,7 @@ export interface TextDiff {
 export class DeclarationWriter {
   constructor(
     readonly filepath: string,
-    private readonly options: PrismaJsonTypesGeneratorConfig,
+    private readonly options: Pick<PrismaJsonTypesGeneratorConfig, 'namespace'>,
     readonly multifile: boolean,
     private readonly importFileExtension: string | undefined
   ) {}
@@ -25,7 +20,7 @@ export class DeclarationWriter {
   /** The prisma's index.d.ts file content. */
   public content = '';
 
-  private changeset: TextDiff[] = [];
+  private changes: TextDiff[] = [];
 
   async template() {
     let header: string;
@@ -62,10 +57,10 @@ export class DeclarationWriter {
       });
     }
 
-    if (this.changeset.length) {
+    if (this.changes.length) {
       throw new PrismaJsonTypesGeneratorError(
         'Tried to load a file that has already been changed',
-        { filepath: this.filepath, changeset: this.changeset }
+        { filepath: this.filepath, changeset: this.changes }
       );
     }
 
@@ -74,54 +69,28 @@ export class DeclarationWriter {
 
   /** Save the original file of sourcePath with the content's contents */
   async save() {
-    // Resets current changeset and file content
+    // Apply all changes to content
+    if (this.changes.length) {
+      this.content = applyTextChanges(this.content, this.changes);
+      this.changes.length = 0;
+    }
+
+    // Apply template after all changes
     this.content = await this.template();
-    this.changeset = [];
 
     // Writes it into the disk
     await fs.writeFile(this.filepath, this.content);
   }
 
   /**
-   * Replaces the coordinates with the provided text, adjusting the coords to previous
-   * changes.
-   *
-   * @example
-   *
-   * ```txt
-   *  a 1   1 a
-   *  s 2   2 s
-   *  d 3   3 s <- (start: 1, end: 3, text: `s`) changed `s` to `ss` (start: 1, wide: 2)
-   *    4   4 d
-   *    5   5
-   *  a 6   6
-   *  s 7   7 a
-   *  d 8   8 s
-   *    9   9 d
-   * ```
+   * Stack change to be applied before declaration save
    */
-  replace(start: number, end: number, text: string) {
-    // Adds a trailing space
-    if (text[0] !== ' ') {
-      text = ` ${text}`;
-    }
-
-    // Maps the coordinates to the previous changes to adjust the position for the new text
-    for (const change of this.changeset) {
-      if (start > change.start) {
-        start += change.diff;
-        end += change.diff;
-      }
-    }
-
-    // Replaces the file content at the correct position
-    this.content = this.content.slice(0, start) + text + this.content.slice(end);
-
+  replace(start: number, end: number, text: string): void {
     // Adds the change to the list
-    this.changeset.push({
+    this.changes.push({
       start,
-      // The difference between the old text and the new text
-      diff: start - end + text.length
+      end,
+      text
     });
   }
 }
