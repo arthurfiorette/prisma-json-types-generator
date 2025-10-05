@@ -34,7 +34,7 @@
     "lint-fix": "biome check --write --unsafe .",
     "prepare": "husky",
     "start": "node dist/bin.js",
-    "test": "sh ./scripts/test.sh",
+    "test-e2e": "sh ./scripts/test.sh",
     "test-unit": "pnpm tsx --test test/unit/**/*.test.ts"
   },
   "dependencies": {

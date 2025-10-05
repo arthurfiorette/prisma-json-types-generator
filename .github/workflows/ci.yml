@@ -44,8 +44,11 @@ jobs:
       - name: Build code
         run: pnpm build
 
-      - name: Test
-        run: pnpm test
+      - name: Unit tests
+        run: pnpm test-unit
+
+      - name: E2E tests
+        run: pnpm test-e2e
         env:
           # Prisma breaks when running tests in parallel
           PJTG_SEQUENTIAL_TESTS: 1
