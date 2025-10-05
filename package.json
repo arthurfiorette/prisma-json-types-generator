@@ -34,7 +34,8 @@
     "lint-fix": "biome check --write --unsafe .",
     "prepare": "husky",
     "start": "node dist/bin.js",
-    "test": "sh ./scripts/test.sh"
+    "test": "sh ./scripts/test.sh",
+    "test-unit": "pnpm tsx --test test/unit/**/*.test.ts"
   },
   "dependencies": {
     "@prisma/generator-helper": "^6.16.1",
@@ -50,7 +51,8 @@
     "@types/semver": "^7.7.1",
     "husky": "^9.1.7",
     "prisma": "^6.16.1",
-    "tsd": "^0.33.0"
+    "tsd": "^0.33.0",
+    "tsx": "^4.20.6"
   },
   "peerDependencies": {
     "@prisma/client": "^6.14",
