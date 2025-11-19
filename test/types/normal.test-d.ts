@@ -1,5 +1,6 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
-import type { Model, UpdateManyInput } from '../target/normal/client';
+import type { Model } from '../target/normal/client';
+import type { UpdateManyInput } from '../target/normal/pjtg';
 
 declare global {
   export namespace PNormalJson {
