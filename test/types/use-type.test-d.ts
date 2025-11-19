@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
-import type { Model, UpdateManyInput } from '../target/use-type/index';
+import type { Model, UpdateManyInput } from '../target/use-type/client';
 
 declare global {
   export namespace PrismaJson {

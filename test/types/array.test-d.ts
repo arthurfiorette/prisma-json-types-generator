@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
-import type { Model } from '../target/array/index';
+import type { Model } from '../target/array/client';
 
 expectAssignable<Model>({
   id: 0,

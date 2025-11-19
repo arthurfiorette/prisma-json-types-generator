@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
-import { Prisma } from '../target/skip';
+import { Prisma } from '../target/skip/client';
 
 declare global {
   export namespace SkipJson {

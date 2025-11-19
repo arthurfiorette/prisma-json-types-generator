@@ -1,5 +1,5 @@
 import { expectNotType, expectType } from 'tsd';
-import type { Model } from '../target/string/index';
+import type { Model } from '../target/string/client';
 
 declare global {
   export namespace PStringJson {
