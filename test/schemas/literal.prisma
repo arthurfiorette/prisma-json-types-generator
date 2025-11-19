@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
   output   = "../target/literal"
 }
 
@@ -10,7 +10,6 @@ generator json {
 
 datasource db {
   provider = "postgresql"
-  url      = ""
 }
 
 model Model {

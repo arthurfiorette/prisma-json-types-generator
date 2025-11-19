@@ -12,7 +12,6 @@ generator json {
 
 datasource db {
   provider = "postgresql"
-  url      = ""
 }
 
 model Model {
