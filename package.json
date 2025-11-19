@@ -32,7 +32,7 @@
     "lint": "biome check .",
     "lint-ci": "biome ci .",
     "lint-fix": "biome check --write --unsafe .",
-    "prepare": "tsc && husky",
+    "prepare": "npx tsc && husky install",
     "start": "node dist/bin.js",
     "test-e2e": "sh ./scripts/test.sh",
     "test-unit": "pnpm tsx --test test/unit/**/*.test.ts"
