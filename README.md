@@ -42,8 +42,9 @@
 - [Advanced Typing](#advanced-typing)
   - [Examples](#examples)
 - [Validating Types at Runtime](#validating-types-at-runtime)
-- [Limitations](#limitations)
+- [Version Compatibility](#version-compatibility)
 - [How It Works](#how-it-works)
+- [Limitations](#limitations)
 - [License](#license)
 
 <br />
@@ -107,7 +108,7 @@ Follow these three steps to get started.
 
     ```prisma
     generator client {
-      provider = "prisma-client-js"
+      provider = "prisma-client"
     }
 
     generator json {
@@ -291,11 +292,11 @@ This same principle can be applied to other validation libraries like TypeBox or
 
 <br />
 
-## Limitations
+## Version Compatibility
 
-- **Complex Filters:** To preserve functionality, types like `JsonFilter` and `JsonWithAggregatesFilter` remain untyped.
-- **Prisma Version:** This generator supports Prisma v5+ and generator v3+.
-- **Known Gaps:** If you find any `Json` fields that are not being typed correctly, please [open an issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues).
+**Version 4.x** of this package is designed for **Prisma 7**, while **version 3.x and below** are compatible with **Prisma 6**. The major version bump reflects the change in Prisma peer dependencies.
+
+This generator was largely unaffected by Prisma 7's release because it operates at the TypeScript AST level, transforming generated declaration files rather than relying on Prisma's internal APIs. The upgrade primarily involved dependency updates and configuration changes, with the core type transformation logic remaining unchanged. This architectural approach ensures the generator remains resilient across Prisma version updates.
 
 <br />
 
@@ -304,6 +305,14 @@ This same principle can be applied to other validation libraries like TypeBox or
 This tool operates as a standard Prisma generator. When `npx prisma generate` runs, the generator receives the Data Model Meta Format (DMMF), which contains your full schema, including the AST comments. After `prisma-client-js` finishes, this generator targets its output declaration file (e.g., `index.d.ts`) and parses it into an Abstract Syntax Tree (AST) using the TypeScript Compiler API.
 
 It then traverses this AST, and for each property signature in a model, it cross-references the DMMF to find a corresponding type comment. If a match is found, it performs a direct AST transformation, replacing the original type node (like `Prisma.JsonValue` or `string`) with a new node representing your custom type. Finally, the modified AST is printed back into TypeScript code, overwriting the original declaration file. This entire process occurs at build time and adds no runtime overhead. For a deeper dive, see the [core implementation](./src/handler/replace-object.ts).
+
+<br />
+
+## Limitations
+
+- **Complex Filters:** To preserve functionality, types like `JsonFilter` and `JsonWithAggregatesFilter` remain untyped.
+- **Prisma Version:** This generator supports Prisma v5+ and generator v3+.
+- **Known Gaps:** If you find any `Json` fields that are not being typed correctly, please [open an issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues).
 
 <br />
 

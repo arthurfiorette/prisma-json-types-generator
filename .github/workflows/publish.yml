@@ -3,11 +3,24 @@ name: Publish to NPM
 on:
   release:
     types: [published]
+
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'NPM tag to publish under'
+        required: true
+        type: choice
+        default: 'latest'
+        options:
+          - latest
+          - beta
 
 permissions:
   id-token: write # Required for OIDC
   contents: read
+
+env:
+  NPM_PUBLISH_TAG: ${{ inputs.tag || (github.event.release.prerelease && 'beta' || 'latest') }}
 
 jobs:
   publish:
@@ -40,5 +53,6 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Publish to NPM # OIDC authentication
-        run: pnpm publish --access public --no-git-checks
+      # Uses OIDC authentication
+      - name: Publish to NPM @ ${{ env.NPM_PUBLISH_TAG }}
+        run: pnpm publish --access public --no-git-checks --tag ${{ env.NPM_PUBLISH_TAG }}

@@ -1,6 +1,6 @@
 {
   "name": "prisma-json-types-generator",
-  "version": "3.6.2",
+  "version": "4.0.0-beta.1",
   "description": "Changes JsonValues to your custom typescript type",
   "keywords": [
     "prisma",
@@ -38,28 +38,29 @@
     "test-unit": "pnpm tsx --test test/unit/**/*.test.ts"
   },
   "dependencies": {
-    "@prisma/generator-helper": "^6.16.1",
-    "semver": "^7.7.2",
+    "@prisma/generator-helper": "^7.0.0",
+    "semver": "^7.7.3",
+    "try": "^1.0.1",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@arthurfiorette/biomejs-config": "^2.0.1",
-    "@biomejs/biome": "^2.2.4",
-    "@prisma/dmmf": "^6.16.1",
-    "@prisma/generator": "^6.16.1",
-    "@types/node": "^24.4.0",
+    "@biomejs/biome": "^2.3.7",
+    "@prisma/dmmf": "^7.0.0",
+    "@prisma/generator": "^7.0.0",
+    "@types/node": "^24.10.1",
     "@types/semver": "^7.7.1",
     "husky": "^9.1.7",
-    "prisma": "^6.16.1",
+    "prisma": "^7.0.0",
     "tsd": "^0.33.0",
     "tsx": "^4.20.6"
   },
   "peerDependencies": {
-    "@prisma/client": "^6.14",
-    "prisma": "^6.14",
-    "typescript": "^5.9.2"
+    "@prisma/client": "^7.0.0",
+    "prisma": "^7.0.0",
+    "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "pnpm@10.23.0",
   "engines": {
     "node": ">=14.0"
   }

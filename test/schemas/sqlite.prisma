@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
   output   = "../target/sqlite"
 }
 
@@ -10,7 +10,6 @@ generator json {
 
 datasource db {
   provider = "sqlite"
-  url      = ""
 }
 
 // SQLite does not have JSON support, so we only allow JSON fields and require

@@ -1,5 +1,6 @@
 import { expectAssignable, expectNotAssignable, expectNotType, expectType } from 'tsd';
-import type { Model, Text, UpdateManyInput } from '../target/mongo/index';
+import type { Model, Text } from '../target/mongo/client';
+import type { UpdateManyInput } from '../target/mongo/pjtg';
 
 declare global {
   export namespace PMongoJson {

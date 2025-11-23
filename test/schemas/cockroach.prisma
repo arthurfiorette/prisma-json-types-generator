@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
   output   = "../target/cockroach"
 }
 
@@ -10,7 +10,6 @@ generator json {
 
 datasource db {
   provider = "cockroachdb"
-  url      = ""
 }
 
 // Does not support Json[] fields, user have to manually use string[] and do 

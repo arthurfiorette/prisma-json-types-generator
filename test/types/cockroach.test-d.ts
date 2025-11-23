@@ -1,5 +1,5 @@
 import { expectAssignable, expectNotAssignable, expectNotType, expectType } from 'tsd';
-import type { Model, Text } from '../target/cockroach/index';
+import type { Model, Text } from '../target/cockroach/client';
 
 declare global {
   export namespace PCockroachJson {
