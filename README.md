@@ -21,7 +21,8 @@
 <br />
 
 > [!IMPORTANT]  
-> **Maintenance Status Update:** This project's maintenance approach has changed. Please see [this issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues/542) for details about what this means for users and the project's future.
+> Install `prisma-json-types-generator@beta` for **Prisma 7** support!<br/>
+> _Please read [this issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues/542) to understand more about the project's future._
 
 <br />
 
@@ -42,7 +43,6 @@
 - [Advanced Typing](#advanced-typing)
   - [Examples](#examples)
 - [Validating Types at Runtime](#validating-types-at-runtime)
-- [Version Compatibility](#version-compatibility)
 - [How It Works](#how-it-works)
 - [Limitations](#limitations)
 - [License](#license)
@@ -72,6 +72,9 @@ Install the package as a development dependency in your project.
 
 ```bash
 npm install -D prisma-json-types-generator
+
+# Prisma v7 support
+# npm install -D prisma@^7 prisma-json-types-generator@beta
 ```
 
 <br />
@@ -289,14 +292,6 @@ declare global {
 ```
 
 This same principle can be applied to other validation libraries like TypeBox or Yup that allow for static type inference.
-
-<br />
-
-## Version Compatibility
-
-**Version 4.x** of this package is designed for **Prisma 7**, while **version 3.x and below** are compatible with **Prisma 6**. The major version bump reflects the change in Prisma peer dependencies.
-
-This generator was largely unaffected by Prisma 7's release because it operates at the TypeScript AST level, transforming generated declaration files rather than relying on Prisma's internal APIs. The upgrade primarily involved dependency updates and configuration changes, with the core type transformation logic remaining unchanged. This architectural approach ensures the generator remains resilient across Prisma version updates.
 
 <br />
 
