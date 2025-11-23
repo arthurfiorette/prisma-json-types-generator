@@ -1,5 +1,5 @@
 import { expectNotType, expectType } from 'tsd';
-import type { Text } from '../target/mssql/index';
+import type { Text } from '../target/mssql/client';
 
 declare global {
   export namespace PMssqlJson {

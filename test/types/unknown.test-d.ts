@@ -1,5 +1,5 @@
 import { expectNotType, expectType } from 'tsd';
-import type { Model } from '../target/unknown/index';
+import type { Model } from '../target/unknown/client';
 
 expectType<Model>({
   id: 0,

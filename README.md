@@ -107,7 +107,7 @@ Follow these three steps to get started.
 
     ```prisma
     generator client {
-      provider = "prisma-client-js"
+      provider = "prisma-client"
     }
 
     generator json {
