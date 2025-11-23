@@ -1,3 +1,4 @@
+import { Result } from 'try';
 import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
@@ -28,23 +29,27 @@ export function handlePrismaModule(
     .getChildren()
     .find((n): n is ts.ModuleBlock => n.kind === ts.SyntaxKind.ModuleBlock);
 
-  if (!content || !content.statements.length) {
+  if (!content?.statements.length) {
     throw new PrismaJsonTypesGeneratorError('Prisma namespace content could not be found');
   }
 
   // Loops through all statements in the prisma namespace
   for (const statement of content.statements) {
-    try {
-      handleStatement(statement, writer, modelMap, typeToNameMap, knownNoOps, config);
-    } catch (error) {
-      // This allows some types to be generated even if others may fail
-      // which is good for incremental development/testing
-      if (error instanceof PrismaJsonTypesGeneratorError) {
-        return PrismaJsonTypesGeneratorError.handler(error);
-      }
+    const { ok, error } = Result.try(() =>
+      handleStatement(statement, writer, modelMap, typeToNameMap, knownNoOps, config)
+    );
 
-      // Stops this generator is error thrown is not manually added by our code.
-      throw error;
+    if (ok) {
+      continue;
     }
+
+    // This allows some types to be generated even if others may fail
+    // which is good for incremental development/testing
+    if (error instanceof PrismaJsonTypesGeneratorError) {
+      return PrismaJsonTypesGeneratorError.handler(error);
+    }
+
+    // Stops this generator is error thrown is not manually added by our code.
+    throw error;
   }
 }

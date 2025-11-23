@@ -40,6 +40,7 @@
   "dependencies": {
     "@prisma/generator-helper": "^7.0.0",
     "semver": "^7.7.3",
+    "try": "^1.0.1",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
