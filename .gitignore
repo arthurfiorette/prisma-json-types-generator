@@ -6,3 +6,4 @@ test/target/
 package-lock.json
 .DS_Store
 yarn.lock
+pnpm-workspace.yaml
