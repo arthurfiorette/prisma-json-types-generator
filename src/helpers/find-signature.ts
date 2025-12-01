@@ -48,12 +48,29 @@ export function findNewSignature(
     // Super complex type that strictly typing will lose functionality
     case `JsonWithAggregatesFilter<"${model}">`:
     case `JsonFilter<"${model}">`:
+    case `Prisma.IntFilter<"${model}"> | number`:
+    case `IntFilter<"${model}"> | number`:
+    case `Prisma.IntWithAggregatesFilter<"${model}"> | number`:
+    case `IntWithAggregatesFilter<"${model}"> | number`:
+    case `Prisma.FloatFilter<"${model}"> | number`:
+    case `FloatFilter<"${model}"> | number`:
+    case `Prisma.FloatWithAggregatesFilter<"${model}"> | number`:
+    case `FloatWithAggregatesFilter<"${model}"> | number`:
+    case `Prisma.IntNullableFilter<"${model}"> | number | null`:
+    case `IntNullableFilter<"${model}"> | number | null`:
+    case `Prisma.IntNullableWithAggregatesFilter<"${model}"> | number | null`:
+    case `IntNullableWithAggregatesFilter<"${model}"> | number | null`:
+    case `Prisma.FloatNullableFilter<"${model}"> | number | null`:
+    case `FloatNullableFilter<"${model}"> | number | null`:
+    case `Prisma.FloatNullableWithAggregatesFilter<"${model}"> | number | null`:
+    case `FloatNullableWithAggregatesFilter<"${model}"> | number | null`:
       break;
 
     //
     // String
     //
     case 'string':
+    case 'number':
       if (!shouldReplaceStrings) {
         break;
       }
@@ -62,6 +79,7 @@ export function findNewSignature(
       break;
 
     case 'string[]':
+    case 'number[]':
       if (!shouldReplaceStrings) {
         break;
       }
@@ -70,11 +88,12 @@ export function findNewSignature(
       break;
 
     case 'string | null':
+    case 'number | null':
       if (!shouldReplaceStrings) {
         break;
       }
 
-      result = typeToChange;
+      result = `${typeToChange} | null`;
       break;
 
     case `StringFilter<"${model}"> | string`:
@@ -126,6 +145,17 @@ export function findNewSignature(
       result = `${libNamespace}TypedStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange}`;
       break;
 
+    case 'IntFieldUpdateOperationsInput | number':
+    case 'Prisma.IntFieldUpdateOperationsInput | number':
+    case 'FloatFieldUpdateOperationsInput | number':
+    case 'Prisma.FloatFieldUpdateOperationsInput | number':
+      if (!shouldReplaceStrings) {
+        break;
+      }
+
+      result = typeToChange;
+      break;
+
     case 'NullableStringFieldUpdateOperationsInput | string | null':
     case 'Prisma.NullableStringFieldUpdateOperationsInput | string | null':
       if (!shouldReplaceStrings) {
@@ -135,7 +165,21 @@ export function findNewSignature(
       result = `${libNamespace}TypedNullableStringFieldUpdateOperationsInput<${typeToChange}> | ${typeToChange} | null`;
       break;
 
+    case 'NullableIntFieldUpdateOperationsInput | number | null':
+    case 'Prisma.NullableIntFieldUpdateOperationsInput | number | null':
+    case 'NullableFloatFieldUpdateOperationsInput | number | null':
+    case 'Prisma.NullableFloatFieldUpdateOperationsInput | number | null':
+      if (!shouldReplaceStrings) {
+        break;
+      }
+
+      result = `${typeToChange} | null`;
+      break;
+
     case `${model}Create${field}Input | string[]`:
+    case `${model}Create${field}Input | number[]`:
+    case `Prisma.${model}Create${field}Input | string[]`:
+    case `Prisma.${model}Create${field}Input | number[]`:
       if (!shouldReplaceStrings) {
         break;
       }
@@ -144,6 +188,9 @@ export function findNewSignature(
       break;
 
     case `${model}Update${field}Input | string[]`:
+    case `${model}Update${field}Input | number[]`:
+    case `Prisma.${model}Update${field}Input | string[]`:
+    case `Prisma.${model}Update${field}Input | number[]`:
       if (!shouldReplaceStrings) {
         break;
       }
@@ -171,6 +218,8 @@ export function findNewSignature(
     // Super complex type that strictly typing will lose functionality
     case `JsonNullableWithAggregatesFilter<"${model}">`:
     case `JsonNullableFilter<"${model}">`:
+    case `Prisma.JsonNullableWithAggregatesFilter<"${model}">`:
+    case `Prisma.JsonNullableFilter<"${model}">`:
       break;
 
     //
