@@ -118,6 +118,7 @@ export function findNewSignature(
       break;
 
     case 'StringFieldUpdateOperationsInput | string':
+    case 'Prisma.StringFieldUpdateOperationsInput | string':
       if (!shouldReplaceStrings) {
         break;
       }
@@ -126,6 +127,7 @@ export function findNewSignature(
       break;
 
     case 'NullableStringFieldUpdateOperationsInput | string | null':
+    case 'Prisma.NullableStringFieldUpdateOperationsInput | string | null':
       if (!shouldReplaceStrings) {
         break;
       }
