@@ -1,5 +1,6 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
 import type { Model } from '../target/normal/client';
+import type { ModelGroupByOutputType } from '../target/normal/models/Model';
 import type { UpdateManyInput } from '../target/normal/pjtg';
 
 declare global {
@@ -112,4 +113,66 @@ expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
 
 expectNotAssignable<UpdateManyInput<Model['list'][number]>>({
   set: ['3,3,3']
+});
+
+// GroupBy output type should have properly typed JSON fields
+expectAssignable<ModelGroupByOutputType>({
+  id: 0,
+  simple: 1,
+  optional: 2,
+  list: [3],
+  _count: null,
+  _avg: null,
+  _sum: null,
+  _min: null,
+  _max: null
+});
+
+expectAssignable<ModelGroupByOutputType>({
+  id: 0,
+  simple: 1,
+  optional: null,
+  list: [3, 3, 3],
+  _count: null,
+  _avg: null,
+  _sum: null,
+  _min: null,
+  _max: null
+});
+
+// GroupBy should reject incorrect JSON types
+expectNotAssignable<ModelGroupByOutputType>({
+  id: 0,
+  simple: '1', // should be number 1, not string '1'
+  optional: 2,
+  list: [3],
+  _count: null,
+  _avg: null,
+  _sum: null,
+  _min: null,
+  _max: null
+});
+
+expectNotAssignable<ModelGroupByOutputType>({
+  id: 0,
+  simple: 1,
+  optional: '2', // should be number 2, not string '2'
+  list: [3],
+  _count: null,
+  _avg: null,
+  _sum: null,
+  _min: null,
+  _max: null
+});
+
+expectNotAssignable<ModelGroupByOutputType>({
+  id: 0,
+  simple: 1,
+  optional: 2,
+  list: ['3'], // should be number[] [3], not string[] ['3']
+  _count: null,
+  _avg: null,
+  _sum: null,
+  _min: null,
+  _max: null
 });
