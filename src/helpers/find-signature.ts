@@ -94,6 +94,7 @@ export function findNewSignature(
       break;
 
     case `StringNullableListFilter<"${model}">`:
+    case `Prisma.StringNullableListFilter<"${model}">`:
       if (!shouldReplaceStrings) {
         break;
       }
@@ -136,6 +137,7 @@ export function findNewSignature(
       break;
 
     case `${model}Create${field}Input | string[]`:
+    case `Prisma.${model}Create${field}Input | string[]`:
       if (!shouldReplaceStrings) {
         break;
       }
@@ -144,6 +146,7 @@ export function findNewSignature(
       break;
 
     case `${model}Update${field}Input | string[]`:
+    case `Prisma.${model}Update${field}Input | string[]`:
       if (!shouldReplaceStrings) {
         break;
       }
