@@ -1,10 +1,15 @@
 import { expectAssignable, expectNotAssignable, expectNotType, expectType } from 'tsd';
-import type { Model } from '../target/string/client';
+import type { Model, StringArrayModel } from '../target/string/client';
 import type { ModelUpdateInput } from '../target/string/models/Model';
+import type {
+  StringArrayModelCreateInput,
+  StringArrayModelUpdateInput
+} from '../target/string/models/StringArrayModel';
 
 declare global {
   export namespace PStringJson {
     type WithType = 'C' | 'D';
+    type StringArrayType = 'foo' | 'bar';
   }
 }
 
@@ -54,4 +59,50 @@ expectNotAssignable<ModelUpdateInput>({
 
 expectNotAssignable<ModelUpdateInput>({
   literal: { set: 'invalid' as string }
+});
+
+// Test String[] type with Prisma. prefix (Prisma 7 format)
+// https://github.com/arthurfiorette/prisma-json-types-generator/issues/603
+expectAssignable<StringArrayModel>({
+  id: '123e4567-e89b-12d3-a456-426614174000',
+  tags: ['foo', 'bar'] as PStringJson.StringArrayType[]
+});
+
+expectNotAssignable<StringArrayModel>({
+  id: '123e4567-e89b-12d3-a456-426614174000',
+  tags: ['invalid'] as string[]
+});
+
+// Test CreateInput types for String[]
+expectAssignable<StringArrayModelCreateInput>({
+  tags: ['foo'] as PStringJson.StringArrayType[]
+});
+
+expectAssignable<StringArrayModelCreateInput>({
+  tags: { set: ['bar'] as PStringJson.StringArrayType[] }
+});
+
+expectNotAssignable<StringArrayModelCreateInput>({
+  tags: ['invalid'] as string[]
+});
+
+expectNotAssignable<StringArrayModelCreateInput>({
+  tags: { set: ['invalid'] as string[] }
+});
+
+// Test UpdateInput types for String[]
+expectAssignable<StringArrayModelUpdateInput>({
+  tags: ['foo', 'bar'] as PStringJson.StringArrayType[]
+});
+
+expectAssignable<StringArrayModelUpdateInput>({
+  tags: { set: ['foo'] as PStringJson.StringArrayType[] }
+});
+
+expectNotAssignable<StringArrayModelUpdateInput>({
+  tags: ['invalid'] as string[]
+});
+
+expectNotAssignable<StringArrayModelUpdateInput>({
+  tags: { set: ['invalid'] as string[] }
 });

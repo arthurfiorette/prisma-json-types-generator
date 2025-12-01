@@ -21,3 +21,9 @@ model Model {
   /// !['A' | 'B']
   literal String
 }
+
+model StringArrayModel {
+  id String @id @default(uuid()) @db.Uuid
+  /// [StringArrayType]
+  tags String[] @default([])
+}
