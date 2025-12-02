@@ -38,7 +38,7 @@
     "test-unit": "pnpm tsx --test test/unit/**/*.test.ts"
   },
   "dependencies": {
-    "@prisma/generator-helper": "^7.0.0",
+    "@prisma/generator-helper": "^7.0.1",
     "semver": "^7.7.3",
     "try": "^1.0.1",
     "tslib": "^2.8.1"
@@ -46,18 +46,18 @@
   "devDependencies": {
     "@arthurfiorette/biomejs-config": "^2.0.1",
     "@biomejs/biome": "^2.3.8",
-    "@prisma/dmmf": "^7.0.0",
-    "@prisma/generator": "^7.0.0",
+    "@prisma/dmmf": "^7.0.1",
+    "@prisma/generator": "^7.0.1",
     "@types/node": "^24.10.1",
     "@types/semver": "^7.7.1",
     "husky": "^9.1.7",
-    "prisma": "^7.0.0",
+    "prisma": "^7.0.1",
     "tsd": "^0.33.0",
     "tsx": "^4.21.0"
   },
   "peerDependencies": {
-    "@prisma/client": "^7.0.0",
-    "prisma": "^7.0.0",
+    "@prisma/client": "^7.0.1",
+    "prisma": "^7.0.1",
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.23.0",
