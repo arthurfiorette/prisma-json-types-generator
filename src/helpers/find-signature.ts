@@ -113,6 +113,7 @@ export function findNewSignature(
       break;
 
     case `StringNullableListFilter<"${model}">`:
+    case `Prisma.StringNullableListFilter<"${model}">`:
       if (!shouldReplaceStrings) {
         break;
       }
