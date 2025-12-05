@@ -25,3 +25,12 @@ model Model {
   /// [List]
   list Json[]
 }
+
+// Test case matching the reproduction repository
+// https://github.com/rivatove/prisma-json-types-generator-418
+model orders {
+  id Int @id @default(autoincrement())
+  
+  /// [SampleJson]
+  meta Json?
+}
