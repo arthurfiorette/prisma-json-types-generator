@@ -1,0 +1,35 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../target/query-compiler"
+  previewFeatures = ["queryCompiler"]
+}
+
+generator json {
+  provider  = "node ./index.js"
+  namespace = "PQueryCompilerJson"
+  allowAny  = true
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  /// [UserProfile]
+  profile Json
+
+  /// [Preferences]
+  preferences Json?
+
+  /// [Tag]
+  tags Json[]
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+
+  /// ![{ title: string; content: string }]
+  metadata Json
+}
