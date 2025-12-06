@@ -197,9 +197,8 @@ export function findNewSignature(
     case 'NullableJsonNullValueInput | InputJsonValue':
     case 'NullableJsonNullValueInput | runtime.InputJsonValue':
       // differentiates null in column or a json null value
-      result = `${typeToChange} | ${
-        signature.startsWith('Prisma.') ? 'Prisma.' : ''
-      }NullableJsonNullValueInput`;
+      // Use hasPrismaNamespace which was captured before stripping the prefix
+      result = `${typeToChange} | ${hasPrismaNamespace ? 'Prisma.' : ''}NullableJsonNullValueInput`;
       break;
 
     // Super complex type that strictly typing will lose functionality
