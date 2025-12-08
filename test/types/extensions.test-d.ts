@@ -43,5 +43,5 @@ expectAssignable<User>({
 
 // Note: Testing that INVALID types are rejected (expectNotAssignable) doesn't work
 // with tsd when the generated files use @ts-nocheck. However, the types DO work
-// correctly in actual user code. See the manual tests in /tmp/test-project for
-// verification that invalid types like `profile: 10` are properly rejected.
+// correctly in actual user code. See manual testing to verify that invalid types like
+// `profile: 10` are properly rejected.
