@@ -2,6 +2,6 @@
   "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["@arthurfiorette/biomejs-config"],
   "files": {
-    "includes": ["**", "!**/test/target"]
+    "includes": ["!**/test/target"]
   }
 }
