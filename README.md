@@ -20,9 +20,7 @@
 <br />
 <br />
 
-> [!IMPORTANT]  
-> Install `prisma-json-types-generator@beta` for **Prisma 7** support!<br/>
-> _Please read [this issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues/542) to understand more about the project's future._
+> [!IMPORTANT] > **Prisma 7** is now supported with `prisma-json-types-generator@4` onwards! Prisma v6 is still supported in v4+.
 
 <br />
 
@@ -47,9 +45,6 @@
 - [Limitations](#limitations)
 - [License](#license)
 
-<br />
-<br />
-
 Supercharge your `@prisma/client` by adding strong, custom types to `Json` and `String` fields. This generator enhances type safety by replacing Prisma's default `JsonValue` with your own TypeScript types, ensuring data conforms to your schema before it even reaches the database.
 
 It works with **all database drivers** supported by Prisma (PostgreSQL, MySQL, SQLite, etc.) **without affecting any runtime code**.
@@ -63,6 +58,7 @@ It works with **all database drivers** supported by Prisma (PostgreSQL, MySQL, S
 - **Full Type-Safety:** Get autocomplete, intellisense, and compile-time checks for your data structures.
 - **Zero Runtime Overhead:** All transformations happen at generation time.
 - **Flexible Typing:** Define types globally in a namespace or inline directly in your schema.
+- **Multiple Client Support:** Works with multiple `@prisma/client` generators simultaneously, perfect for refactoring scenarios where you need to support old and new locations.
 
 <br />
 

@@ -7,53 +7,61 @@ import { handleStatement } from './handler/statement';
 import { extractPrismaModels } from './helpers/dmmf';
 import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config';
 import { DeclarationWriter, getNamespacePrelude } from './util/declaration-writer';
-import { findPrismaClientGenerator } from './util/prisma-generator';
+import { findPrismaClientGenerators, type GeneratorWithOutput } from './util/prisma-generator';
 import { buildTypesFilePath } from './util/source-path';
 
 /** Runs the generator with the given options. */
 export async function onGenerate(options: GeneratorOptions) {
   try {
-    const prismaClient = findPrismaClientGenerator(options.otherGenerators);
-
     const config = parseConfig(options.generator.config);
+    const clients = findPrismaClientGenerators(options.otherGenerators);
 
-    const isNewClient =
-      (prismaClient.provider.fromEnvVar || prismaClient.provider.value) === 'prisma-client';
+    // Run them all in parallel
+    await Promise.all(clients.map((client) => generateClient(client, config, options)));
 
-    const ext = prismaClient.config.importFileExtension?.toString();
-    const dotExt = ext ? `.${ext}` : '';
-
-    if (isNewClient) {
-      const modelsFolder = join(prismaClient.output.value, 'models');
-      const stat = await fs.stat(modelsFolder).catch(() => null);
-
-      // Models are split into multiple files starting in prisma@6.7
-      if (stat?.isDirectory()) {
-        for (const modelFile of await fs.readdir(modelsFolder)) {
-          await handleDeclarationFile(join(modelsFolder, modelFile), config, options, ext, true);
-        }
-
-        await fs.writeFile(
-          join(prismaClient.output.value, 'pjtg.ts'),
-          await getNamespacePrelude({
-            namespace: config.namespace,
-            isNewClient: true,
-            dotExt
-          })
-        );
-
-        return;
-      }
-    }
-
-    const clientOutput = isNewClient
-      ? join(prismaClient.output.value, 'client.ts')
-      : buildTypesFilePath(prismaClient.output.value, config.clientOutput, options.schemaPath);
-
-    await handleDeclarationFile(clientOutput, config, options, ext, false);
+    // Ensures we don't crash the generator process
   } catch (error) {
     console.error(error);
   }
+}
+
+async function generateClient(
+  prismaClient: GeneratorWithOutput,
+  config: PrismaJsonTypesGeneratorConfig,
+  options: GeneratorOptions
+) {
+  const ext = prismaClient.config.importFileExtension?.toString();
+  const isNewClient =
+    (prismaClient.provider.fromEnvVar || prismaClient.provider.value) === 'prisma-client';
+
+  if (isNewClient) {
+    const modelsFolder = join(prismaClient.output.value, 'models');
+    const stat = await fs.stat(modelsFolder).catch(() => null);
+
+    // Models are split into multiple files starting in prisma@6.7
+    if (stat?.isDirectory()) {
+      for (const modelFile of await fs.readdir(modelsFolder)) {
+        await handleDeclarationFile(join(modelsFolder, modelFile), config, options, ext, true);
+      }
+
+      await fs.writeFile(
+        join(prismaClient.output.value, 'pjtg.ts'),
+        await getNamespacePrelude({
+          namespace: config.namespace,
+          isNewClient: true,
+          dotExt: ext ? `.${ext}` : ''
+        })
+      );
+
+      return;
+    }
+  }
+
+  const clientOutput = isNewClient
+    ? join(prismaClient.output.value, 'client.ts')
+    : buildTypesFilePath(prismaClient.output.value, config.clientOutput, options.schemaPath);
+
+  await handleDeclarationFile(clientOutput, config, options, ext, false);
 }
 
 async function handleDeclarationFile(
