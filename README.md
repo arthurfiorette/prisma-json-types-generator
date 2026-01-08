@@ -69,9 +69,6 @@ Install the package as a development dependency in your project.
 
 ```bash
 npm install -D prisma-json-types-generator
-
-# Prisma v7 support
-# npm install -D prisma@^7 prisma-json-types-generator@beta
 ```
 
 <br />
