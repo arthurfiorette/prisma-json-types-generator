@@ -20,7 +20,8 @@
 <br />
 <br />
 
-> [!IMPORTANT] > **Prisma 7** is now supported with `prisma-json-types-generator@4` onwards! Prisma v6 is still supported in v4+.
+> [!IMPORTANT]  
+> **Prisma 7** is now supported with `prisma-json-types-generator@4` onwards! Prisma v6 is still supported in v4+.
 
 <br />
 
