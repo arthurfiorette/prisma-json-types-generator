@@ -38,3 +38,23 @@ expectNotAssignable<ModelWhereInput>({
   testInt: 'not a number',
   testFloat: 'not a float'
 });
+
+// Test that fields without type annotations still accept their proper types
+expectAssignable<ModelWhereInput>({
+  testInt: 42,
+  testFloat: 3.14
+});
+
+expectAssignable<ModelWhereInput>({
+  testInt: { gte: 0 } // Filter objects should work
+});
+
+expectAssignable<ModelWhereInput>({
+  testFloat: { lt: 100.0 }
+});
+
+// Test that fields without type annotations accept any valid number
+expectAssignable<ModelWhereInput>({
+  testInt: 999999, // Any number should work
+  testFloat: 999.999
+});
