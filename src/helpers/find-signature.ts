@@ -52,10 +52,34 @@ export function findNewSignature(
     // Super complex type that strictly typing will lose functionality
     case `JsonWithAggregatesFilter<"${model}">`:
     case `JsonFilter<"${model}">`:
-    case `IntFilter<"${model}"> | number`:
     case `IntWithAggregatesFilter<"${model}"> | number`:
-    case `FloatFilter<"${model}"> | number`:
     case `FloatWithAggregatesFilter<"${model}"> | number`:
+    case `IntNullableWithAggregatesFilter<"${model}"> | number | null`:
+    case `FloatNullableWithAggregatesFilter<"${model}"> | number | null`:
+      break;
+
+    //
+    // Int/Float filters with type annotations
+    // Transforms: IntFilter<"Model"> | number -> IntFilter<"Model"> | CustomType
+    // Preserves filter functionality while constraining literal values to the custom type
+    //
+    case `IntFilter<"${model}"> | number`:
+    case `FloatFilter<"${model}"> | number`:
+      if (!shouldReplaceStrings) {
+        break;
+      }
+
+      result = `${hasPrismaNamespace ? 'Prisma.' : ''}${signature.replace(/ \| number$/, ` | ${typeToChange}`)}`;
+      break;
+
+    case `IntNullableFilter<"${model}"> | number | null`:
+    case `FloatNullableFilter<"${model}"> | number | null`:
+      if (!shouldReplaceStrings) {
+        break;
+      }
+
+      // Transforms: IntNullableFilter<"Model"> | number | null -> IntNullableFilter<"Model"> | CustomType | null
+      result = `${hasPrismaNamespace ? 'Prisma.' : ''}${signature.replace(/ \| number \| null$/, ` | ${typeToChange} | null`)}`;
       break;
 
     //
@@ -187,10 +211,6 @@ export function findNewSignature(
     case 'runtime.JsonValue | null':
     case 'InputJsonValue | null':
     case 'InputJsonValue | InputJsonValue | null':
-    case `IntNullableFilter<"${model}"> | number | null`:
-    case `IntNullableWithAggregatesFilter<"${model}"> | number | null`:
-    case `FloatNullableFilter<"${model}"> | number | null`:
-    case `FloatNullableWithAggregatesFilter<"${model}"> | number | null`:
       result = `${typeToChange} | null`;
       break;
 

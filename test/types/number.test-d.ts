@@ -1,6 +1,11 @@
-import { expectAssignable } from 'tsd';
+import { expectAssignable, expectNotAssignable } from 'tsd';
 import type { Model } from '../target/number/client';
-import type { ModelCreateInput, ModelUpdateInput } from '../target/number/models/Model';
+import type {
+  ModelCreateInput,
+  ModelScalarWhereWithAggregatesInput,
+  ModelUpdateInput,
+  ModelWhereInput
+} from '../target/number/models/Model';
 
 declare global {
   export namespace PNumberJson {
@@ -63,4 +68,80 @@ expectAssignable<ModelUpdateInput>({
 // Test nullable fields can be set to null
 expectAssignable<ModelUpdateInput>({
   nullablePrice: null
+});
+
+expectNotAssignable<ModelWhereInput>({
+  price: 400 // Invalid price, not in Price union
+});
+
+expectNotAssignable<ModelWhereInput>({
+  floatPrice: 4.5 // Invalid floatPrice, not in FloatPrice union
+});
+
+expectNotAssignable<ModelWhereInput>({
+  nullablePrice: 75 // Invalid nullablePrice, not in NullablePrice union
+});
+
+// Test that filter objects still work (complex filters should be preserved)
+expectAssignable<ModelWhereInput>({
+  price: { gt: 100 as PNumberJson.Price } // Should work with valid type
+});
+
+expectAssignable<ModelWhereInput>({
+  floatPrice: { gte: 1.5 as PNumberJson.FloatPrice }
+});
+
+expectAssignable<ModelWhereInput>({
+  nullablePrice: { not: null }
+});
+
+// Test WithAggregates - these should still accept the filter types
+// (WithAggregates filters are NOT transformed to preserve complex functionality)
+expectAssignable<ModelScalarWhereWithAggregatesInput>({
+  price: { gt: 100 }
+});
+
+expectAssignable<ModelScalarWhereWithAggregatesInput>({
+  floatPrice: { gte: 1.5 }
+});
+
+// Test CreateInput rejects invalid values
+expectNotAssignable<ModelCreateInput>({
+  price: 400, // Invalid
+  floatPrice: 1.5 as PNumberJson.FloatPrice
+});
+
+expectNotAssignable<ModelCreateInput>({
+  price: 100 as PNumberJson.Price,
+  floatPrice: 99.9 // Invalid
+});
+
+// Test UpdateInput rejects invalid values
+expectNotAssignable<ModelUpdateInput>({
+  price: 999 // Invalid
+});
+
+expectNotAssignable<ModelUpdateInput>({
+  floatPrice: 0.5 // Invalid
+});
+
+expectNotAssignable<ModelUpdateInput>({
+  nullablePrice: 25 // Invalid
+});
+
+// Test Model output type rejects invalid values
+expectNotAssignable<Model>({
+  id: 0,
+  price: 999, // Invalid
+  nullablePrice: null,
+  floatPrice: 1.5 as PNumberJson.FloatPrice,
+  config: null
+});
+
+expectNotAssignable<Model>({
+  id: 0,
+  price: 100 as PNumberJson.Price,
+  nullablePrice: 25, // Invalid
+  floatPrice: 1.5 as PNumberJson.FloatPrice,
+  config: null
 });
