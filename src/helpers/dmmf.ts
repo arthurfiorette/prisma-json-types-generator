@@ -1,4 +1,5 @@
 import type DMMF from '@prisma/dmmf';
+import type { ColumnAnnotationMap } from '../handler/typedsql';
 import { createRegexForType, generateTypeNamesFromName } from './regex';
 import { parseTypeSyntax } from './type-parser';
 
@@ -62,4 +63,33 @@ export function extractPrismaModels(dmmf: DMMF.Document): {
     modelMap.set(m.name, m);
   }
   return { typeToNameMap, modelMap, knownNoOps };
+}
+
+/**
+ * Builds a map from database column names to their documentation for JSON fields.
+ *
+ * This is used when processing TypedSQL query result columns — each column name is
+ * matched against the Prisma schema field (or its `@map`-ed database name) to find
+ * the documentation annotation that drives type replacement.
+ *
+ * When the same column name exists in multiple models, the first model encountered wins.
+ */
+export function buildTypedSqlColumnAnnotationMap(dmmf: DMMF.Document): ColumnAnnotationMap {
+  const map: ColumnAnnotationMap = new Map();
+
+  for (const model of dmmf.datamodel.models) {
+    for (const field of model.fields) {
+      if (field.type !== 'Json') continue;
+
+      // Use the @map column name if provided, otherwise the field name
+      const columnName = field.dbName || field.name;
+
+      // First model with this column name wins to avoid ambiguity
+      if (!map.has(columnName)) {
+        map.set(columnName, field.documentation);
+      }
+    }
+  }
+
+  return map;
 }
