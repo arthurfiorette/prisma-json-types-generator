@@ -64,5 +64,10 @@
   "packageManager": "pnpm@10.27.0",
   "engines": {
     "node": ">=14.0"
+  },
+  "tsd": {
+    "compilerOptions": {
+      "rootDir": "./"
+    }
   }
 }
