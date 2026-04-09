@@ -13,4 +13,4 @@ try {
   }
 } catch {}
 
-require('./dist/generator.js');
+require('./dist/src/generator.js');
