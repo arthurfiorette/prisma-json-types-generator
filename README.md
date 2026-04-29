@@ -36,6 +36,7 @@
 <br />
 
 - [Installation](#installation)
+- [Install the Skill](#install-the-skill)
 - [Configuration](#configuration)
 - [Quick Start](#quick-start)
 - [Typing `String` Fields (Enums)](#typing-string-fields-enums)
@@ -70,6 +71,16 @@ Install the package as a development dependency in your project.
 ```bash
 npm install -D prisma-json-types-generator
 ```
+
+## Install the Skill
+
+You can also install the companion agent skill for `prisma-json-types-generator`.
+
+```bash
+npx skills add arthurfiorette/prisma-json-types-generator
+```
+
+This skill helps AI agents set up the generator and create or update typed Prisma `Json`, `String`, `Int`, and `Float` fields with the correct `/// [Type]` and `/// ![Type]` syntax.
 
 <br />
 
@@ -217,6 +228,13 @@ model Product {
   /// !['physical' | 'digital']
   type String
 
+  // Numeric scalar literal unions
+  /// ![1 | 2 | 3]
+  priority Int
+
+  /// ![1.5 | 2.5 | 3.5]
+  weight Float
+
   // Inline object type
   /// ![{ width: number; height: number }]
   dimensions Json
@@ -240,6 +258,11 @@ declare global {
   }
 }
 ```
+
+Important:
+
+- For array fields, keep the Prisma field as the array and keep the type as the element shape. Use `tags Json[]` with `/// [Tag]`, not `tags Json` with an array type like `/// ![Tag[]]` unless the JSON value itself is meant to be an array.
+- The same comment syntax also works for scalar fields such as `String`, `Int`, and `Float`, including nullable variants.
 
 <br />
 
