@@ -21,7 +21,7 @@
 <br />
 
 > [!IMPORTANT]  
-> **Prisma 7** is now supported with `prisma-json-types-generator@4` onwards! Prisma v6 is still supported in v4+.
+> `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6.
 
 <br />
 
@@ -300,7 +300,7 @@ It then traverses this AST, and for each property signature in a model, it cross
 ## Limitations
 
 - **Complex Filters:** To preserve functionality, types like `JsonFilter` and `JsonWithAggregatesFilter` remain untyped.
-- **Prisma Version:** This generator supports Prisma v5+ and generator v3+.
+- **Version Support:** `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6.
 - **Known Gaps:** If you find any `Json` fields that are not being typed correctly, please [open an issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues).
 
 <br />
