@@ -4,9 +4,6 @@ import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { createType } from '../util/create-signature';
 import type { DeclarationWriter } from '../util/declaration-writer';
 
-/** A map from column name to field documentation for JSON fields. */
-export type ColumnAnnotationMap = Map<string, string | undefined>;
-
 /**
  * Handles a TypedSQL query file by replacing JSON column types with annotated types.
  *
@@ -19,7 +16,7 @@ export function handleTypedSqlFile(
   tsSource: ts.SourceFile,
   writer: DeclarationWriter,
   query: SqlQueryOutput,
-  columnAnnotationMap: ColumnAnnotationMap,
+  columnDocs: Map<string, string | undefined>,
   config: PrismaJsonTypesGeneratorConfig
 ) {
   // Only process json and json-array typed columns
@@ -36,7 +33,7 @@ export function handleTypedSqlFile(
   >();
 
   for (const col of jsonColumns) {
-    const documentation = columnAnnotationMap.get(col.name);
+    const documentation = columnDocs.get(col.name);
 
     // No annotation and allowAny is set — skip replacing
     if (!documentation && config.allowAny) continue;

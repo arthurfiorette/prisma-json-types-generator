@@ -4,8 +4,8 @@ import type { GeneratorOptions, SqlQueryOutput } from '@prisma/generator';
 import ts from 'typescript';
 import { handlePrismaModule } from './handler/module';
 import { handleStatement } from './handler/statement';
-import { type ColumnAnnotationMap, handleTypedSqlFile } from './handler/typedsql';
-import { buildTypedSqlColumnAnnotationMap, extractPrismaModels } from './helpers/dmmf';
+import { handleTypedSqlFile } from './handler/typedsql';
+import { extractPrismaModels } from './helpers/dmmf';
 import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config';
 import { DeclarationWriter, getNamespacePrelude } from './util/declaration-writer';
 import { findPrismaClientGenerators, type GeneratorWithOutput } from './util/prisma-generator';
@@ -99,27 +99,30 @@ async function handleTypedSqlQueries(
   const sqlDirStat = await fs.stat(sqlDir).catch(() => null);
   if (!sqlDirStat?.isDirectory()) return;
 
-  const columnAnnotationMap = buildTypedSqlColumnAnnotationMap(options.dmmf);
+  // Build column name → documentation lookup from all Json fields in the schema.
+  // Uses the @map db column name when present; first model wins on collisions.
+  const columnDocs = new Map<string, string | undefined>();
+  for (const model of options.dmmf.datamodel.models) {
+    for (const field of model.fields) {
+      if (field.type !== 'Json') continue;
+      const col = field.dbName ?? field.name;
+      if (!columnDocs.has(col)) columnDocs.set(col, field.documentation);
+    }
+  }
 
   for (const query of typedSql) {
     const filePath = join(sqlDir, `${query.name}.ts`);
     const fileStat = await fs.stat(filePath).catch(() => null);
     if (!fileStat?.isFile()) continue;
 
-    await handleTypedSqlDeclarationFile(
-      filePath,
-      query,
-      columnAnnotationMap,
-      config,
-      importFileExtension
-    );
+    await handleTypedSqlDeclarationFile(filePath, query, columnDocs, config, importFileExtension);
   }
 }
 
 async function handleTypedSqlDeclarationFile(
   filepath: string,
   query: SqlQueryOutput,
-  columnAnnotationMap: ColumnAnnotationMap,
+  columnDocs: Map<string, string | undefined>,
   config: PrismaJsonTypesGeneratorConfig,
   importFileExtension: string | undefined
 ) {
@@ -138,7 +141,7 @@ async function handleTypedSqlDeclarationFile(
   );
 
   try {
-    handleTypedSqlFile(tsSource, writer, query, columnAnnotationMap, config);
+    handleTypedSqlFile(tsSource, writer, query, columnDocs, config);
   } catch (error) {
     console.error(error);
   }
