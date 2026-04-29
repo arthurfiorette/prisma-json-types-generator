@@ -9,7 +9,9 @@ export function onManifest(): GeneratorManifest {
   try {
     const pkg = require('../package.json');
     const prismaPeerVersion = pkg.peerDependencies?.prisma;
+    const typescriptPeerVersion = pkg.peerDependencies?.typescript;
     const prismaVersion = require('prisma/package.json').version;
+    const typescriptVersion = require('typescript/package.json').version;
     version = pkg.version;
 
     if (prismaVersion && prismaPeerVersion && !semverSatisfies(prismaVersion, prismaPeerVersion)) {
@@ -17,6 +19,20 @@ export function onManifest(): GeneratorManifest {
         styleText(
           'red',
           `\n\nPrisma Json Types Generator@${version} relies on Prisma ${prismaPeerVersion} and was not tested with your Prisma@${prismaVersion} installation.
+The generated output might not work correctly or even completely break Prisma Client types.\n`
+        )
+      );
+    }
+
+    if (
+      typescriptVersion &&
+      typescriptPeerVersion &&
+      !semverSatisfies(typescriptVersion, typescriptPeerVersion)
+    ) {
+      console.log(
+        styleText(
+          'red',
+          `\n\nPrisma Json Types Generator@${version} relies on TypeScript ${typescriptPeerVersion} and was not tested with your TypeScript@${typescriptVersion} installation.
 The generated output might not work correctly or even completely break Prisma Client types.\n`
         )
       );
