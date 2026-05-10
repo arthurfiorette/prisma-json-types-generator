@@ -1,0 +1,25 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../target/typedSql-pg"
+  previewFeatures = ["typedSql"]
+}
+
+generator json {
+  provider  = "node ./index.js"
+  namespace = "PTypedSqlJson"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Model {
+  id Int @id
+
+  /// ![number]
+  field Json
+
+  /// [OptionalField]
+  optField Json?
+}

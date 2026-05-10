@@ -52,3 +52,42 @@ jobs:
         env:
           # Prisma breaks when running tests in parallel
           PJTG_SEQUENTIAL_TESTS: 1
+
+  e2e-typedsql:
+    name: E2E TypedSQL (PostgreSQL)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup node and restore cached dependencies
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
+
+      - name: Build code
+        run: pnpm build
+
+      - name: Start PostgreSQL
+        run: docker compose up -d --wait
+
+      - name: Push database schema
+        run: pnpm prisma db push --schema test/pg-schemas/typedsql.prisma --skip-generate
+        env:
+          DATABASE_URL: postgresql://prisma:prisma@localhost:5432/typedsql_test
+
+      - name: Generate TypedSQL types
+        run: pnpm prisma generate --schema test/pg-schemas/typedsql.prisma
+        env:
+          DATABASE_URL: postgresql://prisma:prisma@localhost:5432/typedsql_test
+
+      - name: Verify TypedSQL types
+        run: pnpm tsd -f test/types/typedsql-pg.test-d.ts -t . --show-diff
