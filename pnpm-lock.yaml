@@ -16,7 +16,7 @@ importers:
         version: 7.8.0
       semver:
         specifier: ^7.7.4
-        version: 7.7.4
+        version: 7.8.0
       try:
         specifier: ^1.0.3
         version: 1.0.3
@@ -1042,8 +1042,8 @@ packages:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
     hasBin: true
 
-  semver@7.7.4:
-    resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
+  semver@7.8.0:
+    resolution: {integrity: sha512-AcM7dV/5ul4EekoQ29Agm5vri8JNqRyj39o0qpX6vDF2GZrtutZl5RwgD1XnZjiTAfncsJhMI48QQH3sN87YNA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -1910,7 +1910,7 @@ snapshots:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.16.1
-      semver: 7.7.4
+      semver: 7.8.0
       validate-npm-package-license: 3.0.4
 
   ohash@2.0.11: {}
@@ -2055,7 +2055,7 @@ snapshots:
 
   semver@5.7.2: {}
 
-  semver@7.7.4: {}
+  semver@7.8.0: {}
 
   seq-queue@0.0.5: {}
 
