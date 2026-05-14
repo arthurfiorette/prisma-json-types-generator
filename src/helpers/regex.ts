@@ -9,10 +9,10 @@ export function createRegexForType(name: string) {
     // new RegExp(`^${name}CountOrderByAggregateInput$`, 'm'), `SortOrder` fields
     // new RegExp(`^${name}CountAggregateInputType$`, 'm'), `true` fields
 
-    // new RegExp(`^${name}Group$`, 'm'),
-    // new RegExp(`^${name}GroupByOutputType$`, 'm'),
-    // new RegExp(`^${name}OrderByWithRelationInput$`, 'm'), `SortOrder` fields
-    // new RegExp(`^${name}OrderByWithAggregationInput$`, 'm'), `SortOrder` fields
+    new RegExp(`^${name}Group$`, 'm'),
+    new RegExp(`^${name}GroupByOutputType$`, 'm'),
+    new RegExp(`^${name}OrderByWithRelationInput$`, 'm'),
+    new RegExp(`^${name}OrderByWithAggregationInput$`, 'm'),
 
     // new RegExp(`^${name}(?:Scalar)?Where$`, 'm'),
     // new RegExp(`^${name}(?:Scalar)?WhereInput$`, 'm'),
