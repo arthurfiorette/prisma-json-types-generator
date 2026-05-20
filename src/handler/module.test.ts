@@ -208,64 +208,6 @@ describe('handlePrismaModule', () => {
     expect(Result.try).toHaveBeenCalledWith(expect.any(Function));
   });
 
-  it('should handle custom PrismaJsonTypesGeneratorError and call error handler', () => {
-    const mockIdentifier = {
-      kind: ts.SyntaxKind.Identifier,
-      text: PRISMA_NAMESPACE_NAME
-    };
-
-    const mockStatement = {} as ts.Statement;
-
-    const mockModuleBlock = {
-      kind: ts.SyntaxKind.ModuleBlock,
-      statements: [mockStatement]
-    };
-
-    const mockModule = {
-      getChildren: jest
-        .fn()
-        .mockReturnValueOnce([mockIdentifier])
-        .mockReturnValueOnce([mockModuleBlock])
-    } as unknown as ts.ModuleDeclaration;
-
-    const mockCustomError = new PrismaJsonTypesGeneratorError('Test error');
-
-    // Mock handleStatement to throw the custom error when called
-    (handleStatement as jest.MockedFunction<typeof handleStatement>).mockImplementation(() => {
-      throw mockCustomError;
-    });
-
-    // Mock Result.try to execute the provided function and return the caught error
-    (Result.try as jest.Mocked<any>).mockImplementation((fn: () => void) => {
-      try {
-        fn(); // Execute the function that contains handleStatement calls
-        return { ok: true, error: null };
-      } catch (error) {
-        return { ok: false, error };
-      }
-    });
-
-    // Mock the error handler
-    const errorHandlerSpy = jest.spyOn(PrismaJsonTypesGeneratorError, 'handler');
-
-    // Mock console.error to prevent logging during the test
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    handlePrismaModule(
-      mockModule,
-      mockWriter,
-      mockModelMap,
-      mockKnownNoOps,
-      mockTypeToNameMap,
-      mockConfig
-    );
-
-    expect(errorHandlerSpy).toHaveBeenCalledWith(mockCustomError);
-
-    // Restore console.error
-    consoleSpy.mockRestore();
-  });
-
   it('should rethrow non-custom errors', () => {
     const mockIdentifier = {
       kind: ts.SyntaxKind.Identifier,

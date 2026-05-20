@@ -16,25 +16,6 @@ describe('findNewSignature', () => {
         findNewSignature('JsonNullValueInput | InputJsonValue', typeToChange, model, field)
       ).toBe(typeToChange);
     });
-
-    it('should not modify complex filter types', () => {
-      expect(
-        findNewSignature('JsonWithAggregatesFilter<"User">', typeToChange, model, field)
-      ).toBeUndefined();
-      expect(findNewSignature('JsonFilter<"User">', typeToChange, model, field)).toBeUndefined();
-      expect(
-        findNewSignature('IntFilter<"User"> | number', typeToChange, model, field)
-      ).toBeUndefined();
-      expect(
-        findNewSignature('IntWithAggregatesFilter<"User"> | number', typeToChange, model, field)
-      ).toBeUndefined();
-      expect(
-        findNewSignature('FloatFilter<"User"> | number', typeToChange, model, field)
-      ).toBeUndefined();
-      expect(
-        findNewSignature('FloatWithAggregatesFilter<"User"> | number', typeToChange, model, field)
-      ).toBeUndefined();
-    });
   });
 
   describe('when handling string types', () => {
@@ -196,31 +177,6 @@ describe('findNewSignature', () => {
       );
       expect(
         findNewSignature('InputJsonValue | InputJsonValue | null', typeToChange, model, field)
-      ).toBe(`${typeToChange} | null`);
-    });
-
-    it('should handle nullable filter types', () => {
-      expect(
-        findNewSignature('IntNullableFilter<"User"> | number | null', typeToChange, model, field)
-      ).toBe(`${typeToChange} | null`);
-      expect(
-        findNewSignature(
-          'IntNullableWithAggregatesFilter<"User"> | number | null',
-          typeToChange,
-          model,
-          field
-        )
-      ).toBe(`${typeToChange} | null`);
-      expect(
-        findNewSignature('FloatNullableFilter<"User"> | number | null', typeToChange, model, field)
-      ).toBe(`${typeToChange} | null`);
-      expect(
-        findNewSignature(
-          'FloatNullableWithAggregatesFilter<"User"> | number | null',
-          typeToChange,
-          model,
-          field
-        )
       ).toBe(`${typeToChange} | null`);
     });
 

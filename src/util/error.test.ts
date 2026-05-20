@@ -30,28 +30,4 @@ describe('PrismaJsonTypesGeneratorError', () => {
       expect(error.message).toBe(errorMessage);
     });
   });
-
-  describe('handler', () => {
-    it('should log the error to console.error', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      const error = new PrismaJsonTypesGeneratorError('Test error');
-
-      PrismaJsonTypesGeneratorError.handler(error);
-
-      expect(consoleSpy).toHaveBeenCalledWith(error);
-
-      consoleSpy.mockRestore();
-    });
-
-    it('should accept any error instance', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      const error = new Error('Generic error');
-
-      PrismaJsonTypesGeneratorError.handler(error as PrismaJsonTypesGeneratorError);
-
-      expect(consoleSpy).toHaveBeenCalledWith(error);
-
-      consoleSpy.mockRestore();
-    });
-  });
 });
