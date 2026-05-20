@@ -48,12 +48,16 @@
     "@biomejs/biome": "^2.4.13",
     "@prisma/dmmf": "^7.8.0",
     "@prisma/generator": "^7.8.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.12.2",
     "@types/semver": "^7.7.1",
     "husky": "^9.1.7",
+    "jest": "^30.4.2",
     "prisma": "^7.8.0",
+    "ts-jest": "^29.4.9",
     "tsd": "^0.33.0",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "@prisma/client": "^7.8.0",
