@@ -1,8 +1,13 @@
 import { expectAssignable, expectNotAssignable } from 'tsd';
 import type { Model } from '../target/number/client';
 import type {
+  ModelAvgAggregateOutputType,
+  ModelCountAggregateOutputType,
   ModelCreateInput,
+  ModelMaxAggregateOutputType,
+  ModelMinAggregateOutputType,
   ModelScalarWhereWithAggregatesInput,
+  ModelSumAggregateOutputType,
   ModelUpdateInput,
   ModelWhereInput
 } from '../target/number/models/Model';
@@ -144,4 +149,42 @@ expectNotAssignable<Model>({
   nullablePrice: 25, // Invalid
   floatPrice: 1.5 as PNumberJson.FloatPrice,
   config: null
+});
+
+// Aggregate output typing
+expectAssignable<ModelCountAggregateOutputType>({
+  id: 1,
+  price: 1,
+  nullablePrice: 1,
+  floatPrice: 1,
+  config: 1,
+  _all: 1
+});
+
+expectAssignable<ModelAvgAggregateOutputType>({
+  id: 1,
+  price: 123,
+  nullablePrice: null,
+  floatPrice: 1.25
+});
+
+expectAssignable<ModelSumAggregateOutputType>({
+  id: 1,
+  price: 123,
+  nullablePrice: null,
+  floatPrice: 2.75
+});
+
+expectAssignable<ModelMinAggregateOutputType>({
+  id: 1,
+  price: 100 as PNumberJson.Price,
+  nullablePrice: 50 as PNumberJson.NullablePrice,
+  floatPrice: 1.5 as PNumberJson.FloatPrice
+});
+
+expectAssignable<ModelMaxAggregateOutputType>({
+  id: 1,
+  price: 300 as PNumberJson.Price,
+  nullablePrice: 100 as PNumberJson.NullablePrice,
+  floatPrice: 3.5 as PNumberJson.FloatPrice
 });
