@@ -1,7 +1,13 @@
 import { expectAssignable, expectNotAssignable, expectNotType, expectType } from 'tsd';
 import type { Model, StringArrayModel } from '../target/string/client';
-import type { ModelUpdateInput } from '../target/string/models/Model';
 import type {
+  ModelCountAggregateOutputType,
+  ModelMaxAggregateOutputType,
+  ModelMinAggregateOutputType,
+  ModelUpdateInput
+} from '../target/string/models/Model';
+import type {
+  StringArrayModelCountAggregateOutputType,
   StringArrayModelCreateInput,
   StringArrayModelUpdateInput
 } from '../target/string/models/StringArrayModel';
@@ -105,4 +111,33 @@ expectNotAssignable<StringArrayModelUpdateInput>({
 
 expectNotAssignable<StringArrayModelUpdateInput>({
   tags: { set: ['invalid'] as string[] }
+});
+
+// Aggregate output typing
+expectAssignable<ModelCountAggregateOutputType>({
+  id: 1,
+  untyped: 1,
+  typed: 1,
+  literal: 1,
+  _all: 1
+});
+
+expectAssignable<ModelMinAggregateOutputType>({
+  id: 1,
+  untyped: 'A',
+  typed: 'C' as PStringJson.WithType,
+  literal: 'A' as 'A' | 'B'
+});
+
+expectAssignable<ModelMaxAggregateOutputType>({
+  id: 1,
+  untyped: 'Z',
+  typed: 'D' as PStringJson.WithType,
+  literal: 'B' as 'A' | 'B'
+});
+
+expectAssignable<StringArrayModelCountAggregateOutputType>({
+  id: 1,
+  tags: 1,
+  _all: 1
 });
