@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Setup node and restore cached dependencies
         uses: actions/setup-node@v6
@@ -80,7 +80,7 @@ jobs:
         run: docker compose up -d --wait
 
       - name: Push database schema
-        run: pnpm prisma db push --schema test/pg-schemas/typedsql.prisma --skip-generate
+        run: pnpm prisma db push --schema test/pg-schemas/typedsql.prisma
         env:
           DATABASE_URL: postgresql://prisma:prisma@localhost:5432/typedsql_test
 
