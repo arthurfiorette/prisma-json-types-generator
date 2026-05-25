@@ -161,9 +161,25 @@ expectAssignable<ModelCountAggregateOutputType>({
   _all: 1
 });
 
+expectNotAssignable<ModelCountAggregateOutputType>({
+  id: 1,
+  price: '1',
+  nullablePrice: 1,
+  floatPrice: 1,
+  config: 1,
+  _all: 1
+});
+
 expectAssignable<ModelAvgAggregateOutputType>({
   id: 1,
   price: 123,
+  nullablePrice: null,
+  floatPrice: 1.25
+});
+
+expectNotAssignable<ModelAvgAggregateOutputType>({
+  id: 1,
+  price: '123',
   nullablePrice: null,
   floatPrice: 1.25
 });
@@ -175,6 +191,13 @@ expectAssignable<ModelSumAggregateOutputType>({
   floatPrice: 2.75
 });
 
+expectNotAssignable<ModelSumAggregateOutputType>({
+  id: 1,
+  price: 123,
+  nullablePrice: null,
+  floatPrice: '2.75'
+});
+
 expectAssignable<ModelMinAggregateOutputType>({
   id: 1,
   price: 100 as PNumberJson.Price,
@@ -182,9 +205,23 @@ expectAssignable<ModelMinAggregateOutputType>({
   floatPrice: 1.5 as PNumberJson.FloatPrice
 });
 
+expectNotAssignable<ModelMinAggregateOutputType>({
+  id: 1,
+  price: 123,
+  nullablePrice: 75,
+  floatPrice: 2.25
+});
+
 expectAssignable<ModelMaxAggregateOutputType>({
   id: 1,
   price: 300 as PNumberJson.Price,
   nullablePrice: 100 as PNumberJson.NullablePrice,
   floatPrice: 3.5 as PNumberJson.FloatPrice
+});
+
+expectNotAssignable<ModelMaxAggregateOutputType>({
+  id: 1,
+  price: 999,
+  nullablePrice: 75,
+  floatPrice: 9.75
 });
