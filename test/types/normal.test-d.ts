@@ -1,6 +1,10 @@
 import { expectAssignable, expectNotAssignable, expectType } from 'tsd';
 import type { Model, PrismaClient } from '../target/normal/client';
-import type { ModelGroupByOutputType } from '../target/normal/models/Model';
+import type {
+  ModelCountAggregateOutputType,
+  ModelGroupByOutputType
+} from '../target/normal/models/Model';
+import type { OrdersCountAggregateOutputType } from '../target/normal/models/orders';
 import type { UpdateManyInput } from '../target/normal/pjtg';
 
 declare global {
@@ -266,3 +270,26 @@ declare const prisma: PrismaClient;
     }
   }
 })();
+
+// Count aggregate output must stay numeric
+expectAssignable<ModelCountAggregateOutputType>({
+  id: 1,
+  simple: 1,
+  optional: 1,
+  list: 1,
+  _all: 1
+});
+
+declare const modelCount: ModelCountAggregateOutputType;
+expectType<number>(modelCount.simple);
+expectType<number>(modelCount.optional);
+expectType<number>(modelCount.list);
+
+expectAssignable<OrdersCountAggregateOutputType>({
+  id: 1,
+  meta: 1,
+  _all: 1
+});
+
+declare const ordersCount: OrdersCountAggregateOutputType;
+expectType<number>(ordersCount.meta);

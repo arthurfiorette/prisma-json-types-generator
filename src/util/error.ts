@@ -7,9 +7,4 @@ export class PrismaJsonTypesGeneratorError extends Error {
     super(message);
     Object.assign(this, data);
   }
-
-  // TODO: Better handler? investigate how to handle errors in the best way.
-  static handler(error: PrismaJsonTypesGeneratorError) {
-    console.error(error);
-  }
 }

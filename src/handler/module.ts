@@ -46,7 +46,9 @@ export function handlePrismaModule(
     // This allows some types to be generated even if others may fail
     // which is good for incremental development/testing
     if (error instanceof PrismaJsonTypesGeneratorError) {
-      return PrismaJsonTypesGeneratorError.handler(error);
+      // TODO: Better handler? investigate how to handle errors in the best way.
+      console.error(error);
+      continue;
     }
 
     // Stops this generator is error thrown is not manually added by our code.

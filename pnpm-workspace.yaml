@@ -2,3 +2,12 @@ ignoredBuiltDependencies:
   - '@prisma/engines'
   - esbuild
   - prisma
+
+# Fails if trusted package stops being trusted
+trustPolicy: no-downgrade
+# Ignores trust policies for packages older than a week
+trustPolicyIgnoreAfter: 10080
+# Minimum of 1 day before released packages can be installed
+minimumReleaseAge: 1440
+# no git/tarball dependencies, only from trusted registry
+blockExoticSubdeps: true

@@ -9,10 +9,10 @@ export function createRegexForType(name: string) {
     // new RegExp(`^${name}CountOrderByAggregateInput$`, 'm'), `SortOrder` fields
     // new RegExp(`^${name}CountAggregateInputType$`, 'm'), `true` fields
 
-    // new RegExp(`^${name}Group$`, 'm'),
-    // new RegExp(`^${name}GroupByOutputType$`, 'm'),
-    // new RegExp(`^${name}OrderByWithRelationInput$`, 'm'), `SortOrder` fields
-    // new RegExp(`^${name}OrderByWithAggregationInput$`, 'm'), `SortOrder` fields
+    new RegExp(`^${name}Group$`, 'm'),
+    new RegExp(`^${name}GroupByOutputType$`, 'm'),
+    new RegExp(`^${name}OrderByWithRelationInput$`, 'm'),
+    new RegExp(`^${name}OrderByWithAggregationInput$`, 'm'),
 
     // new RegExp(`^${name}(?:Scalar)?Where$`, 'm'),
     // new RegExp(`^${name}(?:Scalar)?WhereInput$`, 'm'),
@@ -92,19 +92,14 @@ export function generateTypeNamesFromName(name: string): string[] {
 
   types.push(`$${name}Payload`);
 
-  // CountAggregate - Output type (capitalized)
-  types.push(`${capitalizedName}CountAggregate`);
-
   // GroupBy - Output types (capitalized)
   types.push(`${capitalizedName}Group`);
   types.push(`${capitalizedName}GroupByOutputType`);
 
-  // Aggregate output types (capitalized)
-  types.push(`${capitalizedName}AvgAggregateOutputType`);
-  types.push(`${capitalizedName}SumAggregateOutputType`);
+  // Aggregate output types that preserve model scalar domains
+  // (do NOT include Count/Avg/Sum output types since those are numeric aggregates)
   types.push(`${capitalizedName}MinAggregateOutputType`);
   types.push(`${capitalizedName}MaxAggregateOutputType`);
-  types.push(`${capitalizedName}CountAggregateOutputType`);
 
   // Where types - Input types (preserve original casing)
   types.push(`${name}Where`, `${name}ScalarWhere`);
