@@ -42,6 +42,9 @@
 - [Typing `String` Fields (Enums)](#typing-string-fields-enums)
 - [Advanced Typing](#advanced-typing)
   - [Examples](#examples)
+- [TypedSQL Support](#typedsql-support)
+  - [Model-Based Annotations](#model-based-annotations)
+  - [SQL-File Annotations for Complex Queries](#sql-file-annotations-for-complex-queries)
 - [Validating Types at Runtime](#validating-types-at-runtime)
 - [How It Works](#how-it-works)
 - [Limitations](#limitations)
@@ -263,6 +266,74 @@ Important:
 
 - For array fields, keep the Prisma field as the array and keep the type as the element shape. Use `tags Json[]` with `/// [Tag]`, not `tags Json` with an array type like `/// ![Tag[]]` unless the JSON value itself is meant to be an array.
 - The same comment syntax also works for scalar fields such as `String`, `Int`, and `Float`, including nullable variants.
+
+<br />
+
+## TypedSQL Support
+
+[Prisma's TypedSQL](https://www.prisma.io/docs/orm/prisma-client/using-raw-sql/typedsql) feature generates strongly-typed wrappers for raw SQL queries. When a query returns `Json` columns, Prisma types them as `$runtime.JsonValue`. This generator replaces those with your annotated types, giving you full type safety down to raw SQL.
+
+Enable TypedSQL in your schema and add this generator as usual:
+
+```prisma
+generator client {
+  provider        = "prisma-client"
+  previewFeatures = ["typedSql"]
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+```
+
+### Model-Based Annotations
+
+For queries that return columns that map directly to a model field, the existing `/// [Type]` and `/// ![Type]` annotations in your schema are used automatically. No extra configuration is needed.
+
+```prisma
+model Order {
+  id   Int  @id
+  /// ![number]
+  meta Json
+}
+```
+
+```sql
+-- prisma/sql/getOrderMeta.sql
+SELECT id, meta FROM "Order"
+```
+
+After `prisma generate`, the `getOrderMeta.Result.meta` type is replaced with `(number)` instead of `$runtime.JsonValue`.
+
+### SQL-File Annotations for Complex Queries
+
+Real-world SQL queries often don't map 1:1 to a single model — they use column aliases, CTEs, JOINs, or computed expressions. In those cases, use a `-- @pjt-type` comment at the top of the `.sql` file to annotate individual result columns:
+
+```sql
+-- prisma/sql/getOrderStats.sql
+
+-- @pjt-type order_meta ![number]
+-- @pjt-type summary [OrderSummary]
+
+WITH latest AS (
+  SELECT
+    id,
+    meta      AS order_meta,
+    stats_col AS summary
+  FROM "Order"
+  WHERE created_at > NOW() - INTERVAL '30 days'
+)
+SELECT * FROM latest
+```
+
+The annotation syntax is identical to schema doc-comments:
+
+| Annotation | Result type |
+| :--- | :--- |
+| `-- @pjt-type col [MyType]` | `PrismaJson.MyType` |
+| `-- @pjt-type col ![number \| string]` | `(number \| string)` |
+
+SQL-file annotations take priority over model-based ones for that query, so you can also use them to override a model-level annotation for a specific query.
 
 <br />
 

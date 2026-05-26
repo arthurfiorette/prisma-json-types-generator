@@ -1,10 +1,10 @@
 import fs from 'node:fs/promises';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import type { GeneratorOptions, SqlQueryOutput } from '@prisma/generator';
 import ts from 'typescript';
 import { handlePrismaModule } from './handler/module';
 import { handleStatement } from './handler/statement';
-import { handleTypedSqlFile } from './handler/typedsql';
+import { handleTypedSqlFile, parseSqlAnnotations } from './handler/typedsql';
 import { extractPrismaModels } from './helpers/dmmf';
 import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config';
 import { DeclarationWriter, getNamespacePrelude } from './util/declaration-writer';
@@ -110,12 +110,27 @@ async function handleTypedSqlQueries(
     }
   }
 
+  // SQL source files live next to the schema file (e.g. prisma/sql/<queryName>.sql)
+  const sqlSourceDir = join(dirname(options.schemaPath), 'sql');
+
   for (const query of typedSql) {
     const filePath = join(sqlDir, `${query.name}.ts`);
     const fileStat = await fs.stat(filePath).catch(() => null);
     if (!fileStat?.isFile()) continue;
 
-    await handleTypedSqlDeclarationFile(filePath, query, columnDocs, config, importFileExtension);
+    // Per-query column docs: start from model-based map, then overlay any SQL-file
+    // annotations so that complex queries with aliases / computed columns are covered.
+    let queryColumnDocs = columnDocs;
+    const sqlSourcePath = join(sqlSourceDir, `${query.name}.sql`);
+    const sqlContent = await fs.readFile(sqlSourcePath, 'utf-8').catch(() => null);
+    if (sqlContent) {
+      const sqlAnnotations = parseSqlAnnotations(sqlContent);
+      if (sqlAnnotations.size > 0) {
+        queryColumnDocs = new Map([...columnDocs, ...sqlAnnotations]);
+      }
+    }
+
+    await handleTypedSqlDeclarationFile(filePath, query, queryColumnDocs, config, importFileExtension);
   }
 }
 

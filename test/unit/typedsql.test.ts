@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { describe, test } from 'node:test';
 import ts from 'typescript';
-import { handleTypedSqlFile } from '../../src/handler/typedsql';
+import { handleTypedSqlFile, parseSqlAnnotations } from '../../src/handler/typedsql';
 import type { PrismaJsonTypesGeneratorConfig } from '../../src/util/config';
 import type { TextDiff } from '../../src/util/text-changes';
 import { applyTextChanges } from '../../src/util/text-changes';
@@ -315,5 +315,108 @@ describe('columnDocs lookup — json-typed columns with @map and collisions', ()
 
     assert(map.has('raw'), 'Should include field even without documentation');
     assert.equal(map.get('raw'), undefined);
+  });
+});
+
+describe('parseSqlAnnotations - SQL file annotation parsing', () => {
+  test('parses an inline literal annotation', () => {
+    const result = parseSqlAnnotations('-- @pjt-type my_col ![number]\nSELECT 1');
+    assert.equal(result.size, 1);
+    assert.equal(result.get('my_col'), '![number]');
+  });
+
+  test('parses a namespace-based annotation', () => {
+    const result = parseSqlAnnotations('-- @pjt-type col [MyType]\nSELECT 1');
+    assert.equal(result.size, 1);
+    assert.equal(result.get('col'), '[MyType]');
+  });
+
+  test('parses multiple annotations', () => {
+    const sql = '-- @pjt-type col1 ![string]\n-- @pjt-type col2 [T]\nSELECT 1';
+    const result = parseSqlAnnotations(sql);
+    assert.equal(result.size, 2);
+    assert.equal(result.get('col1'), '![string]');
+    assert.equal(result.get('col2'), '[T]');
+  });
+
+  test('ignores non-annotation comments', () => {
+    const result = parseSqlAnnotations('-- This is a regular comment\nSELECT 1');
+    assert.equal(result.size, 0);
+  });
+
+  test('returns an empty map for an empty string', () => {
+    assert.equal(parseSqlAnnotations('').size, 0);
+  });
+
+  test('handles extra whitespace between -- and @pjt-type', () => {
+    const result = parseSqlAnnotations('--   @pjt-type  col  ![string]');
+    assert.equal(result.size, 1);
+    assert.equal(result.get('col'), '![string]');
+  });
+
+  test('last annotation wins for duplicate column names', () => {
+    const sql = '-- @pjt-type col ![number]\n-- @pjt-type col ![string]';
+    const result = parseSqlAnnotations(sql);
+    assert.equal(result.size, 1);
+    assert.equal(result.get('col'), '![string]');
+  });
+
+  test('annotation is usable by createType via handleTypedSqlFile', () => {
+    const source = `import * as $runtime from "../runtime/client";
+export namespace aliasQuery {
+  export type Parameters = [];
+  export type Result = {
+    id: number
+    field_alias: $runtime.JsonValue
+  }
+}
+`;
+    const sqlContent = '-- @pjt-type field_alias ![number]\nSELECT id, field AS field_alias FROM "Model"';
+    const sqlAnnotations = parseSqlAnnotations(sqlContent);
+
+    const tsSource = ts.createSourceFile(
+      'aliasQuery.ts',
+      source,
+      ts.ScriptTarget.ESNext,
+      true,
+      ts.ScriptKind.TS
+    );
+
+    const changes: TextDiff[] = [];
+    const writer = {
+      changes,
+      multifile: true as const,
+      replace(start: number, end: number, text: string) {
+        changes.push({ start, end, text });
+      }
+    };
+
+    const config: PrismaJsonTypesGeneratorConfig = {
+      namespace: 'PrismaJson',
+      allowAny: false,
+      useType: undefined,
+      clientOutput: undefined
+    };
+
+    handleTypedSqlFile(
+      tsSource,
+      writer as never,
+      {
+        name: 'aliasQuery',
+        source: 'SELECT id, field AS field_alias FROM "Model"',
+        documentation: null,
+        parameters: [],
+        resultColumns: [
+          { name: 'id', typ: 'int', nullable: false },
+          { name: 'field_alias', typ: 'json', nullable: false }
+        ]
+      },
+      sqlAnnotations,
+      config
+    );
+
+    const result = applyTextChanges(source, changes);
+    assert(result.includes('field_alias: (number)'), `Expected 'field_alias: (number)' in:\n${result}`);
+    assert(result.includes('id: number'), `Expected 'id: number' untouched in:\n${result}`);
   });
 });

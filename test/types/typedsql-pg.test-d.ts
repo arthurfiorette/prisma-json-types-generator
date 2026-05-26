@@ -7,30 +7,30 @@ declare global {
   }
 }
 
-// field is replaced with (number) from the /// ![number] annotation
+// field_alias is replaced with (number) via -- @pjt-type annotation in getModel.sql
 expectAssignable<getModel.Result>({
   id: 1,
-  field: 42,
+  field_alias: 42,
   optField: null
 });
 
 // optField is replaced with PTypedSqlJson.OptionalField | null = string | null
 expectAssignable<getModel.Result>({
   id: 1,
-  field: 1,
+  field_alias: 1,
   optField: 'hello'
 });
 
-// field should NOT accept a string (it's (number))
+// field_alias should NOT accept a string (it's (number))
 expectNotAssignable<getModel.Result>({
   id: 1,
-  field: 'not-a-number',
+  field_alias: 'not-a-number',
   optField: null
 });
 
 // optField should NOT accept a number (it's string | null)
 expectNotAssignable<getModel.Result>({
   id: 1,
-  field: 1,
+  field_alias: 1,
   optField: 42
 });
