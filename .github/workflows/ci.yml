@@ -85,7 +85,7 @@ jobs:
           DATABASE_URL: postgresql://prisma:prisma@localhost:5432/typedsql_test
 
       - name: Generate TypedSQL types
-        run: pnpm prisma generate --config test/pg-schemas/prisma.config.ts --schema test/pg-schemas/typedsql.prisma
+        run: pnpm prisma generate --sql --config test/pg-schemas/prisma.config.ts --schema test/pg-schemas/typedsql.prisma
         env:
           DATABASE_URL: postgresql://prisma:prisma@localhost:5432/typedsql_test
 
