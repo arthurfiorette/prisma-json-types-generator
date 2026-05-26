@@ -54,10 +54,25 @@ jobs:
           PJTG_SEQUENTIAL_TESTS: 1
 
   e2e-typedsql:
-    name: E2E TypedSQL (PostgreSQL)
-    runs-on: ubuntu-latest
+    name: E2E TypedSQL (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            database_url: postgresql://prisma:prisma@localhost:5432/typedsql_test
+          - os: macos-latest
+            database_url: postgresql://localhost:5432/typedsql_test
+          - os: windows-latest
+            database_url: postgresql://postgres:root@localhost:5432/typedsql_test
 
     steps:
+      - name: Uses LF line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - name: Checkout
         uses: actions/checkout@v6
 
@@ -76,18 +91,36 @@ jobs:
       - name: Build code
         run: pnpm build
 
-      - name: Start PostgreSQL
+      - name: Start PostgreSQL (Linux)
+        if: runner.os == 'Linux'
         run: docker compose up -d --wait
+
+      - name: Start PostgreSQL (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew services start postgresql@14
+          until "$(brew --prefix)/opt/postgresql@14/bin/pg_isready" -q; do sleep 1; done
+          "$(brew --prefix)/opt/postgresql@14/bin/createdb" typedsql_test
+
+      - name: Start PostgreSQL (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $svc = (Get-Service postgresql*).Name
+          Start-Service $svc
+          $pgVer = $svc -replace 'postgresql-x64-', ''
+          $env:PGPASSWORD = 'root'
+          & "C:\Program Files\PostgreSQL\$pgVer\bin\psql.exe" -U postgres -c "CREATE DATABASE typedsql_test;"
 
       - name: Push database schema
         run: pnpm prisma db push --config test/pg-schemas/prisma.config.ts --schema test/pg-schemas/typedsql.prisma
         env:
-          DATABASE_URL: postgresql://prisma:prisma@localhost:5432/typedsql_test
+          DATABASE_URL: ${{ matrix.database_url }}
 
       - name: Generate TypedSQL types
         run: pnpm prisma generate --sql --config test/pg-schemas/prisma.config.ts --schema test/pg-schemas/typedsql.prisma
         env:
-          DATABASE_URL: postgresql://prisma:prisma@localhost:5432/typedsql_test
+          DATABASE_URL: ${{ matrix.database_url }}
 
       - name: Verify TypedSQL types
         run: pnpm tsd -f test/types/typedsql-pg.test-d.ts -t . --show-diff
