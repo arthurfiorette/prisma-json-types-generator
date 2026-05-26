@@ -371,7 +371,8 @@ export namespace aliasQuery {
   }
 }
 `;
-    const sqlContent = '-- @pjt-type field_alias ![number]\nSELECT id, field AS field_alias FROM "Model"';
+    const sqlContent =
+      '-- @pjt-type field_alias ![number]\nSELECT id, field AS field_alias FROM "Model"';
     const sqlAnnotations = parseSqlAnnotations(sqlContent);
 
     const tsSource = ts.createSourceFile(
@@ -416,7 +417,10 @@ export namespace aliasQuery {
     );
 
     const result = applyTextChanges(source, changes);
-    assert(result.includes('field_alias: (number)'), `Expected 'field_alias: (number)' in:\n${result}`);
+    assert(
+      result.includes('field_alias: (number)'),
+      `Expected 'field_alias: (number)' in:\n${result}`
+    );
     assert(result.includes('id: number'), `Expected 'id: number' untouched in:\n${result}`);
   });
 });

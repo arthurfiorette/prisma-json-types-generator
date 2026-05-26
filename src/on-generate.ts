@@ -130,7 +130,13 @@ async function handleTypedSqlQueries(
       }
     }
 
-    await handleTypedSqlDeclarationFile(filePath, query, queryColumnDocs, config, importFileExtension);
+    await handleTypedSqlDeclarationFile(
+      filePath,
+      query,
+      queryColumnDocs,
+      config,
+      importFileExtension
+    );
   }
 }
 
