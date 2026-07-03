@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import { join } from 'node:path';
 import type { GeneratorOptions } from '@prisma/generator';
-import ts from 'typescript';
+import ts from '@typescript/typescript6';
 import { handlePrismaModule } from './handler/module';
 import { handleStatement } from './handler/statement';
 import { extractPrismaModels } from './helpers/dmmf';

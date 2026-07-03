@@ -1,5 +1,5 @@
+import ts from '@typescript/typescript6';
 import { Result } from 'try';
-import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { PRISMA_NAMESPACE_NAME } from '../util/constants';

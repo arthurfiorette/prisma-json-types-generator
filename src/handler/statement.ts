@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from '@typescript/typescript6';
 import type { PrismaEntity } from '../helpers/dmmf';
 import { extractBaseNameFromRelationType } from '../helpers/regex';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';

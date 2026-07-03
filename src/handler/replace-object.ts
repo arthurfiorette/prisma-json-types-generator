@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from '@typescript/typescript6';
 import type { PrismaEntity } from '../helpers/dmmf';
 import { findNewSignature } from '../helpers/find-signature';
 import { parseTypeSyntax } from '../helpers/type-parser';
