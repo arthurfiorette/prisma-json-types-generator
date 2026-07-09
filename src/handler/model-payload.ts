@@ -1,18 +1,19 @@
-import ts from 'typescript';
+import type { TypeAliasDeclaration, TypeLiteralNode } from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
+import ts from '../util/ts';
 import { replaceObject } from './replace-object';
 
 /** Replacer responsible for the main <Model>Payload type. */
 export function handleModelPayload(
-  typeAlias: ts.TypeAliasDeclaration,
+  typeAlias: TypeAliasDeclaration,
   writer: DeclarationWriter,
   model: PrismaEntity,
   config: PrismaJsonTypesGeneratorConfig
 ) {
-  const type = typeAlias.type as ts.TypeLiteralNode;
+  const type = typeAlias.type as TypeLiteralNode;
 
   if (type.kind !== ts.SyntaxKind.TypeLiteral) {
     throw new PrismaJsonTypesGeneratorError('Provided model payload is not a type literal', {
@@ -35,7 +36,7 @@ export function handleModelPayload(
   // this is the OBJECT part
   const object = (
     model.type === 'model' ? scalarsField?.type?.typeArguments?.[0] : scalarsField?.type
-  ) as ts.TypeLiteralNode;
+  ) as TypeLiteralNode;
 
   if (!object) {
     throw new PrismaJsonTypesGeneratorError('Payload scalars could not be resolved', {

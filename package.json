@@ -50,15 +50,23 @@
     "@prisma/generator": "^7.8.0",
     "@types/node": "^26.1.0",
     "@types/semver": "^7.7.1",
+    "@typescript/typescript6": "^6.0.2",
     "husky": "^9.1.7",
     "prisma": "^7.8.0",
     "tsd": "^0.33.0",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
   },
   "peerDependencies": {
     "@prisma/client": "^7.8.0",
+    "@typescript/typescript6": "^6.0.2",
     "prisma": "^7.8.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.2 || ^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@typescript/typescript6": {
+      "optional": true
+    }
   },
   "packageManager": "pnpm@10.33.2",
   "engines": {

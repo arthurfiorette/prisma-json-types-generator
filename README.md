@@ -21,7 +21,7 @@
 <br />
 
 > [!IMPORTANT]  
-> `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6.
+> `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6/v7. TypeScript 7 projects also need `@typescript/typescript6`, see [Installation](#installation).
 
 <br />
 
@@ -71,6 +71,16 @@ Install the package as a development dependency in your project.
 ```bash
 npm install -D prisma-json-types-generator
 ```
+
+### TypeScript 7
+
+TypeScript 7 (the native compiler) no longer ships the JS compiler API this generator uses to parse the generated client declarations. If your project uses `typescript@7`, also install [`@typescript/typescript6`](https://www.npmjs.com/package/@typescript/typescript6), Microsoft's official compatibility package:
+
+```bash
+npm install -D @typescript/typescript6
+```
+
+Your project keeps compiling with TypeScript 7; the compatibility package is only used by this generator. On TypeScript 6, nothing changes and no extra package is needed.
 
 ## Install the Skill
 
@@ -323,7 +333,7 @@ It then traverses this AST, and for each property signature in a model, it cross
 ## Limitations
 
 - **Complex Filters:** To preserve functionality, types like `JsonFilter` and `JsonWithAggregatesFilter` remain untyped.
-- **Version Support:** `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6.
+- **Version Support:** `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6/v7 (v7 requires `@typescript/typescript6`, see [Installation](#installation)).
 - **Known Gaps:** If you find any `Json` fields that are not being typed correctly, please [open an issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues).
 
 <br />

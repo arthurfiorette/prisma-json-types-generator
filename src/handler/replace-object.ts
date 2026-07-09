@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type { PropertySignature, TypeLiteralNode } from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import { findNewSignature } from '../helpers/find-signature';
 import { parseTypeSyntax } from '../helpers/type-parser';
@@ -6,10 +6,11 @@ import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { createType } from '../util/create-signature';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
+import ts from '../util/ts';
 
 /** Tries to replace every property of an object */
 export function replaceObject(
-  object: ts.TypeLiteralNode,
+  object: TypeLiteralNode,
   writer: DeclarationWriter,
   model: PrismaEntity,
   config: PrismaJsonTypesGeneratorConfig
@@ -36,7 +37,7 @@ export function replaceObject(
       }
 
       // the original `field: Type`
-      const signature = (member as ts.PropertySignature).type;
+      const signature = (member as PropertySignature).type;
 
       if (!signature) {
         throw new PrismaJsonTypesGeneratorError('Could not find signature type', {

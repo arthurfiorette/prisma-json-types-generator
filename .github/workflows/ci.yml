@@ -52,3 +52,41 @@ jobs:
         env:
           # Prisma breaks when running tests in parallel
           PJTG_SEQUENTIAL_TESTS: 1
+
+  typescript-7:
+    name: CI typescript@7
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup node and restore cached dependencies
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
+
+      - name: Build code
+        run: pnpm build
+
+      # Swap in TypeScript 7 after building so the generator resolves the
+      # compiler API through the @typescript/typescript6 fallback at runtime.
+      # minimum-release-age is bypassed because it silently keeps the previous
+      # version when the requested one is too recent, voiding this job.
+      - name: Install TypeScript 7
+        run: |
+          pnpm --config.minimum-release-age=0 add -D typescript@^7.0.0
+          node -e "const v = require('typescript/package.json').version; if (!v.startsWith('7.')) { throw new Error('expected typescript 7, got ' + v) }"
+
+      - name: E2E tests
+        run: pnpm test-e2e
+        env:
+          # Prisma breaks when running tests in parallel
+          PJTG_SEQUENTIAL_TESTS: 1

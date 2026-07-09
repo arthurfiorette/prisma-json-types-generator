@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import { join } from 'node:path';
 import type { GeneratorOptions } from '@prisma/generator';
-import ts from 'typescript';
+import type { ModuleDeclaration, Statement } from 'typescript';
 import { handlePrismaModule } from './handler/module';
 import { handleStatement } from './handler/statement';
 import { extractPrismaModels } from './helpers/dmmf';
@@ -9,6 +9,7 @@ import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config'
 import { DeclarationWriter, getNamespacePrelude } from './util/declaration-writer';
 import { findPrismaClientGenerators, type GeneratorWithOutput } from './util/prisma-generator';
 import { buildTypesFilePath } from './util/source-path';
+import ts from './util/ts';
 
 /** Runs the generator with the given options. */
 export async function onGenerate(options: GeneratorOptions) {
@@ -92,7 +93,7 @@ async function handleDeclarationFile(
       if (!multifile) {
         if (child.kind === ts.SyntaxKind.ModuleDeclaration) {
           handlePrismaModule(
-            child as ts.ModuleDeclaration,
+            child as ModuleDeclaration,
             writer,
             modelMap,
             knownNoOps,
@@ -102,14 +103,7 @@ async function handleDeclarationFile(
         }
       } else {
         if (ts.isStatement(child)) {
-          handleStatement(
-            child as ts.Statement,
-            writer,
-            modelMap,
-            typeToNameMap,
-            knownNoOps,
-            config
-          );
+          handleStatement(child as Statement, writer, modelMap, typeToNameMap, knownNoOps, config);
         }
       }
     } catch (error) {

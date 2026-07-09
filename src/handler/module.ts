@@ -1,15 +1,16 @@
 import { Result } from 'try';
-import ts from 'typescript';
+import type { Identifier, ModuleBlock, ModuleDeclaration } from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { PRISMA_NAMESPACE_NAME } from '../util/constants';
 import type { DeclarationWriter } from '../util/declaration-writer';
 import { PrismaJsonTypesGeneratorError } from '../util/error';
+import ts from '../util/ts';
 import { handleStatement } from './statement';
 
 /** Handles the prisma namespace module. */
 export function handlePrismaModule(
-  child: ts.ModuleDeclaration,
+  child: ModuleDeclaration,
   writer: DeclarationWriter,
   modelMap: Map<string, PrismaEntity>,
   knownNoOps: Set<string>,
@@ -18,7 +19,7 @@ export function handlePrismaModule(
 ) {
   const name = child
     .getChildren()
-    .find((n): n is ts.Identifier => n.kind === ts.SyntaxKind.Identifier);
+    .find((n): n is Identifier => n.kind === ts.SyntaxKind.Identifier);
 
   // Not a prisma namespace
   if (!name || name.text !== PRISMA_NAMESPACE_NAME) {
@@ -27,7 +28,7 @@ export function handlePrismaModule(
 
   const content = child
     .getChildren()
-    .find((n): n is ts.ModuleBlock => n.kind === ts.SyntaxKind.ModuleBlock);
+    .find((n): n is ModuleBlock => n.kind === ts.SyntaxKind.ModuleBlock);
 
   if (!content?.statements.length) {
     throw new PrismaJsonTypesGeneratorError('Prisma namespace content could not be found');

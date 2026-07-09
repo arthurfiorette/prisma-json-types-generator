@@ -1,8 +1,9 @@
-import ts from 'typescript';
+import type { Statement, TypeAliasDeclaration, TypeLiteralNode } from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import { extractBaseNameFromRelationType } from '../helpers/regex';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import type { DeclarationWriter } from '../util/declaration-writer';
+import ts from '../util/ts';
 import { handleModelPayload } from './model-payload';
 import { replaceObject } from './replace-object';
 
@@ -11,7 +12,7 @@ import { replaceObject } from './replace-object';
  * where/create/update input/output
  */
 export function handleStatement(
-  statement: ts.Statement,
+  statement: Statement,
   writer: DeclarationWriter,
   modelMap: Map<string, PrismaEntity>,
   typeToNameMap: Map<string, string>,
@@ -22,7 +23,7 @@ export function handleStatement(
     return;
   }
 
-  const type = statement as ts.TypeAliasDeclaration;
+  const type = statement as TypeAliasDeclaration;
 
   // Filters any statement that isn't a export type declaration
   if (type.type.kind !== ts.SyntaxKind.TypeLiteral) {
@@ -44,7 +45,7 @@ export function handleStatement(
       if (typeName === `$${modelName}Payload`) {
         return handleModelPayload(type, writer, model, config);
       }
-      return replaceObject(type.type as ts.TypeLiteralNode, writer, model, config);
+      return replaceObject(type.type as TypeLiteralNode, writer, model, config);
     }
   } else {
     // If the type name isn't constant, match the model name using a regex, then do the lookup
@@ -52,7 +53,7 @@ export function handleStatement(
     if (baseName) {
       const model = modelMap.get(baseName);
       if (model) {
-        return replaceObject(type.type as ts.TypeLiteralNode, writer, model, config);
+        return replaceObject(type.type as TypeLiteralNode, writer, model, config);
       }
     }
   }
