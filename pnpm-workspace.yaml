@@ -11,3 +11,8 @@ trustPolicyIgnoreAfter: 10080
 minimumReleaseAge: 1440
 # no git/tarball dependencies, only from trusted registry
 blockExoticSubdeps: true
+
+allowBuilds:
+  '@prisma/engines': true
+  esbuild: true
+  prisma: true

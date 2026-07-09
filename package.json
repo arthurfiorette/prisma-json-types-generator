@@ -1,6 +1,6 @@
 {
   "name": "prisma-json-types-generator",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "Changes JsonValues to your custom typescript type",
   "keywords": [
     "prisma",
@@ -39,28 +39,28 @@
   },
   "dependencies": {
     "@prisma/generator-helper": "^7.8.0",
-    "semver": "^7.7.4",
+    "typescript": "npm:typescript@^6.0.3",
+    "semver": "^7.8.5",
     "try": "^1.0.3",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@arthurfiorette/biomejs-config": "^2.0.1",
-    "@biomejs/biome": "^2.4.13",
+    "@biomejs/biome": "^2.5.3",
     "@prisma/dmmf": "^7.8.0",
     "@prisma/generator": "^7.8.0",
-    "@types/node": "^26.1.0",
+    "@types/node": "^24.13.3",
     "@types/semver": "^7.7.1",
     "husky": "^9.1.7",
     "prisma": "^7.8.0",
     "tsd": "^0.33.0",
-    "tsx": "^4.21.0"
+    "tsx": "^4.23.0"
   },
   "peerDependencies": {
     "@prisma/client": "^7.8.0",
-    "prisma": "^7.8.0",
-    "typescript": "^6.0.3"
+    "prisma": "^7.8.0"
   },
-  "packageManager": "pnpm@10.33.2",
+  "packageManager": "pnpm@11.10.0",
   "engines": {
     "node": ">=14.0"
   },
