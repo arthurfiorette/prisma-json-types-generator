@@ -7,6 +7,7 @@ import { handleStatement } from './handler/statement';
 import { handleTypedSqlFile, parseSqlAnnotations } from './handler/typedsql';
 import { extractPrismaModels } from './helpers/dmmf';
 import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config';
+import { createType } from './util/create-signature';
 import { DeclarationWriter, getNamespacePrelude } from './util/declaration-writer';
 import { findPrismaClientGenerators, type GeneratorWithOutput } from './util/prisma-generator';
 import { buildTypesFilePath } from './util/source-path';
@@ -55,7 +56,7 @@ async function generateClient(
       );
 
       // Process TypedSQL queries after pjtg.ts is in place
-      await handleTypedSqlQueries(prismaClient, config, options, ext);
+      await handleTypedSqlQueries(prismaClient, config, options, ext, true);
 
       return;
     }
@@ -67,30 +68,15 @@ async function generateClient(
 
   await handleDeclarationFile(clientOutput, config, options, ext, false);
 
-  // For TypedSQL with old-client (or new-client single-file mode), ensure pjtg.ts exists
-  if (options.typedSql?.length) {
-    if (!isNewClient) {
-      const pjtgPath = join(prismaClient.output.value, 'pjtg.ts');
-      if (!(await fs.stat(pjtgPath).catch(() => null))) {
-        await fs.writeFile(
-          pjtgPath,
-          await getNamespacePrelude({
-            namespace: config.namespace,
-            isNewClient: false,
-            dotExt: ext ? `.${ext}` : ''
-          })
-        );
-      }
-    }
-    await handleTypedSqlQueries(prismaClient, config, options, ext);
-  }
+  await handleTypedSqlQueries(prismaClient, config, options, ext, isNewClient);
 }
 
 async function handleTypedSqlQueries(
   prismaClient: GeneratorWithOutput,
   config: PrismaJsonTypesGeneratorConfig,
   options: GeneratorOptions,
-  importFileExtension: string | undefined
+  importFileExtension: string | undefined,
+  isNewClient: boolean
 ) {
   const typedSql = options.typedSql;
   if (!typedSql?.length) return;
@@ -99,45 +85,141 @@ async function handleTypedSqlQueries(
   const sqlDirStat = await fs.stat(sqlDir).catch(() => null);
   if (!sqlDirStat?.isDirectory()) return;
 
-  // Build column name → documentation lookup from all Json fields in the schema.
-  // Uses the @map db column name when present; first model wins on collisions.
-  const columnDocs = new Map<string, string | undefined>();
-  for (const model of options.dmmf.datamodel.models) {
-    for (const field of model.fields) {
-      if (field.type !== 'Json') continue;
-      const col = field.dbName ?? field.name;
-      if (!columnDocs.has(col)) columnDocs.set(col, field.documentation);
+  // Only the queries prisma actually emitted a file for. `sql/` also holds an index and,
+  // for the old client, a layout we don't rewrite — so this can legitimately be empty.
+  const queries: { query: SqlQueryOutput; filepath: string }[] = [];
+
+  for (const query of typedSql) {
+    const filepath = join(sqlDir, `${query.name}.ts`);
+    const fileStat = await fs.stat(filepath).catch(() => null);
+
+    if (fileStat?.isFile()) {
+      queries.push({ query, filepath });
     }
   }
+
+  if (queries.length === 0) return;
+
+  // Rewritten files import PJTG from a sibling of sql/. The multifile client already
+  // wrote it; every other layout needs it created here, and only once we know there is
+  // something to rewrite — otherwise we'd leave a stray file in the client output.
+  const pjtgPath = join(prismaClient.output.value, 'pjtg.ts');
+
+  if (!(await fs.stat(pjtgPath).catch(() => null))) {
+    await fs.writeFile(
+      pjtgPath,
+      await getNamespacePrelude({
+        namespace: config.namespace,
+        isNewClient,
+        dotExt: importFileExtension ? `.${importFileExtension}` : ''
+      })
+    );
+  }
+
+  const { columnDocs, ambiguous } = buildColumnDocs(options.dmmf.datamodel.models, config);
 
   // SQL source files live next to the schema file (e.g. prisma/sql/<queryName>.sql)
   const sqlSourceDir = join(dirname(options.schemaPath), 'sql');
 
-  for (const query of typedSql) {
-    const filePath = join(sqlDir, `${query.name}.ts`);
-    const fileStat = await fs.stat(filePath).catch(() => null);
-    if (!fileStat?.isFile()) continue;
-
+  for (const { query, filepath } of queries) {
     // Per-query column docs: start from model-based map, then overlay any SQL-file
     // annotations so that complex queries with aliases / computed columns are covered.
     let queryColumnDocs = columnDocs;
+    let sqlAnnotations: Map<string, string> | undefined;
     const sqlSourcePath = join(sqlSourceDir, `${query.name}.sql`);
     const sqlContent = await fs.readFile(sqlSourcePath, 'utf-8').catch(() => null);
     if (sqlContent) {
-      const sqlAnnotations = parseSqlAnnotations(sqlContent);
+      sqlAnnotations = parseSqlAnnotations(sqlContent);
       if (sqlAnnotations.size > 0) {
         queryColumnDocs = new Map([...columnDocs, ...sqlAnnotations]);
       }
     }
 
+    warnAboutAmbiguousColumns(query, ambiguous, sqlAnnotations);
+
     await handleTypedSqlDeclarationFile(
-      filePath,
+      filepath,
       query,
       queryColumnDocs,
       config,
       importFileExtension
     );
   }
+}
+
+/**
+ * Builds the column name → documentation lookup used to type TypedSQL result columns,
+ * keyed by the `@map` db column name when present.
+ *
+ * Column names are only unique within a model and prisma does not tell us which table a
+ * result column came from, so a column claimed by multiple models with *different*
+ * annotations is reported as ambiguous and left unannotated. Guessing one of them would
+ * silently hand out the wrong type; `-- @pjt-type` disambiguates explicitly.
+ */
+export function buildColumnDocs(
+  models: readonly {
+    readonly fields: readonly {
+      readonly name: string;
+      readonly type: string;
+      readonly dbName?: string | null;
+      readonly documentation?: string;
+    }[];
+  }[],
+  config: PrismaJsonTypesGeneratorConfig
+) {
+  const columnDocs = new Map<string, string | undefined>();
+  const resolvedTypes = new Map<string, string>();
+  const ambiguous = new Set<string>();
+
+  for (const model of models) {
+    for (const field of model.fields) {
+      if (field.type !== 'Json') continue;
+
+      const column = field.dbName ?? field.name;
+      const type = createType(field.documentation, config);
+
+      if (!columnDocs.has(column)) {
+        columnDocs.set(column, field.documentation);
+        resolvedTypes.set(column, type);
+        continue;
+      }
+
+      // Models agreeing on the type are not ambiguous, only conflicting ones are
+      if (resolvedTypes.get(column) !== type) {
+        ambiguous.add(column);
+      }
+    }
+  }
+
+  for (const column of ambiguous) {
+    columnDocs.set(column, undefined);
+  }
+
+  return { columnDocs, ambiguous };
+}
+
+/** Warns about ambiguous columns a query actually selects and does not itself annotate. */
+function warnAboutAmbiguousColumns(
+  query: SqlQueryOutput,
+  ambiguous: Set<string>,
+  sqlAnnotations: Map<string, string> | undefined
+) {
+  const unresolved = query.resultColumns
+    .filter((column) => column.typ === 'json' || column.typ === 'json-array')
+    .filter((column) => ambiguous.has(column.name) && !sqlAnnotations?.has(column.name))
+    .map((column) => column.name);
+
+  if (unresolved.length === 0) return;
+
+  // Generators talk JSON-RPC over stderr, so stdout (which prisma inherits) is the only
+  // stream that actually reaches the user.
+  console.log(
+    `prisma-json-types-generator: ${query.name}.sql selects ${unresolved
+      .map((column) => `\`${column}\``)
+      .join(', ')}, which multiple models annotate differently. ` +
+      'Annotate the column in the SQL file to resolve it, e.g. `-- @pjt-type ' +
+      `${unresolved[0]} [YourType]\`.`
+  );
 }
 
 async function handleTypedSqlDeclarationFile(

@@ -1,26 +1,36 @@
 import { parseTypeSyntax } from '../helpers/type-parser';
 import type { PrismaJsonTypesGeneratorConfig } from './config';
 
+/**
+ * Finds the first type annotation within a doc-comment, or null when there is none.
+ *
+ * Description can be a multi-line string like:
+ *   '@DtoCastType(Customization, ../../types, Customization)\n' +
+ *   '[CustomizationType]'
+ * So we need to find the correct line to parse
+ */
+export function findTypeAnnotation(description: string | undefined) {
+  if (!description) {
+    return null;
+  }
+
+  for (const line of description.split('\n')) {
+    const parsed = parseTypeSyntax(line);
+
+    if (parsed) {
+      return parsed;
+    }
+  }
+
+  return null;
+}
+
 /** Creates the new signature for the provided type. */
 export function createType(
   description: string | undefined,
   config: PrismaJsonTypesGeneratorConfig
 ) {
-  if (!description) {
-    return 'unknown';
-  }
-
-  // Description can be a multi-line string like:
-  //   '@DtoCastType(Customization, ../../types, Customization)\n' +
-  //   '[CustomizationType]'
-  // So we need to find the correct line to parse
-  let parsed = null;
-  for (const line of description.split('\n')) {
-    parsed = parseTypeSyntax(line);
-    if (parsed) {
-      break;
-    }
-  }
+  const parsed = findTypeAnnotation(description);
 
   // Defaults to unknown always, config.allowAny is handled before this function
   if (!parsed) {

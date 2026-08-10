@@ -45,6 +45,7 @@
 - [TypedSQL Support](#typedsql-support)
   - [Model-Based Annotations](#model-based-annotations)
   - [SQL-File Annotations for Complex Queries](#sql-file-annotations-for-complex-queries)
+  - [Typing Query Parameters](#typing-query-parameters)
 - [Validating Types at Runtime](#validating-types-at-runtime)
 - [How It Works](#how-it-works)
 - [Limitations](#limitations)
@@ -305,6 +306,21 @@ SELECT id, meta FROM "Order"
 
 After `prisma generate`, the `getOrderMeta.Result.meta` type is replaced with `(number)` instead of `$runtime.JsonValue`.
 
+Only the JSON type itself is swapped, so whatever Prisma inferred around it is kept: a column Prisma could not prove non-nullable stays `| null`, and a `json-array` column stays an array whose *element* is your annotated type.
+
+```typescript
+export namespace getOrderMeta {
+  export type Result = {
+    meta: (number)          // Json
+    notes: (number) | null  // nullable column
+    tags: (number)[] | null // Json[] column
+  }
+}
+```
+
+> [!IMPORTANT]
+> Columns are matched by database column name (respecting `@map`), and Prisma does not report which table a result column came from. If several models declare the same column name with **different** annotations, the column is ambiguous: the generator prints a warning and falls back to `unknown` rather than silently picking one model's type. Annotate the column in the SQL file to resolve it.
+
 ### SQL-File Annotations for Complex Queries
 
 Real-world SQL queries often don't map 1:1 to a single model — they use column aliases, CTEs, JOINs, or computed expressions. In those cases, use a `-- @pjt-type` comment at the top of the `.sql` file to annotate individual result columns:
@@ -334,6 +350,26 @@ The annotation syntax is identical to schema doc-comments:
 | `-- @pjt-type col ![number \| string]` | `(number \| string)` |
 
 SQL-file annotations take priority over model-based ones for that query, so you can also use them to override a model-level annotation for a specific query.
+
+### Typing Query Parameters
+
+`Json` parameters are typed by Prisma as `$runtime.InputJsonObject`. To narrow one, put the same annotation syntax in the description of Prisma's own `-- @param` comment:
+
+```sql
+-- prisma/sql/findOrders.sql
+
+-- @param {Json} $1:filter ![{ status: string }]
+
+SELECT id, meta FROM "Order" WHERE meta @> $1
+```
+
+```typescript
+export namespace findOrders {
+  export type Parameters = [filter: ({ status: string })]
+}
+```
+
+Unlike result columns, parameters are opt-in: a `Json` parameter without an annotation keeps Prisma's `InputJsonObject`, which is a far more useful input type than `unknown`.
 
 <br />
 

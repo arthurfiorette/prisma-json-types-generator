@@ -2,6 +2,7 @@ import { strict as assert } from 'node:assert';
 import { describe, test } from 'node:test';
 import ts from 'typescript';
 import { handleTypedSqlFile, parseSqlAnnotations } from '../../src/handler/typedsql';
+import { buildColumnDocs } from '../../src/on-generate';
 import type { PrismaJsonTypesGeneratorConfig } from '../../src/util/config';
 import type { TextDiff } from '../../src/util/text-changes';
 import { applyTextChanges } from '../../src/util/text-changes';
@@ -39,7 +40,13 @@ function processTypedSqlSource(
   queryName: string,
   resultColumns: Array<{ name: string; typ: string; nullable: boolean }>,
   columnDocs: Map<string, string | undefined>,
-  cfg: PrismaJsonTypesGeneratorConfig = config
+  cfg: PrismaJsonTypesGeneratorConfig = config,
+  parameters: Array<{
+    name: string;
+    typ: string;
+    nullable: boolean;
+    documentation: string | null;
+  }> = []
 ): string {
   const tsSource = ts.createSourceFile(
     `${queryName}.ts`,
@@ -58,7 +65,7 @@ function processTypedSqlSource(
       name: queryName,
       source: `SELECT * FROM "${queryName}"`,
       documentation: null,
-      parameters: [],
+      parameters,
       resultColumns
     },
     columnDocs,
@@ -162,6 +169,51 @@ export namespace q {
     assert(result.includes('tags: (string)[]'), `Expected array type in:\n${result}`);
   });
 
+  test('keeps | null on a nullable json-array column', () => {
+    const source = `import * as $runtime from "../runtime/client";
+export namespace q {
+  export type Parameters = [];
+  export type Result = {
+    tags: $runtime.JsonValue[] | null
+  }
+}
+`;
+    const columnDocs = new Map([['tags', '![string]']]);
+
+    const result = processTypedSqlSource(
+      source,
+      'q',
+      [{ name: 'tags', typ: 'json-array', nullable: true }],
+      columnDocs
+    );
+
+    assert(
+      result.includes('tags: (string)[] | null'),
+      `Expected the nullability prisma emitted to be preserved in:\n${result}`
+    );
+  });
+
+  test('replaces a quoted column name', () => {
+    const source = `import * as $runtime from "../runtime/client";
+export namespace q {
+  export type Parameters = [];
+  export type Result = {
+    "my-column": $runtime.JsonValue
+  }
+}
+`;
+    const columnDocs = new Map([['my-column', '![number]']]);
+
+    const result = processTypedSqlSource(
+      source,
+      'q',
+      [{ name: 'my-column', typ: 'json', nullable: false }],
+      columnDocs
+    );
+
+    assert(result.includes('"my-column": (number)'), `Expected quoted column in:\n${result}`);
+  });
+
   test('skips unannotated json columns when allowAny=true', () => {
     const columnDocs = new Map<string, string | undefined>(); // empty
 
@@ -249,72 +301,166 @@ export namespace q {
   });
 });
 
-describe('columnDocs lookup — json-typed columns with @map and collisions', () => {
-  /** Helper replicating the inline build from on-generate.ts */
-  function buildColumnDocs(
-    models: Array<{
-      fields: Array<{
-        name: string;
-        type: string;
-        dbName: string | null;
-        documentation: string | undefined;
-      }>;
-    }>
-  ): Map<string, string | undefined> {
-    const columnDocs = new Map<string, string | undefined>();
-    for (const model of models) {
-      for (const field of model.fields) {
-        if (field.type !== 'Json') continue;
-        const col = field.dbName ?? field.name;
-        if (!columnDocs.has(col)) columnDocs.set(col, field.documentation);
-      }
-    }
-    return columnDocs;
-  }
+describe('handleTypedSqlFile - TypedSQL JSON parameter replacement', () => {
+  const paramSource = `import * as $runtime from "../runtime/client";
 
-  test('maps field name to documentation for Json fields', () => {
-    const map = buildColumnDocs([
-      {
-        fields: [
-          { name: 'id', type: 'Int', dbName: null, documentation: undefined },
-          { name: 'data', type: 'Json', dbName: null, documentation: '![number]' }
-        ]
-      }
+export const q = $runtime.makeTypedQueryFactory("SELECT 1") as (filter: $runtime.InputJsonObject, untyped: $runtime.InputJsonObject) => $runtime.TypedSql<q.Parameters, q.Result>
+
+export namespace q {
+  export type Parameters = [filter: $runtime.InputJsonObject, untyped: $runtime.InputJsonObject]
+  export type Result = {
+    id: number
+  }
+}
+`;
+
+  test('replaces an annotated json parameter in both the tuple and the factory', () => {
+    const result = processTypedSqlSource(paramSource, 'q', [], new Map(), config, [
+      { name: 'filter', typ: 'json', nullable: false, documentation: '![{ a: number }]' },
+      { name: 'untyped', typ: 'json', nullable: false, documentation: null }
     ]);
 
-    assert(!map.has('id'), 'Should not include non-Json fields');
-    assert(map.has('data'), 'Should include Json fields');
-    assert.equal(map.get('data'), '![number]');
+    assert(
+      result.includes('Parameters = [filter: ({ a: number }), untyped: $runtime.InputJsonObject]'),
+      `Expected the namespace tuple to be rewritten in:\n${result}`
+    );
+    assert(
+      result.includes('as (filter: ({ a: number }), untyped: $runtime.InputJsonObject) =>'),
+      `Expected the factory signature to be rewritten in:\n${result}`
+    );
+  });
+
+  test('resolves a namespace type for a json parameter', () => {
+    const result = processTypedSqlSource(paramSource, 'q', [], new Map(), config, [
+      { name: 'filter', typ: 'json', nullable: false, documentation: '[Filter]' }
+    ]);
+
+    assert(
+      result.includes('filter: PTypedSqlJson.Filter'),
+      `Expected namespace type in:\n${result}`
+    );
+  });
+
+  test('leaves a json parameter whose description is plain prose untouched', () => {
+    const result = processTypedSqlSource(paramSource, 'q', [], new Map(), config, [
+      { name: 'filter', typ: 'json', nullable: false, documentation: 'The filter to apply.' }
+    ]);
+
+    assert.equal(result, paramSource);
+  });
+
+  test('leaves unannotated json parameters as prisma emitted them', () => {
+    const result = processTypedSqlSource(paramSource, 'q', [], new Map(), config, [
+      { name: 'filter', typ: 'json', nullable: false, documentation: null }
+    ]);
+
+    assert.equal(result, paramSource);
+  });
+
+  test('does not treat allowAny=false as an annotation for parameters', () => {
+    const result = processTypedSqlSource(paramSource, 'q', [], new Map(), config, [
+      { name: 'filter', typ: 'json', nullable: false, documentation: null }
+    ]);
+
+    assert(
+      !result.includes('filter: unknown'),
+      `Unannotated parameters must not become unknown in:\n${result}`
+    );
+  });
+
+  test('ignores non-json parameters', () => {
+    const result = processTypedSqlSource(paramSource, 'q', [], new Map(), config, [
+      { name: 'filter', typ: 'int', nullable: false, documentation: '![{ a: number }]' }
+    ]);
+
+    assert.equal(result, paramSource);
+  });
+});
+
+describe('buildColumnDocs — json-typed columns with @map and collisions', () => {
+  test('maps field name to documentation for Json fields', () => {
+    const { columnDocs } = buildColumnDocs(
+      [
+        {
+          fields: [
+            { name: 'id', type: 'Int', dbName: null, documentation: undefined },
+            { name: 'data', type: 'Json', dbName: null, documentation: '![number]' }
+          ]
+        }
+      ],
+      config
+    );
+
+    assert(!columnDocs.has('id'), 'Should not include non-Json fields');
+    assert(columnDocs.has('data'), 'Should include Json fields');
+    assert.equal(columnDocs.get('data'), '![number]');
   });
 
   test('uses dbName (@map) as the key when set', () => {
-    const map = buildColumnDocs([
-      {
-        fields: [{ name: 'myField', type: 'Json', dbName: 'my_field', documentation: '[T]' }]
-      }
-    ]);
+    const { columnDocs } = buildColumnDocs(
+      [{ fields: [{ name: 'myField', type: 'Json', dbName: 'my_field', documentation: '[T]' }] }],
+      config
+    );
 
-    assert(map.has('my_field'), 'Should use dbName as key');
-    assert(!map.has('myField'), 'Should not use field name when dbName is set');
-    assert.equal(map.get('my_field'), '[T]');
+    assert(columnDocs.has('my_field'), 'Should use dbName as key');
+    assert(!columnDocs.has('myField'), 'Should not use field name when dbName is set');
+    assert.equal(columnDocs.get('my_field'), '[T]');
   });
 
-  test('first model wins when the same column name appears in multiple models', () => {
-    const map = buildColumnDocs([
-      { fields: [{ name: 'data', type: 'Json', dbName: null, documentation: '[TypeA]' }] },
-      { fields: [{ name: 'data', type: 'Json', dbName: null, documentation: '[TypeB]' }] }
-    ]);
+  test('drops the annotation when models disagree on the same column name', () => {
+    const { columnDocs, ambiguous } = buildColumnDocs(
+      [
+        { fields: [{ name: 'data', type: 'Json', dbName: null, documentation: '[TypeA]' }] },
+        { fields: [{ name: 'data', type: 'Json', dbName: null, documentation: '[TypeB]' }] }
+      ],
+      config
+    );
 
-    assert.equal(map.get('data'), '[TypeA]', 'First model should win');
+    assert(ambiguous.has('data'), 'Conflicting column should be reported as ambiguous');
+    assert.equal(
+      columnDocs.get('data'),
+      undefined,
+      'Ambiguous column must not silently take one of the two types'
+    );
+  });
+
+  test('models agreeing on the same column name are not ambiguous', () => {
+    const { columnDocs, ambiguous } = buildColumnDocs(
+      [
+        { fields: [{ name: 'data', type: 'Json', dbName: null, documentation: '[Same]' }] },
+        { fields: [{ name: 'data', type: 'Json', dbName: null, documentation: '[Same]' }] }
+      ],
+      config
+    );
+
+    assert.equal(ambiguous.size, 0, 'Identical annotations are not a conflict');
+    assert.equal(columnDocs.get('data'), '[Same]');
+  });
+
+  test('compares the resolved type, not the raw doc-comment', () => {
+    const { ambiguous } = buildColumnDocs(
+      [
+        { fields: [{ name: 'data', type: 'Json', dbName: null, documentation: '[Same]' }] },
+        {
+          fields: [
+            { name: 'data', type: 'Json', dbName: null, documentation: 'Some prose.\n[Same]' }
+          ]
+        }
+      ],
+      config
+    );
+
+    assert.equal(ambiguous.size, 0, 'Same type reached through different prose is not a conflict');
   });
 
   test('sets undefined documentation for unannotated Json fields', () => {
-    const map = buildColumnDocs([
-      { fields: [{ name: 'raw', type: 'Json', dbName: null, documentation: undefined }] }
-    ]);
+    const { columnDocs } = buildColumnDocs(
+      [{ fields: [{ name: 'raw', type: 'Json', dbName: null, documentation: undefined }] }],
+      config
+    );
 
-    assert(map.has('raw'), 'Should include field even without documentation');
-    assert.equal(map.get('raw'), undefined);
+    assert(columnDocs.has('raw'), 'Should include field even without documentation');
+    assert.equal(columnDocs.get('raw'), undefined);
   });
 });
 

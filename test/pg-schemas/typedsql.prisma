@@ -21,4 +21,19 @@ model Model {
 
   /// [OptionalField]
   optField Json?
+
+  /// ![{ tag: string }]
+  tags Json[]
+
+  /// !['model']
+  shared Json
+}
+
+// Annotates `shared` differently than Model does, making the column ambiguous for any
+// query that selects it without a `-- @pjt-type` annotation.
+model Other {
+  id Int @id
+
+  /// !['other']
+  shared Json
 }
