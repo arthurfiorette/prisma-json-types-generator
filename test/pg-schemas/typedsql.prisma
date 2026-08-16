@@ -27,6 +27,9 @@ model Model {
 
   /// !['model']
   shared Json
+
+  /// ![{ unit: string }]
+  mapped Json @map("mapped_column")
 }
 
 // Annotates `shared` differently than Model does, making the column ambiguous for any

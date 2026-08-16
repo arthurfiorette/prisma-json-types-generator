@@ -396,15 +396,42 @@ describe('buildColumnDocs — json-typed columns with @map and collisions', () =
     assert.equal(columnDocs.get('data'), '![number]');
   });
 
-  test('uses dbName (@map) as the key when set', () => {
-    const { columnDocs } = buildColumnDocs(
+  test('keys a @map-ed field under both the db column name and the field name', () => {
+    const { columnDocs, ambiguous } = buildColumnDocs(
       [{ fields: [{ name: 'myField', type: 'Json', dbName: 'my_field', documentation: '[T]' }] }],
       config
     );
 
-    assert(columnDocs.has('my_field'), 'Should use dbName as key');
-    assert(!columnDocs.has('myField'), 'Should not use field name when dbName is set');
-    assert.equal(columnDocs.get('my_field'), '[T]');
+    // `SELECT my_field` reports the db name, `SELECT my_field AS "myField"` the field name
+    assert.equal(columnDocs.get('my_field'), '[T]', 'Should be reachable by db column name');
+    assert.equal(columnDocs.get('myField'), '[T]', 'Should be reachable by field name');
+    assert.equal(ambiguous.size, 0, 'One field under two names is not a conflict');
+  });
+
+  test('does not treat models agreeing on a @map-ed column as ambiguous', () => {
+    const { columnDocs, ambiguous } = buildColumnDocs(
+      [
+        { fields: [{ name: 'myField', type: 'Json', dbName: 'my_field', documentation: '[T]' }] },
+        { fields: [{ name: 'myField', type: 'Json', dbName: 'my_field', documentation: '[T]' }] }
+      ],
+      config
+    );
+
+    assert.equal(ambiguous.size, 0, 'Identical annotations are not a conflict');
+    assert.equal(columnDocs.get('myField'), '[T]');
+  });
+
+  test('reports a conflict between a field name and another model’s @map-ed column', () => {
+    const { columnDocs, ambiguous } = buildColumnDocs(
+      [
+        { fields: [{ name: 'meta', type: 'Json', dbName: null, documentation: '[TypeA]' }] },
+        { fields: [{ name: 'metaData', type: 'Json', dbName: 'meta', documentation: '[TypeB]' }] }
+      ],
+      config
+    );
+
+    assert(ambiguous.has('meta'), 'Collision across the two naming styles is still a conflict');
+    assert.equal(columnDocs.get('meta'), undefined);
   });
 
   test('drops the annotation when models disagree on the same column name', () => {

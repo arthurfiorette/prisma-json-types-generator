@@ -24,13 +24,23 @@ expectType<{ tag: string }[] | null>(result.tags);
 // a result column came from, so it stays unknown rather than silently picking one
 expectType<unknown>(result.shared);
 
+// A `@map`ed column is reported by whichever name the query gives it, so both have to
+// resolve: the db name when it is selected bare...
+expectType<{ unit: string }>(result.mapped_column);
+
+// ...and the prisma field name when it is aliased, which is how a snake_case schema is
+// normally queried. Keying on the db name alone leaves every such column `unknown`.
+expectType<{ unit: string }>(result.mapped);
+
 // The whole row still type checks as a unit
 expectAssignable<getModel.Result>({
   id: 1,
   field_alias: 42,
   optField: null,
   tags: [{ tag: 'a' }],
-  shared: 'anything'
+  shared: 'anything',
+  mapped_column: { unit: 'a' },
+  mapped: { unit: 'a' }
 });
 
 expectNotAssignable<getModel.Result>({
@@ -38,7 +48,9 @@ expectNotAssignable<getModel.Result>({
   field_alias: 'not-a-number',
   optField: null,
   tags: [{ tag: 'a' }],
-  shared: 'anything'
+  shared: 'anything',
+  mapped_column: { unit: 'a' },
+  mapped: { unit: 'a' }
 });
 
 expectNotAssignable<getModel.Result>({
@@ -46,7 +58,19 @@ expectNotAssignable<getModel.Result>({
   field_alias: 1,
   optField: 42,
   tags: [{ tag: 'a' }],
-  shared: 'anything'
+  shared: 'anything',
+  mapped_column: { unit: 'a' },
+  mapped: { unit: 'a' }
+});
+
+expectNotAssignable<getModel.Result>({
+  id: 1,
+  field_alias: 1,
+  optField: null,
+  tags: [{ tag: 'a' }],
+  shared: 'anything',
+  mapped_column: { unit: 42 },
+  mapped: { unit: 'a' }
 });
 
 // Annotated `-- @param` is replaced in the namespace tuple...

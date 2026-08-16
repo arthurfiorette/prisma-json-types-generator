@@ -148,8 +148,13 @@ async function handleTypedSqlQueries(
 }
 
 /**
- * Builds the column name → documentation lookup used to type TypedSQL result columns,
- * keyed by the `@map` db column name when present.
+ * Builds the column name → documentation lookup used to type TypedSQL result columns.
+ *
+ * A field is registered under both its `@map` db column name and its prisma field name,
+ * because prisma reports result columns by their name *in the query output*: bare
+ * `SELECT provider_data` yields the db name, while the usual `SELECT provider_data AS
+ * "providerData"` yields the field name. Keying on only one of the two silently misses
+ * every query written in the other style.
  *
  * Column names are only unique within a model and prisma does not tell us which table a
  * result column came from, so a column claimed by multiple models with *different*
@@ -175,18 +180,19 @@ export function buildColumnDocs(
     for (const field of model.fields) {
       if (field.type !== 'Json') continue;
 
-      const column = field.dbName ?? field.name;
       const type = createType(field.documentation, config);
 
-      if (!columnDocs.has(column)) {
-        columnDocs.set(column, field.documentation);
-        resolvedTypes.set(column, type);
-        continue;
-      }
+      for (const column of new Set([field.dbName ?? field.name, field.name])) {
+        if (!columnDocs.has(column)) {
+          columnDocs.set(column, field.documentation);
+          resolvedTypes.set(column, type);
+          continue;
+        }
 
-      // Models agreeing on the type are not ambiguous, only conflicting ones are
-      if (resolvedTypes.get(column) !== type) {
-        ambiguous.add(column);
+        // Models agreeing on the type are not ambiguous, only conflicting ones are
+        if (resolvedTypes.get(column) !== type) {
+          ambiguous.add(column);
+        }
       }
     }
   }
