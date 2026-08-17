@@ -30,13 +30,27 @@ model Model {
 
   /// ![{ unit: string }]
   mapped Json @map("mapped_column")
+
+  // An annotated non-Json field: nothing about the replacement is specific to Json
+  /// [UserIdString]
+  userId String
+
+  // Annotated differently by Other, which makes it ambiguous
+  /// !['from-model']
+  slug String
+
+  // No annotation at all
+  plain String
 }
 
-// Annotates `shared` differently than Model does, making the column ambiguous for any
-// query that selects it without a `-- @pjt-type` annotation.
+// Annotates `shared` and `slug` differently than Model does, making both columns ambiguous
+// for any query that selects them without a `-- @pjt-type` annotation.
 model Other {
   id Int @id
 
   /// !['other']
   shared Json
+
+  /// !['from-other']
+  slug String
 }

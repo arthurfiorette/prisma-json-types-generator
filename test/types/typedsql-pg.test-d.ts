@@ -5,6 +5,7 @@ import type { getModel } from '../target/typedSql-pg/sql/getModel';
 declare global {
   export namespace PTypedSqlJson {
     export type OptionalField = string;
+    export type UserIdString = string & { __brand: 'UserId' };
   }
 }
 
@@ -32,7 +33,21 @@ expectType<{ unit: string }>(result.mapped_column);
 // normally queried. Keying on the db name alone leaves every such column `unknown`.
 expectType<{ unit: string }>(result.mapped);
 
+// Nothing about the replacement is specific to Json: an annotated `String` column carries
+// its annotated type into the result, exactly as it does into the model payload
+expectType<PTypedSqlJson.UserIdString>(result.userId);
+
+// `slug` is annotated differently by Model and Other. Unlike an ambiguous Json column,
+// which has only `JsonValue` to fall back on, prisma already wrote a real type here -- so
+// it is kept. Degrading it to `unknown` would be strictly worse than doing nothing.
+expectType<string>(result.slug);
+
+// A column no model annotates is likewise left exactly as prisma wrote it
+expectType<string>(result.plain);
+
 // The whole row still type checks as a unit
+declare const userId: PTypedSqlJson.UserIdString;
+
 expectAssignable<getModel.Result>({
   id: 1,
   field_alias: 42,
@@ -40,7 +55,24 @@ expectAssignable<getModel.Result>({
   tags: [{ tag: 'a' }],
   shared: 'anything',
   mapped_column: { unit: 'a' },
-  mapped: { unit: 'a' }
+  mapped: { unit: 'a' },
+  userId,
+  slug: 'anything',
+  plain: 'anything'
+});
+
+// The brand is real: a plain string is not assignable to the annotated column
+expectNotAssignable<getModel.Result>({
+  id: 1,
+  field_alias: 42,
+  optField: null,
+  tags: [{ tag: 'a' }],
+  shared: 'anything',
+  mapped_column: { unit: 'a' },
+  mapped: { unit: 'a' },
+  userId: 'unbranded',
+  slug: 'anything',
+  plain: 'anything'
 });
 
 expectNotAssignable<getModel.Result>({
@@ -50,7 +82,10 @@ expectNotAssignable<getModel.Result>({
   tags: [{ tag: 'a' }],
   shared: 'anything',
   mapped_column: { unit: 'a' },
-  mapped: { unit: 'a' }
+  mapped: { unit: 'a' },
+  userId,
+  slug: 'anything',
+  plain: 'anything'
 });
 
 expectNotAssignable<getModel.Result>({
@@ -60,7 +95,10 @@ expectNotAssignable<getModel.Result>({
   tags: [{ tag: 'a' }],
   shared: 'anything',
   mapped_column: { unit: 'a' },
-  mapped: { unit: 'a' }
+  mapped: { unit: 'a' },
+  userId,
+  slug: 'anything',
+  plain: 'anything'
 });
 
 expectNotAssignable<getModel.Result>({
@@ -70,7 +108,10 @@ expectNotAssignable<getModel.Result>({
   tags: [{ tag: 'a' }],
   shared: 'anything',
   mapped_column: { unit: 42 },
-  mapped: { unit: 'a' }
+  mapped: { unit: 'a' },
+  userId,
+  slug: 'anything',
+  plain: 'anything'
 });
 
 // Annotated `-- @param` is replaced in the namespace tuple...
@@ -83,3 +124,11 @@ expectNotAssignable<Parameters<typeof findByFilter>[0]>({ tag: 42 });
 
 // An unannotated Json parameter keeps prisma's input type, which still accepts objects
 expectAssignable<findByFilter.Parameters[1]>({ anything: true });
+
+// Parameters are annotated the same way whatever their kind...
+expectAssignable<findByFilter.Parameters[2]>(userId);
+expectNotAssignable<findByFilter.Parameters[2]>('unbranded');
+expectAssignable<Parameters<typeof findByFilter>[2]>(userId);
+
+// ...and an unannotated one of any kind keeps what prisma wrote
+expectType<string>(({} as findByFilter.Parameters)[3]);

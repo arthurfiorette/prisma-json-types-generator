@@ -272,7 +272,7 @@ Important:
 
 ## TypedSQL Support
 
-[Prisma's TypedSQL](https://www.prisma.io/docs/orm/prisma-client/using-raw-sql/typedsql) feature generates strongly-typed wrappers for raw SQL queries. When a query returns `Json` columns, Prisma types them as `$runtime.JsonValue`. This generator replaces those with your annotated types, giving you full type safety down to raw SQL.
+[Prisma's TypedSQL](https://www.prisma.io/docs/orm/prisma-client/using-raw-sql/typedsql) feature generates strongly-typed wrappers for raw SQL queries. Its result columns are typed from the database alone, so a `Json` column arrives as `$runtime.JsonValue` and an id column as a plain `string`. This generator gives those columns the same annotated types it gives your model payloads, carrying your type safety down to raw SQL.
 
 Enable TypedSQL in your schema and add this generator as usual:
 
@@ -306,7 +306,7 @@ SELECT id, meta FROM "Order"
 
 After `prisma generate`, the `getOrderMeta.Result.meta` type is replaced with `(number)` instead of `$runtime.JsonValue`.
 
-Only the JSON type itself is swapped, so whatever Prisma inferred around it is kept: a column Prisma could not prove non-nullable stays `| null`, and a `json-array` column stays an array whose *element* is your annotated type.
+Only the column's own type is swapped, so whatever Prisma inferred around it is kept: a column Prisma could not prove non-nullable stays `| null`, and an array column stays an array whose *element* is your annotated type.
 
 ```typescript
 export namespace getOrderMeta {
@@ -318,8 +318,30 @@ export namespace getOrderMeta {
 }
 ```
 
+Annotations are not limited to `Json` fields. Any field the generator types in your model payloads is typed in a query result too, which is what lets a raw SQL query hand back branded ids:
+
+```prisma
+model Order {
+  /// [OrderIdString]
+  id     String @id
+  /// [UserIdString]
+  userId String @map("user_id")
+}
+```
+
+```typescript
+export namespace getOrder {
+  export type Result = {
+    id: PrismaJson.OrderIdString     // was string
+    userId: PrismaJson.UserIdString  // was string
+  }
+}
+```
+
 > [!IMPORTANT]
-> Columns are matched by database column name (respecting `@map`), and Prisma does not report which table a result column came from. If several models declare the same column name with **different** annotations, the column is ambiguous: the generator prints a warning and falls back to `unknown` rather than silently picking one model's type. Annotate the column in the SQL file to resolve it.
+> Prisma reports a result column by the name it carries in the query output, and does not say which table it came from. Each field is therefore matched under both its `@map` database column name and its Prisma field name, so `SELECT user_id` and `SELECT user_id AS "userId"` both resolve.
+>
+> If several models declare the same column name and do not agree on its annotation — including one model annotating it and another not — the column is ambiguous and the generator will not guess. A `Json` column falls back to `unknown` and prints a warning, because `JsonValue` tells you nothing either way. A column of any other kind keeps the type Prisma wrote, since `string` is already a useful type and `unknown` would be a downgrade. Annotate the column in the SQL file to resolve either case.
 
 ### SQL-File Annotations for Complex Queries
 
@@ -353,23 +375,24 @@ SQL-file annotations take priority over model-based ones for that query, so you 
 
 ### Typing Query Parameters
 
-`Json` parameters are typed by Prisma as `$runtime.InputJsonObject`. To narrow one, put the same annotation syntax in the description of Prisma's own `-- @param` comment:
+Parameters are typed by Prisma from the database as well — a `Json` parameter as `$runtime.InputJsonObject`, an id parameter as `string`. To narrow one, put the same annotation syntax in the description of Prisma's own `-- @param` comment:
 
 ```sql
 -- prisma/sql/findOrders.sql
 
 -- @param {Json} $1:filter ![{ status: string }]
+-- @param {String} $2:userId [UserIdString]
 
-SELECT id, meta FROM "Order" WHERE meta @> $1
+SELECT id, meta FROM "Order" WHERE meta @> $1 AND user_id = $2
 ```
 
 ```typescript
 export namespace findOrders {
-  export type Parameters = [filter: ({ status: string })]
+  export type Parameters = [filter: ({ status: string }), userId: PrismaJson.UserIdString]
 }
 ```
 
-Unlike result columns, parameters are opt-in: a `Json` parameter without an annotation keeps Prisma's `InputJsonObject`, which is a far more useful input type than `unknown`.
+Parameters are matched by position rather than by name, so there is no model field to read an annotation from and they are opt-in whatever their kind. An unannotated parameter keeps what Prisma wrote — for a `Json` parameter that is `InputJsonObject`, a far more useful input type than `unknown`.
 
 <br />
 

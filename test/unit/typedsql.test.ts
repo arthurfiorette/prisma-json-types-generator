@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { describe, test } from 'node:test';
 import ts from 'typescript';
-import { handleTypedSqlFile, parseSqlAnnotations } from '../../src/handler/typedsql';
+import { columnDocsKey, handleTypedSqlFile, parseSqlAnnotations } from '../../src/handler/typedsql';
 import { buildColumnDocs } from '../../src/on-generate';
 import type { PrismaJsonTypesGeneratorConfig } from '../../src/util/config';
 import type { TextDiff } from '../../src/util/text-changes';
@@ -75,7 +75,7 @@ function processTypedSqlSource(
   return applyTextChanges(source, writer.changes);
 }
 
-describe('handleTypedSqlFile - TypedSQL JSON type replacement', () => {
+describe('handleTypedSqlFile - TypedSQL result column replacement', () => {
   const sampleSource = `import * as $runtime from "../runtime/client";
 
 export declare const asdd: () => $runtime.TypedSql<asdd.Parameters, asdd.Result>;
@@ -245,21 +245,55 @@ export namespace q {
     assert(result.includes('field: unknown'), `Expected 'field: unknown' in:\n${result}`);
   });
 
-  test('ignores non-json columns even if they appear in the annotation map', () => {
-    const columnDocs = new Map([['id', '![number]']]);
+  test('replaces an annotated non-json column', () => {
+    const columnDocs = new Map([['id', '![1 | 2]']]);
 
     const result = processTypedSqlSource(
       sampleSource,
       'asdd',
-      [
-        // id is int, not json
-        { name: 'id', typ: 'int', nullable: false }
-      ],
+      [{ name: 'id', typ: 'int', nullable: false }],
       columnDocs
     );
 
-    // 'id' should remain 'number' — handler should not touch non-json columns
-    assert(result.includes('id: number'), `Expected id:number untouched in:\n${result}`);
+    assert(result.includes('id: (1 | 2)'), `Expected 'id: (1 | 2)' in:\n${result}`);
+  });
+
+  test('leaves an unannotated non-json column as prisma wrote it', () => {
+    // An ambiguous column reaches the handler this way too: on-generate drops its docs
+    const columnDocs = new Map<string, string | undefined>([['id', undefined]]);
+
+    const result = processTypedSqlSource(
+      sampleSource,
+      'asdd',
+      [{ name: 'id', typ: 'int', nullable: false }],
+      columnDocs
+    );
+
+    // `number` is a real type, unlike `JsonValue`, so it must survive untouched --
+    // degrading it to `unknown` the way an unannotated json column does is strictly worse
+    assert(result.includes('id: number'), `Expected 'id: number' untouched in:\n${result}`);
+  });
+
+  test('leaves an enum column alone, having no node that stands for its type', () => {
+    const source = `export namespace asdd {
+  export type Parameters = [];
+  export type Result = {
+    status: $DbEnums["status_type"]
+  }
+}
+`;
+
+    const result = processTypedSqlSource(
+      source,
+      'asdd',
+      [{ name: 'status', typ: 'status_type', nullable: false }],
+      new Map([['status', '![number]']])
+    );
+
+    assert(
+      result.includes('status: $DbEnums["status_type"]'),
+      `Expected the enum untouched in:\n${result}`
+    );
   });
 
   test('does nothing when query has no json columns', () => {
@@ -301,7 +335,7 @@ export namespace q {
   });
 });
 
-describe('handleTypedSqlFile - TypedSQL JSON parameter replacement', () => {
+describe('handleTypedSqlFile - TypedSQL parameter replacement', () => {
   const paramSource = `import * as $runtime from "../runtime/client";
 
 export const q = $runtime.makeTypedQueryFactory("SELECT 1") as (filter: $runtime.InputJsonObject, untyped: $runtime.InputJsonObject) => $runtime.TypedSql<q.Parameters, q.Result>
@@ -368,22 +402,52 @@ export namespace q {
     );
   });
 
-  test('ignores non-json parameters', () => {
-    const result = processTypedSqlSource(paramSource, 'q', [], new Map(), config, [
-      { name: 'filter', typ: 'int', nullable: false, documentation: '![{ a: number }]' }
+  const scalarParamSource = `import * as $runtime from "../runtime/client";
+
+export const q = $runtime.makeTypedQueryFactory("SELECT 1") as (userId: string, limit: number) => $runtime.TypedSql<q.Parameters, q.Result>
+
+export namespace q {
+  export type Parameters = [userId: string, limit: number]
+  export type Result = {
+    id: number
+  }
+}
+`;
+
+  test('replaces an annotated non-json parameter in both the tuple and the factory', () => {
+    const result = processTypedSqlSource(scalarParamSource, 'q', [], new Map(), config, [
+      { name: 'userId', typ: 'string', nullable: false, documentation: '[UserIdString]' },
+      { name: 'limit', typ: 'int', nullable: false, documentation: null }
     ]);
 
-    assert.equal(result, paramSource);
+    assert(
+      result.includes('Parameters = [userId: PTypedSqlJson.UserIdString, limit: number]'),
+      `Expected the namespace tuple to be rewritten in:\n${result}`
+    );
+    assert(
+      result.includes('as (userId: PTypedSqlJson.UserIdString, limit: number) =>'),
+      `Expected the factory signature to be rewritten in:\n${result}`
+    );
+  });
+
+  test('leaves an unannotated non-json parameter as prisma emitted it', () => {
+    const result = processTypedSqlSource(scalarParamSource, 'q', [], new Map(), config, [
+      { name: 'userId', typ: 'string', nullable: false, documentation: null },
+      { name: 'limit', typ: 'int', nullable: false, documentation: null }
+    ]);
+
+    assert.equal(result, scalarParamSource);
   });
 });
 
-describe('buildColumnDocs — json-typed columns with @map and collisions', () => {
-  test('maps field name to documentation for Json fields', () => {
+describe('buildColumnDocs — annotated columns with @map and collisions', () => {
+  test('maps every field name to its documentation, whatever its type', () => {
     const { columnDocs } = buildColumnDocs(
       [
         {
           fields: [
             { name: 'id', type: 'Int', dbName: null, documentation: undefined },
+            { name: 'userId', type: 'String', dbName: null, documentation: '[UserIdString]' },
             { name: 'data', type: 'Json', dbName: null, documentation: '![number]' }
           ]
         }
@@ -391,9 +455,54 @@ describe('buildColumnDocs — json-typed columns with @map and collisions', () =
       config
     );
 
-    assert(!columnDocs.has('id'), 'Should not include non-Json fields');
-    assert(columnDocs.has('data'), 'Should include Json fields');
-    assert.equal(columnDocs.get('data'), '![number]');
+    assert.equal(columnDocs.get(columnDocsKey('json', 'data')), '![number]');
+
+    // A `String` field annotates its TypedSQL column exactly as it annotates the model
+    assert.equal(columnDocs.get(columnDocsKey('string', 'userId')), '[UserIdString]');
+
+    // Unannotated fields are registered too, so that a model which does not annotate a
+    // column counts as disagreeing with one that does
+    assert(columnDocs.has(columnDocsKey('int', 'id')), 'Should register unannotated fields');
+    assert.equal(columnDocs.get(columnDocsKey('int', 'id')), undefined);
+  });
+
+  test('does not collide two same-named columns of different scalar types', () => {
+    const { columnDocs, ambiguous } = buildColumnDocs(
+      [
+        {
+          fields: [
+            { name: 'transcript', type: 'Json', dbName: null, documentation: '[CallTranscript]' }
+          ]
+        },
+        { fields: [{ name: 'transcript', type: 'String', dbName: null, documentation: undefined }] }
+      ],
+      config
+    );
+
+    // Prisma reports the column's kind, and a `json` column cannot have been read from a
+    // `String` field -- so the unannotated one is not a candidate and cannot outvote this
+    assert.equal(columnDocs.get(columnDocsKey('json', 'transcript')), '[CallTranscript]');
+    assert.equal(ambiguous.size, 0, 'Different scalar types are different columns');
+  });
+
+  test('reports a conflict between an annotated and an unannotated model', () => {
+    const { columnDocs, ambiguous } = buildColumnDocs(
+      [
+        {
+          fields: [
+            { name: 'userId', type: 'String', dbName: null, documentation: '[UserIdString]' }
+          ]
+        },
+        { fields: [{ name: 'userId', type: 'String', dbName: null, documentation: undefined }] }
+      ],
+      config
+    );
+
+    assert(
+      ambiguous.has(columnDocsKey('string', 'userId')),
+      'One model declining to annotate is a disagreement'
+    );
+    assert.equal(columnDocs.get(columnDocsKey('string', 'userId')), undefined);
   });
 
   test('keys a @map-ed field under both the db column name and the field name', () => {
@@ -403,8 +512,16 @@ describe('buildColumnDocs — json-typed columns with @map and collisions', () =
     );
 
     // `SELECT my_field` reports the db name, `SELECT my_field AS "myField"` the field name
-    assert.equal(columnDocs.get('my_field'), '[T]', 'Should be reachable by db column name');
-    assert.equal(columnDocs.get('myField'), '[T]', 'Should be reachable by field name');
+    assert.equal(
+      columnDocs.get(columnDocsKey('json', 'my_field')),
+      '[T]',
+      'Should be reachable by db column name'
+    );
+    assert.equal(
+      columnDocs.get(columnDocsKey('json', 'myField')),
+      '[T]',
+      'Should be reachable by field name'
+    );
     assert.equal(ambiguous.size, 0, 'One field under two names is not a conflict');
   });
 
@@ -418,7 +535,7 @@ describe('buildColumnDocs — json-typed columns with @map and collisions', () =
     );
 
     assert.equal(ambiguous.size, 0, 'Identical annotations are not a conflict');
-    assert.equal(columnDocs.get('myField'), '[T]');
+    assert.equal(columnDocs.get(columnDocsKey('json', 'myField')), '[T]');
   });
 
   test('reports a conflict between a field name and another model’s @map-ed column', () => {
@@ -430,8 +547,11 @@ describe('buildColumnDocs — json-typed columns with @map and collisions', () =
       config
     );
 
-    assert(ambiguous.has('meta'), 'Collision across the two naming styles is still a conflict');
-    assert.equal(columnDocs.get('meta'), undefined);
+    assert(
+      ambiguous.has(columnDocsKey('json', 'meta')),
+      'Collision across the two naming styles is still a conflict'
+    );
+    assert.equal(columnDocs.get(columnDocsKey('json', 'meta')), undefined);
   });
 
   test('drops the annotation when models disagree on the same column name', () => {
@@ -443,9 +563,12 @@ describe('buildColumnDocs — json-typed columns with @map and collisions', () =
       config
     );
 
-    assert(ambiguous.has('data'), 'Conflicting column should be reported as ambiguous');
+    assert(
+      ambiguous.has(columnDocsKey('json', 'data')),
+      'Conflicting column should be reported as ambiguous'
+    );
     assert.equal(
-      columnDocs.get('data'),
+      columnDocs.get(columnDocsKey('json', 'data')),
       undefined,
       'Ambiguous column must not silently take one of the two types'
     );
@@ -461,7 +584,7 @@ describe('buildColumnDocs — json-typed columns with @map and collisions', () =
     );
 
     assert.equal(ambiguous.size, 0, 'Identical annotations are not a conflict');
-    assert.equal(columnDocs.get('data'), '[Same]');
+    assert.equal(columnDocs.get(columnDocsKey('json', 'data')), '[Same]');
   });
 
   test('compares the resolved type, not the raw doc-comment', () => {
@@ -486,8 +609,11 @@ describe('buildColumnDocs — json-typed columns with @map and collisions', () =
       config
     );
 
-    assert(columnDocs.has('raw'), 'Should include field even without documentation');
-    assert.equal(columnDocs.get('raw'), undefined);
+    assert(
+      columnDocs.has(columnDocsKey('json', 'raw')),
+      'Should include field even without documentation'
+    );
+    assert.equal(columnDocs.get(columnDocsKey('json', 'raw')), undefined);
   });
 });
 

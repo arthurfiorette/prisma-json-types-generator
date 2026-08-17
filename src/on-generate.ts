@@ -4,7 +4,7 @@ import type { GeneratorOptions, SqlQueryOutput } from '@prisma/generator';
 import ts from 'typescript';
 import { handlePrismaModule } from './handler/module';
 import { handleStatement } from './handler/statement';
-import { handleTypedSqlFile, parseSqlAnnotations } from './handler/typedsql';
+import { columnDocsKey, handleTypedSqlFile, parseSqlAnnotations } from './handler/typedsql';
 import { extractPrismaModels } from './helpers/dmmf';
 import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config';
 import { createType } from './util/create-signature';
@@ -122,17 +122,24 @@ async function handleTypedSqlQueries(
   const sqlSourceDir = join(dirname(options.schemaPath), 'sql');
 
   for (const { query, filepath } of queries) {
-    // Per-query column docs: start from model-based map, then overlay any SQL-file
-    // annotations so that complex queries with aliases / computed columns are covered.
-    let queryColumnDocs = columnDocs;
     let sqlAnnotations: Map<string, string> | undefined;
     const sqlSourcePath = join(sqlSourceDir, `${query.name}.sql`);
     const sqlContent = await fs.readFile(sqlSourcePath, 'utf-8').catch(() => null);
     if (sqlContent) {
       sqlAnnotations = parseSqlAnnotations(sqlContent);
-      if (sqlAnnotations.size > 0) {
-        queryColumnDocs = new Map([...columnDocs, ...sqlAnnotations]);
-      }
+    }
+
+    // Per-query column docs: resolve each column against the model-based map by the kind
+    // prisma introspected for it, then overlay any SQL-file annotations so that complex
+    // queries with aliases / computed columns are covered.
+    const queryColumnDocs = new Map<string, string | undefined>();
+
+    for (const column of query.resultColumns) {
+      queryColumnDocs.set(column.name, columnDocs.get(columnDocsKey(column.typ, column.name)));
+    }
+
+    for (const [column, annotation] of sqlAnnotations ?? []) {
+      queryColumnDocs.set(column, annotation);
     }
 
     warnAboutAmbiguousColumns(query, ambiguous, sqlAnnotations);
@@ -148,7 +155,14 @@ async function handleTypedSqlQueries(
 }
 
 /**
- * Builds the column name → documentation lookup used to type TypedSQL result columns.
+ * Builds the column → documentation lookup used to type TypedSQL result columns, keyed by
+ * `columnDocsKey`: the column's name, qualified by the scalar type it was read from.
+ *
+ * Every field is registered, not only the `Json` ones: a `String` field annotated
+ * `/// [UserIdString]` types its TypedSQL column exactly as it types the model payload. A
+ * field with no annotation is registered too, resolving to the same nothing an unannotated
+ * `Json` field does, so that a model which does *not* annotate a column is counted as
+ * disagreeing with one that does rather than being invisible to the check below.
  *
  * A field is registered under both its `@map` db column name and its prisma field name,
  * because prisma reports result columns by their name *in the query output*: bare
@@ -157,9 +171,12 @@ async function handleTypedSqlQueries(
  * every query written in the other style.
  *
  * Column names are only unique within a model and prisma does not tell us which table a
- * result column came from, so a column claimed by multiple models with *different*
- * annotations is reported as ambiguous and left unannotated. Guessing one of them would
- * silently hand out the wrong type; `-- @pjt-type` disambiguates explicitly.
+ * result column came from, so a column claimed by several models that do not agree on its
+ * annotation is reported as ambiguous and left unannotated. Guessing one of them would
+ * silently hand out the wrong type; `-- @pjt-type` disambiguates explicitly. Only models
+ * that could actually have produced the column collide, since the key carries the scalar
+ * type: an annotated `Json` field and a `String` field of the same name are two different
+ * columns, and prisma says which one a query returned.
  */
 export function buildColumnDocs(
   models: readonly {
@@ -178,11 +195,11 @@ export function buildColumnDocs(
 
   for (const model of models) {
     for (const field of model.fields) {
-      if (field.type !== 'Json') continue;
-
       const type = createType(field.documentation, config);
 
-      for (const column of new Set([field.dbName ?? field.name, field.name])) {
+      for (const name of new Set([field.dbName ?? field.name, field.name])) {
+        const column = `${field.type}:${name}`;
+
         if (!columnDocs.has(column)) {
           columnDocs.set(column, field.documentation);
           resolvedTypes.set(column, type);
@@ -210,9 +227,15 @@ function warnAboutAmbiguousColumns(
   ambiguous: Set<string>,
   sqlAnnotations: Map<string, string> | undefined
 ) {
+  // Only json columns are worth warning about. An ambiguous column of any other kind keeps
+  // the type prisma wrote for it, so nothing got worse; a json column falls back to
+  // `unknown`, which is a type the caller has to deal with.
   const unresolved = query.resultColumns
     .filter((column) => column.typ === 'json' || column.typ === 'json-array')
-    .filter((column) => ambiguous.has(column.name) && !sqlAnnotations?.has(column.name))
+    .filter(
+      (column) =>
+        ambiguous.has(columnDocsKey(column.typ, column.name)) && !sqlAnnotations?.has(column.name)
+    )
     .map((column) => column.name);
 
   if (unresolved.length === 0) return;
