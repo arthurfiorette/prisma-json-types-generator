@@ -1,156 +1,105 @@
 ---
 name: prisma-json-types-generator
-description: Use when creating or updating typed Prisma `Json`, `String`, `String[]`, `Int`, or `Float` fields with prisma-json-types-generator, including `/// [Type]` and `/// ![Type]` comments, enum-like literal fields, inline vs named types, and generated types still showing `JsonValue`, `unknown`, or plain scalar types.
+description: Use when adding or fixing types on Prisma `Json`, `String`, `String[]`, `Int`, or `Float` fields with prisma-json-types-generator, including `/// [Type]` and `/// ![Type]` comments, enum-like literal unions, namespace vs inline types, TypedSQL result columns and parameters, and generated types that still show `JsonValue`, `unknown`, or a plain scalar.
 compatibility: Requires file read/edit access and is most useful when the Prisma schema, tsconfig, and TypeScript type declarations are available in the workspace.
 ---
 
-# Prisma Json Types Generator
+# prisma-json-types-generator
 
-Make Prisma `Json`, `String`, `String[]`, `Int`, or `Float` fields type-safe with the smallest correct schema and type-definition change.
+The generator gives Prisma `Json`, `String`, `String[]`, `Int`, and `Float` fields TypeScript types taken from comments in the schema. It only rewrites the types emitted by `prisma generate`. Nothing is checked at runtime or by the database.
 
-This only changes generated TypeScript types after `prisma generate`.
+## Workflow
 
-## Core Workflow
+1. Read the relevant Prisma schema and, if it exists, the file that declares the `PrismaJson` namespace. Read `tsconfig.json` only when the namespace declarations are not picked up.
+2. If the generator is not installed or its setup looks broken, read `references/setup.md` before editing fields.
+3. Choose a namespace type or an inline type for the field.
+4. Add or fix the `///` comment directly above the field.
+5. For a namespace type, add or update its declaration.
+6. Run `prisma generate` (`prisma generate --sql` when the project uses TypedSQL) and the project's type check when you can.
 
-1. Read only what you need: the relevant Prisma schema, the existing `PrismaJson` wiring file if there is one, and `tsconfig.json` if the namespace declarations are not being picked up.
-2. For first-time installation, generator wiring, or broken setup, read `references/setup.md` before editing fields.
-3. Find the target field.
-4. Decide whether it should use a named namespace type or a short inline type.
-5. Add or fix the AST comment immediately above the field.
-6. Add or update the TypeScript type if the field uses a named type.
-7. Run `prisma generate` and a relevant type check when practical.
+Change only the fields the user asked about.
 
-Prefer the smallest correct change. If the user only needs one typed field, do not redesign the whole schema.
+## Namespace or inline types
 
-## Choosing A Typing Style
+`/// [TypeName]` references `TypeName` in the configured namespace, `PrismaJson` by default. Use it for objects, types shared by several fields, and anything that may get a Zod schema later.
 
-Use namespace-based types for reusable or complex shapes. Use inline types only for shorter, simpler types.
-
-```prisma [prisma/schema.prisma]
-model User {
-  /// [UserProfile]
-  profile Json
-}
-```
-
-```ts [src/types.ts]
-import type { UserProfile as DomainUserProfile } from './domain/user-profile';
-
-declare global {
-  namespace PrismaJson {
-    type UserProfile = DomainUserProfile;
-  }
-}
-```
+`/// ![Type]` takes a TypeScript type expression written in the schema. Use it for short literal unions and small one-off objects.
 
 ```prisma [prisma/schema.prisma]
 model Post {
+  /// [PostMeta]
+  meta Json
+
   /// !['draft' | 'published' | 'archived']
   status String
 
   /// ![1 | 2 | 3]
   rank Int
 
-  /// ![{ theme: 'dark' | 'light'; twitterHandle?: string }]
-  profile Json
+  /// ![{ width: number; height: number }]
+  dimensions Json
 }
 ```
 
-## Field Rules
+The namespace declaration file must be a module included by `tsconfig.json`. The types themselves can be defined anywhere and aliased into the namespace:
 
-Apply the comment directly above the field it types.
+```ts [src/types.ts]
+import type { PostMeta as DomainPostMeta } from './domain/post-meta';
 
-- `/// [TypeName]` references a type in the configured namespace
-- `/// ![TypeExpression]` inlines the full TypeScript type expression
-
-Let Prisma carry nullability and array wrappers. Use `Json[]` with `/// [Tag]`, not `Json` with `Tag[]`, unless the JSON value itself should be an array.
-
-```prisma [prisma/schema.prisma]
-model User {
-  /// [UserTag]
-  tags Json[]
-
-  /// [UserSettings]
-  settings Json?
+declare global {
+  namespace PrismaJson {
+    type PostMeta = DomainPostMeta;
+  }
 }
 ```
 
-`String?` is supported the same way as other nullable fields.
+A declaration file without any import needs `export {};` to stay a module.
 
-Numeric scalar fields such as `Int`, `Int?`, `Float`, and `Float?` can also use named or inline literal-union types.
+## Field rules
 
-## Practical Heuristics
+- The comment uses `///`. Prisma leaves plain `//` comments out of the DMMF the generator reads.
+- The comment goes directly above the field it types.
+- Prisma keeps the nullability and list wrappers, so the type describes a single element. Use `tags Json[]` with `/// [Tag]`. An array type such as `/// ![Tag[]]` belongs on a plain `Json` field whose stored value is a JSON array.
+- Nullable fields (`Json?`, `String?`, `Int?`, `Float?`) and `String[]` take the same comments.
+- Fields of MongoDB composite `type` blocks can be typed the same way as model fields.
+- Untyped `Json` fields resolve to `unknown` unless the generator sets `allowAny` or `useType`.
 
-- Prefer namespace types for objects reused across models, large JSON payloads, or anything the user may validate with Zod later.
-- Prefer inline types only for shorter and simpler field types.
-- If the user mentions runtime validation, suggest sharing types from Zod or a similar library.
-- If untyped `Json` shows up as `unknown`, that is expected unless `allowAny` or `useType` is configured.
+## TypedSQL
+
+With `prisma generate --sql`, the generator also types TypedSQL results and parameters, for both `prisma-client` and `prisma-client-js`.
+
+On PostgreSQL, a result column read straight from a table column gets the type of that schema field, through aliases, joins, subqueries, and CTEs. Matching asks the database for each column's source and never compares names. It needs the `pg` package and a connection URL in `DATABASE_URL`, or in the variable named by the `typedSqlUrlEnv` option. Without them the generator prints a warning and applies only the `.sql` annotations.
+
+Computed columns, and every column on other databases, are typed with a `--` comment in the `.sql` file: the usual syntax followed by the returned column name. These annotations override the schema field type. Parameters are typed at the start of their `@param` description.
+
+```sql [prisma/sql/getStats.sql]
+-- [UserStats] stats
+-- ![{ total: number }] "Total Count"
+-- @param {Json} $1:filter [PostFilter]
+SELECT
+  json_build_object('posts', count(*)) AS stats,
+  json_build_object('total', count(*)) AS "Total Count"
+FROM "Post"
+WHERE meta @> $1
+```
+
+PostgreSQL lowercases unquoted column names (`AS Stats` returns `stats`), and the annotation must use the returned name. When the queries are not in `sql/` next to the schema, set the `typedSqlPath` option.
 
 ## Troubleshooting
 
-When the generated types still look wrong, check these in order:
+If a field still shows `JsonValue`, `unknown`, or a plain scalar, check in this order:
 
-1. The generator is present and points to `prisma-json-types-generator`.
-2. The comment is `///`, not a normal `//` comment.
-3. The comment sits immediately above the target field.
-4. The namespace name in the generator matches the namespace in TypeScript.
-5. The declaration file is a module, usually via `export {};`.
-6. The declaration file is included by `tsconfig.json`.
-7. Check generator output or error logs if typings still look wrong; `prisma generate` may still complete even when the final typings are not what the user expected.
-8. The user is not expecting JSON filter types to be strongly typed; some filter helpers intentionally remain broad.
+1. A generator block with `provider = "prisma-json-types-generator"` exists.
+2. The comment starts with `///` and sits directly above the field.
+3. The `namespace` option matches the namespace declared in TypeScript.
+4. The declaration file is a module and `tsconfig.json` includes it.
+5. `prisma generate` ran after the schema change. Generator errors and warnings are printed while the command can still exit successfully, so read its output.
+6. For TypedSQL, `--sql` was passed, `pg` is installed, the URL variable is set, and annotation names match the returned column names.
 
-## Output Expectations
+`JsonFilter` and `JsonWithAggregatesFilter` stay untyped on purpose. Do not try to type filter inputs.
 
-When you act on this skill:
+## Finishing
 
-- make the file edits, not just suggestions, when the workspace is available
-- keep the diff local to the relevant schema and type files
-- summarize what changed and why
-- mention the exact verification commands you ran, or say that you could not run them
-
-## Examples
-
-```prisma [prisma/schema.prisma]
-model User {
-  /// [UserProfile]
-  profile Json
-
-  /// [UserSettings]
-  settings Json?
-
-  /// [UserTag]
-  tags Json[]
-}
-```
-
-```ts [src/types.ts]
-export {};
-
-declare global {
-  namespace PrismaJson {
-    type UserProfile = {
-      theme: 'dark' | 'light';
-      twitterHandle?: string;
-    };
-
-    type UserSettings = {
-      locale: string;
-    };
-
-    type UserTag = string;
-  }
-}
-```
-
-```prisma [prisma/schema.prisma]
-model Post {
-  /// !['draft' | 'published' | 'archived']
-  status String
-
-  /// ![1 | 2 | 3]
-  rank Int
-
-  /// ![1.5 | 2.5 | 3.5]
-  weight Float
-}
-```
+- Edit the files when the workspace is available instead of only suggesting changes.
+- Keep the diff to the schema and type declaration files involved.
+- Report what changed and the verification commands you ran, or say that you could not run them.
