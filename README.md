@@ -2,7 +2,7 @@
    <b>Using this package?</b> Please consider <a href="https://github.com/sponsors/arthurfiorette" target="_blank">donating</a> to support my open source work ❤️
   <br />
   <sup>
-   Help prisma-json-types-generator grow! Star and share this amazing repository with your friends and co-workers!
+   If this project helps you, star the repository and share it with your co-workers.
   </sup>
 </p>
 
@@ -31,63 +31,59 @@
 
 <h1>Prisma Json Types Generator</h1>
 
-> Generate your prisma client with strict JSON types and String literals!
+> Your own TypeScript types for the `Json` and scalar fields of the Prisma client.
 
 <br />
 
 - [Installation](#installation)
-- [Install the Skill](#install-the-skill)
+- [Install the skill](#install-the-skill)
 - [Configuration](#configuration)
-- [Quick Start](#quick-start)
-- [Typing `String` Fields (Enums)](#typing-string-fields-enums)
-- [Advanced Typing](#advanced-typing)
+- [Quick start](#quick-start)
+- [Typing `String` fields (enums)](#typing-string-fields-enums)
+- [Advanced typing](#advanced-typing)
   - [Examples](#examples)
 - [TypedSQL](#typedsql)
-- [Validating Types at Runtime](#validating-types-at-runtime)
-- [How It Works](#how-it-works)
+- [Validating types at runtime](#validating-types-at-runtime)
+- [How it works](#how-it-works)
 - [Limitations](#limitations)
 - [License](#license)
 
-Supercharge your `@prisma/client` by adding strong, custom types to `Json` and `String` fields. This generator enhances type safety by replacing Prisma's default `JsonValue` with your own TypeScript types, ensuring data conforms to your schema before it even reaches the database.
+Prisma types every `Json` field as `JsonValue` and every `String` field as `string`. This generator replaces those types in the generated `@prisma/client` with TypeScript types you define, so the compiler checks the values you read and write.
 
-It works with **all database drivers** supported by Prisma (PostgreSQL, MySQL, SQLite, etc.) **without affecting any runtime code**.
+It works with every database Prisma supports. Only the generated types change, so there is no runtime cost.
 
 <br />
 
-### Key Features
+### Features
 
-- **Strongly Typed `Json`:** Define complex object shapes for your `Json` fields.
-- **String-Based Enums:** Type `String` fields to create enums without needing native database enums.
-- **Full Type-Safety:** Get autocomplete, intellisense, and compile-time checks for your data structures.
-- **Zero Runtime Overhead:** All transformations happen at generation time.
-- **Flexible Typing:** Define types globally in a namespace or inline directly in your schema.
-- **Multiple Client Support:** Works with multiple `@prisma/client` generators simultaneously, perfect for refactoring scenarios where you need to support old and new locations.
+- Object shapes for `Json` fields, including `Json[]` lists.
+- Literal unions for `String`, `Int` and `Float` fields, which gives you enums without native database enums.
+- Types declared in a global namespace or written inline in the schema.
+- Support for several `@prisma/client` generators at once, useful while moving the client to a new output location.
 
 <br />
 
 ## Installation
 
-Install the package as a development dependency in your project.
-
 ```bash
 npm install -D prisma-json-types-generator
 ```
 
-## Install the Skill
+## Install the skill
 
-You can also install the companion agent skill for `prisma-json-types-generator`.
+An agent skill for this generator is also available:
 
 ```bash
 npx skills add arthurfiorette/prisma-json-types-generator
 ```
 
-This skill helps AI agents set up the generator and create or update typed Prisma `Json`, `String`, `Int`, and `Float` fields with the correct `/// [Type]` and `/// ![Type]` syntax.
+It teaches AI agents to set up the generator and to type Prisma `Json`, `String`, `Int` and `Float` fields with the `/// [Type]` and `/// ![Type]` syntax.
 
 <br />
 
 ## Configuration
 
-You can configure the generator in your `schema.prisma` file.
+Options go in the generator block of `schema.prisma`:
 
 ```prisma
 generator json {
@@ -98,24 +94,22 @@ generator json {
 }
 ```
 
-| Option         | Description                                                                                                                                                              | Default         |
-| :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------- |
-| `namespace`    | The global namespace where your custom types are defined.                                                                                                                | `"PrismaJson"`  |
-| `clientOutput` | Path to the `@prisma/client` output directory. The generator usually finds this automatically, but you can specify it if needed (e.g., in complex monorepos).            | (auto-detected) |
-| `allowAny`     | If `true`, untyped `Json` fields will resolve to `any`. If `false`, they will resolve to `unknown` for stricter type safety.                                             | `false`         |
-| `useType`      | Specifies a root type within your namespace to use as a fallback for all untyped `Json` fields. This adds an index signature `[key: string]: any` to the specified type. | `undefined`     |
-| `typedSqlUrlEnv` | Environment variable holding the PostgreSQL url used to match [TypedSQL](#typedsql) columns to schema fields.                                                          | `"DATABASE_URL"` |
-| `typedSqlPath` | Directory of your [TypedSQL](#typedsql) `.sql` files, relative to the schema. Only needed if you changed `typedSql.path` in `prisma.config.ts`.                          | `"sql"`         |
+| Option           | Description                                                                                                                               | Default          |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
+| `namespace`      | Global namespace that holds your custom types.                                                                                            | `"PrismaJson"`   |
+| `clientOutput`   | Path to the `@prisma/client` output directory. It is detected automatically, so set it only when detection fails, as in some monorepos.   | (auto-detected)  |
+| `allowAny`       | When `true`, untyped `Json` fields resolve to `any` instead of `unknown`.                                                                 | `false`          |
+| `useType`        | Type in your namespace used for every untyped `Json` field. The generator adds an index signature `[key: string]: any` to it.             | `undefined`      |
+| `typedSqlUrlEnv` | Environment variable with the PostgreSQL URL used to match [TypedSQL](#typedsql) columns to schema fields.                                | `"DATABASE_URL"` |
+| `typedSqlPath`   | Directory of your [TypedSQL](#typedsql) `.sql` files, relative to the schema. Set it only if you changed `typedSql.path` in `prisma.config.ts`. | `"sql"`          |
 
 <br />
 
-## Quick Start
+## Quick start
 
-Follow these three steps to get started.
+1.  Add the generator to your schema
 
-1.  Add the Generator to Your Schema
-
-    In your `schema.prisma` file, add the `json` generator block below the default `client` generator.
+    Add a `json` generator block after the `client` generator in `schema.prisma`.
 
     ```prisma
     generator client {
@@ -127,17 +121,16 @@ Follow these three steps to get started.
     }
     ```
 
-2.  Define Your Custom Types
+2.  Declare your types
 
-    Create a type declaration file (e.g., `src/types.ts`) and ensure it's included in your `tsconfig.json`. Define your types inside the `PrismaJson` global namespace.
+    Create a declaration file such as `src/types.ts`, make sure your `tsconfig.json` includes it, and declare your types in the global `PrismaJson` namespace.
 
     ```ts
-    // This file must be a module, so we include an empty export.
+    // declare global only works inside a module, hence the empty export.
     export {};
 
     declare global {
       namespace PrismaJson {
-        // Define a type for a user's profile information.
         type UserProfile = {
           theme: 'dark' | 'light';
           twitterHandle?: string;
@@ -146,9 +139,9 @@ Follow these three steps to get started.
     }
     ```
 
-3.  Link Types in Your Prisma Schema
+3.  Link the types in your schema
 
-    Use an AST comment (`/// [TypeName]`) above a `Json` field in your `schema.prisma` to link it to your custom type.
+    Add a `/// [TypeName]` AST comment above a `Json` field to give it that type.
 
     ```prisma
     model User {
@@ -162,7 +155,7 @@ Follow these three steps to get started.
 
 <br />
 
-Now, run `npx prisma generate`. The `profile` field on the `User` model will be strongly typed!
+Run `npx prisma generate` and `User.profile` is typed as `PrismaJson.UserProfile`:
 
 ```ts
 import { PrismaClient } from '@prisma/client';
@@ -179,18 +172,16 @@ async function updateUserProfile() {
     }
   });
 
-  // user.profile is now fully typed as UserProfile!
+  // user.profile is PrismaJson.UserProfile
   console.log(user.profile.theme); // 'dark'
 }
 ```
 
 <br />
 
-## Typing `String` Fields (Enums)
+## Typing `String` fields (enums)
 
-You can use the same technique to type `String` fields, which is perfect for creating "string enums" without using Prisma's native `enum` type. This is useful for maintaining a set of allowed values directly in your application code.
-
-Use the inline type syntax (`/// ![Type]`) for this.
+`String` fields can be typed as a union of string literals, which works as an enum without Prisma's native `enum` type and keeps the allowed values in your schema. Use the inline syntax, `/// ![Type]`:
 
 ```prisma
 model Post {
@@ -202,16 +193,16 @@ model Post {
 }
 ```
 
-After generating, `post.status` will be correctly typed as `'draft' | 'published' | 'archived'`.
+`post.status` is then typed as `'draft' | 'published' | 'archived'`.
 
 <br />
 
-## Advanced Typing
+## Advanced typing
 
-The generator offers two ways to define types:
+A field can reference a type from the namespace or have its type written inline:
 
-1.  **Namespace-based (`/// [TypeName]`):** References a type from the `PrismaJson` namespace. Best for complex, reusable types.
-2.  **Inline (`/// ![Type]`):** Defines the type directly in the schema. Best for simple, one-off types like enums or basic objects.
+1.  `/// [TypeName]` references a type in the `PrismaJson` namespace. Use it for complex or reused types.
+2.  `/// ![Type]` takes a TypeScript type written in the schema. Use it for small one-off types such as unions or simple objects.
 
 ### Examples
 
@@ -262,20 +253,20 @@ declare global {
 }
 ```
 
-Important:
+Notes:
 
-- For array fields, keep the Prisma field as the array and keep the type as the element shape. Use `tags Json[]` with `/// [Tag]`, not `tags Json` with an array type like `/// ![Tag[]]` unless the JSON value itself is meant to be an array.
-- The same comment syntax also works for scalar fields such as `String`, `Int`, and `Float`, including nullable variants.
+- On list fields such as `tags Json[]`, annotate the element type (`/// [Tag]`). An array type like `/// ![Tag[]]` belongs on a plain `Json` field whose stored value is a JSON array.
+- The same syntax works on `String`, `Int` and `Float` fields, nullable ones included.
 
 <br />
 
 ## TypedSQL
 
-[TypedSQL](https://www.prisma.io/docs/orm/prisma-client/using-raw-sql/typedsql) queries are typed from the database alone, so `Json` columns come out as `JsonValue` and annotated `String` columns as `string`. This generator types them too, for both `prisma-client` and `prisma-client-js`, when you run `prisma generate --sql`.
+Prisma types [TypedSQL](https://www.prisma.io/docs/orm/prisma-client/using-raw-sql/typedsql) results from the database alone, so `Json` columns come out as `JsonValue` and annotated `String` columns as `string`. When you run `prisma generate --sql`, this generator applies your types to them as well, with both `prisma-client` and `prisma-client-js`.
 
 ### Columns read from your models (PostgreSQL)
 
-Columns that are read straight from a table column get the type of the schema field behind them, just like model payloads do:
+A result column that comes straight from a table column gets the type of the matching schema field, as model payloads do:
 
 ```prisma
 model User {
@@ -303,18 +294,18 @@ export namespace getUsers {
 }
 ```
 
-Columns are **never matched by name**. The generator asks PostgreSQL which table and column each result column comes from (it only describes the query, it never runs it), so aliases, joins, subqueries and CTEs just work, and same-named columns of different tables or schemas can't be confused. Nullability and `Json[]` arrays are kept as Prisma inferred them.
+The generator does not match columns by name. It asks PostgreSQL to describe the query, without running it, and PostgreSQL reports the source table and column of each result column. Aliases, joins, subqueries and CTEs are handled, and columns with the same name in different tables or schemas are kept apart. Nullability and `Json[]` arrays stay as Prisma inferred them.
 
-This needs a database connection, just like `prisma generate --sql` itself:
+Like `prisma generate --sql` itself, this needs a database connection:
 
-- Install [`pg`](https://www.npmjs.com/package/pg), which you already have if you use `@prisma/adapter-pg`.
-- The url is read from `DATABASE_URL`, or from the variable set in the `typedSqlUrlEnv` option. Prisma does not pass the url from `prisma.config.ts` to generators.
+- Install [`pg`](https://www.npmjs.com/package/pg). You already have it if you use `@prisma/adapter-pg`.
+- The URL is read from `DATABASE_URL`, or from the variable named in the `typedSqlUrlEnv` option. Prisma does not pass the URL from `prisma.config.ts` to generators.
 
-When it isn't available, a warning is printed and only the annotations below are applied.
+Without a connection, the generator prints a warning and applies only the `.sql` annotations described below.
 
 ### Annotating columns in the `.sql` file
 
-Computed columns have no field behind them, and other databases don't report where a column comes from. Annotate those in a `--` comment of the `.sql` file with the usual syntax followed by the column name. These also take priority over the schema field annotations:
+Computed columns have no schema field, and databases other than PostgreSQL don't report where a column comes from. For these, add a `--` comment to the `.sql` file with the usual syntax followed by the column name. These annotations take priority over schema field annotations:
 
 ```sql
 -- prisma/sql/getStats.sql
@@ -326,11 +317,11 @@ SELECT
 FROM "Post"
 ```
 
-Like Prisma's `@param`, any line starting with `--` is read, so annotations can also sit next to their column. The name must match the returned column: on PostgreSQL unquoted names are lowercased (`AS Stats` returns `stats`), quote them to keep their case.
+As with Prisma's `@param`, every line starting with `--` is read, so an annotation can also go next to its column. The name must match the returned column name. PostgreSQL lowercases unquoted names (`AS Stats` returns `stats`), so quote a name to keep its case.
 
 ### Parameters
 
-Put the annotation at the start of the description in Prisma's own `@param` tag:
+Put the annotation at the start of the description in Prisma's `@param` tag:
 
 ```sql
 -- @param {Json} $1:filter [PostFilter]
@@ -342,19 +333,15 @@ Parameters without an annotation keep Prisma's type.
 
 <br />
 
-## Validating Types at Runtime
+## Validating types at runtime
 
-This generator provides compile-time type safety, not runtime validation. You can, however, share types from a runtime validation library like Zod to create a single source of truth for your data structures.
+This generator only checks types at compile time. For runtime validation, derive the namespace types from a validation library such as Zod, so both checks come from one definition:
 
-The principle is simple:
+1.  Define the schema with Zod.
+2.  Infer the TypeScript type from it.
+3.  Expose that type in the `PrismaJson` namespace.
 
-1.  Define your schema using Zod.
-2.  Infer the static TypeScript type from that schema.
-3.  Expose the inferred type within the `PrismaJson` namespace.
-
-This pattern gives you both runtime validation and compile-time type safety from a single definition.
-
-First, define your model in `schema.prisma`.
+In `schema.prisma`:
 
 ```prisma
 model User {
@@ -365,7 +352,7 @@ model User {
 }
 ```
 
-Then, define the Zod schema and expose its inferred type in your TypeScript definitions file.
+In your type declaration file:
 
 ```typescript
 import { z } from 'zod';
@@ -384,28 +371,28 @@ declare global {
 }
 ```
 
-This same principle can be applied to other validation libraries like TypeBox or Yup that allow for static type inference.
+Other libraries with static type inference, such as TypeBox or Yup, work the same way.
 
 <br />
 
-## How It Works
+## How it works
 
-This tool operates as a standard Prisma generator. When `npx prisma generate` runs, the generator receives the Data Model Meta Format (DMMF), which contains your full schema, including the AST comments. After `prisma-client-js` finishes, this generator targets its output declaration file (e.g., `index.d.ts`) and parses it into an Abstract Syntax Tree (AST) using the TypeScript Compiler API.
+During `npx prisma generate`, Prisma passes the generator the Data Model Meta Format (DMMF), which contains your schema and its AST comments. Once the Prisma client is generated, the generator parses its output files (`index.d.ts` for `prisma-client-js`, `.ts` files for `prisma-client`) into an abstract syntax tree (AST) with the TypeScript Compiler API.
 
-It then traverses this AST, and for each property signature in a model, it cross-references the DMMF to find a corresponding type comment. If a match is found, it performs a direct AST transformation, replacing the original type node (like `Prisma.JsonValue` or `string`) with a new node representing your custom type. Finally, the modified AST is printed back into TypeScript code, overwriting the original declaration file. This entire process occurs at build time and adds no runtime overhead. For a deeper dive, see the [core implementation](./src/handler/replace-object.ts).
+For each model property in the AST, it looks up the field's type comment in the DMMF. When there is one, the original type node (such as `Prisma.JsonValue` or `string`) is replaced with a node for your type. The modified AST is then printed back over the original file. See the [core implementation](./src/handler/replace-object.ts) for details.
 
 <br />
 
 ## Limitations
 
-- **Complex Filters:** To preserve functionality, types like `JsonFilter` and `JsonWithAggregatesFilter` remain untyped.
-- **Version Support:** `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6.
-- **Known Gaps:** If you find any `Json` fields that are not being typed correctly, please [open an issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues).
+- `JsonFilter` and `JsonWithAggregatesFilter` stay untyped so that filtering keeps working.
+- `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6.
+- If a `Json` field is not typed correctly, please [open an issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues).
 
 <br />
 
 ## License
 
-Licensed under the **MIT**. See [`LICENSE`](LICENSE) for more informations.
+Licensed under the MIT license. See [`LICENSE`](LICENSE).
 
 <br />
