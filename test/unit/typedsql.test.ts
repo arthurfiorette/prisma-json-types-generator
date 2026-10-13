@@ -6,7 +6,8 @@ import { parseSqlAnnotations } from '../../src/helpers/sql-annotations.js';
 describe('parseSqlAnnotations', () => {
   test('parses type and literal annotations', () => {
     const result = parseSqlAnnotations(
-      '-- [Profile] profile\n--![{ a: 1 | 2 }] stats\nSELECT profile, stats FROM t'
+      '-- [Profile] profile\n--![{ a: 1 | 2 }] stats\nSELECT profile, stats FROM t',
+      false
     );
 
     assert.deepEqual(
@@ -19,13 +20,16 @@ describe('parseSqlAnnotations', () => {
   });
 
   test('supports quoted column names with escaped quotes', () => {
-    const result = parseSqlAnnotations('-- [T] "my ""col"""\nSELECT 1');
+    const result = parseSqlAnnotations('-- [T] "my ""col"""\nSELECT 1', false);
 
     assert.equal(result.get('my "col"'), '[T]');
   });
 
   test('supports nested brackets and CRLF line endings', () => {
-    const result = parseSqlAnnotations('-- ![[number[]][]] nested\r\n-- [A] other\r\nSELECT 1');
+    const result = parseSqlAnnotations(
+      '-- ![[number[]][]] nested\r\n-- [A] other\r\nSELECT 1',
+      false
+    );
 
     assert.equal(result.get('nested'), '![[number[]][]]');
     assert.equal(result.get('other'), '[A]');
@@ -39,16 +43,28 @@ describe('parseSqlAnnotations', () => {
         '-- [T]',
         '-- @param {Json} $1:filter [Filter]',
         'SELECT 1'
-      ].join('\n')
+      ].join('\n'),
+      false
     );
 
     assert.equal(result.size, 0);
   });
 
-  test('only reads the leading comment block', () => {
-    const result = parseSqlAnnotations('\n-- [A] a\n\nSELECT a, b\n-- [B] b\nFROM t');
+  test('reads every `--` line, like prisma does for @param', () => {
+    const result = parseSqlAnnotations(
+      '/* block */\n-- [A] a\n\nSELECT a, b -- [C] c\n  -- [B] b\nFROM t',
+      false
+    );
 
-    assert.deepEqual([...result.keys()], ['a']);
+    // Trailing comments are part of the query source prisma introspects, only full lines count
+    assert.deepEqual([...result.keys()], ['a', 'b']);
+  });
+
+  test('lowercases unquoted names only when asked to', () => {
+    const sql = '-- [A] Stats\n-- [B] "Mixed Case"\nSELECT 1';
+
+    assert.deepEqual([...parseSqlAnnotations(sql, true).keys()], ['stats', 'Mixed Case']);
+    assert.deepEqual([...parseSqlAnnotations(sql, false).keys()], ['Stats', 'Mixed Case']);
   });
 });
 

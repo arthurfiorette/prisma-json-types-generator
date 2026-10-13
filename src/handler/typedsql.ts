@@ -45,8 +45,22 @@ export async function resolveTypedSqlTypes(
     return result;
   }
 
-  const described = await describeOrigins(options, config, queries, warn);
-  const sqlDir = await resolveSqlDir(options.schemaPath, config.typedSqlPath);
+  // Multi-file schemas pass their directory
+  const schemaDir = (await fs.stat(options.schemaPath).catch(() => null))?.isDirectory()
+    ? options.schemaPath
+    : dirname(options.schemaPath);
+
+  // Prisma reads queries from `typedSql.path` of prisma.config.ts, defaulting to `sql/` next
+  // to the schema. The config is not visible to generators, hence the `typedSqlPath` option.
+  const sqlDir = config.typedSqlPath
+    ? resolve(schemaDir, config.typedSqlPath)
+    : join(schemaDir, 'sql');
+
+  const described = await describeOrigins(options, config, schemaDir, queries, warn);
+
+  // Both fold unquoted identifiers to lowercase, so `AS Stats` returns a `stats` column
+  const provider = options.datasources[0]?.activeProvider;
+  const foldUnquoted = provider === 'postgresql' || provider === 'cockroachdb';
 
   if (!(await fs.stat(sqlDir).catch(() => null))?.isDirectory()) {
     warn(
@@ -77,7 +91,7 @@ export async function resolveTypedSqlTypes(
       }
     }
 
-    for (const [column, annotation] of await readSqlAnnotations(sqlDir, query)) {
+    for (const [column, annotation] of await readSqlAnnotations(sqlDir, query, foldUnquoted)) {
       if (!query.resultColumns.some((c) => c.name === column)) {
         warn(`${query.name}.sql annotates column "${column}", which the query does not return.`);
         continue;
@@ -130,6 +144,7 @@ function fieldKey(origin: { schema: string; table: string; column: string }) {
 async function describeOrigins(
   options: GeneratorOptions,
   config: PrismaJsonTypesGeneratorConfig,
+  schemaDir: string,
   queries: readonly SqlQueryOutput[],
   warn: (message: string) => void
 ) {
@@ -148,7 +163,11 @@ async function describeOrigins(
   }
 
   try {
-    const { defaultSchema, queries: described } = await describeQueryOrigins(url, queries);
+    const { defaultSchema, queries: described } = await describeQueryOrigins(
+      url,
+      schemaDir,
+      queries
+    );
     const columns = new Map<string, DescribedColumn[]>();
 
     for (const [name, result] of described) {
@@ -169,21 +188,10 @@ async function describeOrigins(
   }
 }
 
-/**
- * Prisma reads queries from `typedSql.path` of prisma.config.ts, defaulting to `sql/` next
- * to the schema. The config is not visible to generators, hence the `typedSqlPath` option.
- */
-async function resolveSqlDir(schemaPath: string, typedSqlPath: string | undefined) {
-  const stat = await fs.stat(schemaPath).catch(() => null);
-  const schemaRoot = stat?.isDirectory() ? schemaPath : dirname(schemaPath);
-
-  return typedSqlPath ? resolve(schemaRoot, typedSqlPath) : join(schemaRoot, 'sql');
-}
-
-async function readSqlAnnotations(sqlDir: string, query: SqlQueryOutput) {
+async function readSqlAnnotations(sqlDir: string, query: SqlQueryOutput, foldUnquoted: boolean) {
   const content = await fs.readFile(join(sqlDir, `${query.name}.sql`), 'utf-8').catch(() => null);
 
-  return content === null ? new Map<string, string>() : parseSqlAnnotations(content);
+  return content === null ? new Map<string, string>() : parseSqlAnnotations(content, foldUnquoted);
 }
 
 /**
@@ -302,18 +310,22 @@ function getPropertyName(name: ts.PropertyName) {
 export async function handleTypedSqlFiles(
   outputDir: string,
   isNewClient: boolean,
+  /** `generatedFileExtension` of the client generator, `.d.ts` files for prisma-client-js */
+  fileExtension: string,
   importFileExtension: string | undefined,
-  types: Map<string, QueryTypes>
+  types: Map<string, QueryTypes>,
+  warn: (message: string) => void
 ) {
   for (const [queryName, queryTypes] of types) {
     if (!queryTypes.columns.size && !queryTypes.parameters.size) {
       continue;
     }
 
-    const filepath = join(outputDir, 'sql', `${queryName}.${isNewClient ? 'ts' : 'd.ts'}`);
+    const filepath = join(outputDir, 'sql', `${queryName}.${fileExtension}`);
     const original = await fs.readFile(filepath, 'utf-8').catch(() => null);
 
     if (original === null) {
+      warn(`Could not find ${filepath} to type the ${queryName} query.`);
       continue;
     }
 

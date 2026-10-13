@@ -28,8 +28,10 @@ export async function onGenerate(options: GeneratorOptions) {
         await handleTypedSqlFiles(
           client.output.value,
           isNewClient(client),
+          isNewClient(client) ? (client.config.generatedFileExtension?.toString() ?? 'ts') : 'd.ts',
           getImportFileExtension(client),
-          typedSqlTypes
+          typedSqlTypes,
+          warn
         );
       })
     );

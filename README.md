@@ -41,8 +41,8 @@
 - [Quick Start](#quick-start)
 - [Typing `String` Fields (Enums)](#typing-string-fields-enums)
 - [Advanced Typing](#advanced-typing)
-- [TypedSQL](#typedsql)
   - [Examples](#examples)
+- [TypedSQL](#typedsql)
 - [Validating Types at Runtime](#validating-types-at-runtime)
 - [How It Works](#how-it-works)
 - [Limitations](#limitations)
@@ -314,7 +314,7 @@ When it isn't available, a warning is printed and only the annotations below are
 
 ### Annotating columns in the `.sql` file
 
-Computed columns have no field behind them, and other databases don't report where a column comes from. Annotate those at the top of the `.sql` file with the usual syntax followed by the column name. These also take priority over the schema field annotations:
+Computed columns have no field behind them, and other databases don't report where a column comes from. Annotate those in a `--` comment of the `.sql` file with the usual syntax followed by the column name. These also take priority over the schema field annotations:
 
 ```sql
 -- prisma/sql/getStats.sql
@@ -326,7 +326,7 @@ SELECT
 FROM "Post"
 ```
 
-Only the leading comment block is read, which is the same block Prisma reads `@param` from.
+Like Prisma's `@param`, any line starting with `--` is read, so annotations can also sit next to their column. The name must match the returned column: on PostgreSQL unquoted names are lowercased (`AS Stats` returns `stats`), quote them to keep their case.
 
 ### Parameters
 

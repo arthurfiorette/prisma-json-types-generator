@@ -3,6 +3,8 @@ import type { JsonValue } from '@prisma/client/runtime/client';
 import { expectAssignable, expectNotAssignable, expectType } from 'tsd';
 import type * as New from '../target/typedsql/client/sql';
 import type * as Old from '../target/typedsql/client-js/sql';
+// `generatedFileExtension = "mts"` and `importFileExtension = "mjs"`
+import type * as Mts from '../target/typedsql/client-mts/sql.mjs';
 
 declare global {
   export namespace PTypedSqlJson {
@@ -15,18 +17,20 @@ declare global {
   }
 }
 
-// Both clients must produce the same types, so every check runs against both
+// Every client must produce the same types, so each check runs against all of them.
+// Accessing a property of the union of all rows yields the widest of their types, which
+// catches any client falling back to prisma's (wider) types. `unknown` is already the
+// widest type, so those are checked per client instead.
 
 declare const users: New.getUsers.Result;
 declare const usersOld: Old.getUsers.Result;
+declare const usersMts: Mts.getUsers.Result;
 
 // Columns selected by their db names (`@map` / `@@map`) resolve to their schema fields
-for (const row of [users, usersOld]) {
+for (const row of [users, usersOld, usersMts]) {
   expectType<PTypedSqlJson.UserProfile>(row.profile_data);
   // Json[] annotations type the element, like in model payloads, keeping prisma's nullability
   expectType<string[] | null>(row.tags);
-  // Unannotated Json fields become unknown, like in model payloads
-  expectType<unknown>(row.extra);
   // Annotated non-Json fields are typed as well
   expectType<PTypedSqlJson.UserEmail>(row.email);
   // Unannotated non-Json fields keep their type
@@ -34,34 +38,44 @@ for (const row of [users, usersOld]) {
   expectType<number>(row.id);
 }
 
+// Unannotated Json fields become unknown, like in model payloads
+expectType<unknown>(users.extra);
+expectType<unknown>(usersOld.extra);
+expectType<unknown>(usersMts.extra);
+
 declare const aliased: New.getAliased.Result;
 declare const aliasedOld: Old.getAliased.Result;
+declare const aliasedMts: Mts.getAliased.Result;
 
 // Aliases, CTEs and subqueries in FROM still resolve to the original column
-for (const row of [aliased, aliasedOld]) {
+for (const row of [aliased, aliasedOld, aliasedMts]) {
   expectType<PTypedSqlJson.UserProfile>(row.profile);
   expectType<PTypedSqlJson.UserEmail>(row.contact);
 }
 
 declare const sameNames: New.getSameNames.Result;
 declare const sameNamesOld: Old.getSameNames.Result;
+declare const sameNamesMts: Mts.getSameNames.Result;
 
 // Two tables named "Post" in different schemas, both with a "meta" column of different types
-for (const row of [sameNames, sameNamesOld]) {
+for (const row of [sameNames, sameNamesOld, sameNamesMts]) {
   expectType<PTypedSqlJson.PostMeta | null>(row.meta);
   expectType<PTypedSqlJson.AuditMeta>(row.audit_meta);
 }
 
 declare const computed: New.getComputed.Result;
 declare const computedOld: Old.getComputed.Result;
+declare const computedMts: Mts.getComputed.Result;
 
-for (const row of [computed, computedOld]) {
+for (const row of [computed, computedOld, computedMts]) {
   // Explicit annotations win over the schema field annotation
   expectType<PTypedSqlJson.ProfileOverride>(row.profile_data);
   // Computed columns can only be typed explicitly
   expectType<{ posts: number } | null>(row.stats);
   // Quoted column names with escaped quotes
   expectType<{ tag: string } | null>(row['weird "name"']);
+  // Annotated next to the column, unquoted `AS Mixed` is returned as `mixed`
+  expectType<{ mixed: true } | null>(row.mixed);
   // Computed and unannotated, nothing is known so prisma's type is kept
   expectType<JsonValue>(row.unannotated);
 }
@@ -70,8 +84,10 @@ for (const row of [computed, computedOld]) {
 for (const params of [
   {} as New.getComputed.Parameters,
   {} as Old.getComputed.Parameters,
+  {} as Mts.getComputed.Parameters,
   {} as Parameters<typeof New.getComputed>,
-  {} as Parameters<typeof Old.getComputed>
+  {} as Parameters<typeof Old.getComputed>,
+  {} as Parameters<typeof Mts.getComputed>
 ]) {
   expectType<PTypedSqlJson.PostMetaFilter>(params[0]);
   expectType<PTypedSqlJson.UserEmail>(params[1]);
@@ -85,9 +101,13 @@ expectNotAssignable<Parameters<typeof New.getComputed>>([{}, 'not an email', 10]
 
 declare const updated: New.updateExtra.Result;
 declare const updatedOld: Old.updateExtra.Result;
+declare const updatedMts: Mts.updateExtra.Result;
 
 // RETURNING columns of write queries are resolved as well
-for (const row of [updated, updatedOld]) {
+for (const row of [updated, updatedOld, updatedMts]) {
   expectType<PTypedSqlJson.UserProfile>(row.profile_data);
-  expectType<unknown>(row.extra);
 }
+
+expectType<unknown>(updated.extra);
+expectType<unknown>(updatedOld.extra);
+expectType<unknown>(updatedMts.extra);

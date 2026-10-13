@@ -9,6 +9,9 @@ SELECT
   u.profile_data,
   json_build_object('posts', count(p.id)) AS stats,
   json_build_object('tag', 'a') AS "weird ""name""",
+  -- Annotations can be next to their column, unquoted names are lowercased like postgres does
+  -- ![{ mixed: true }] Mixed
+  json_build_object('mixed', true) AS Mixed,
   u.profile_data -> 'nested' AS unannotated
 FROM users u
 LEFT JOIN "Post" p ON p."authorId" = u.id AND p.meta @> $1

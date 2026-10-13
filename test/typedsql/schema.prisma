@@ -12,6 +12,14 @@ generator clientJs {
   previewFeatures = ["typedSql"]
 }
 
+generator clientMts {
+  provider               = "prisma-client"
+  output                 = "../target/typedsql/client-mts"
+  previewFeatures        = ["typedSql"]
+  generatedFileExtension = "mts"
+  importFileExtension    = "mjs"
+}
+
 generator json {
   provider  = "node ./index.js"
   namespace = "PTypedSqlJson"

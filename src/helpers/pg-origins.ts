@@ -1,3 +1,6 @@
+import fs from 'node:fs/promises';
+import { resolve } from 'node:path';
+import type { ConnectionOptions } from 'node:tls';
 import type { Client, FieldDef } from 'pg';
 
 /** The table column a query result column was read from. */
@@ -33,25 +36,15 @@ export interface DescribedQueries {
  */
 export async function describeQueryOrigins(
   url: string,
+  schemaDir: string,
   queries: readonly { name: string; source: string }[]
 ): Promise<DescribedQueries> {
-  const pg = loadPg();
-  const parsedUrl = new URL(url);
-
-  // `?schema=` is prisma specific and is applied as the search_path by prisma, which
-  // decides which table an unqualified name refers to.
-  const schema = parsedUrl.searchParams.get('schema');
-  parsedUrl.searchParams.delete('schema');
-
-  const client = new pg.Client({
-    connectionString: parsedUrl.toString(),
-    connectionTimeoutMillis: 10_000,
-    application_name: 'prisma-json-types-generator'
-  });
-
-  await client.connect();
+  const { client, schema } = await connect(url, schemaDir);
 
   try {
+    // Never let a describe blocked by a lock hang `prisma generate`
+    await client.query(`SET lock_timeout = '10s'; SET statement_timeout = '30s'`);
+
     if (schema) {
       await client.query(`SELECT set_config('search_path', quote_ident($1), false)`, [schema]);
     }
@@ -74,7 +67,7 @@ export async function describeQueryOrigins(
       if (fields instanceof Error) continue;
 
       for (const field of fields) {
-        if (field.tableID) tableIds.add(field.tableID);
+        if (field.tableID) tableIds.add(toOid(field.tableID));
       }
     }
 
@@ -88,7 +81,9 @@ export async function describeQueryOrigins(
           ? fields
           : fields.map((field) => ({
               name: field.name,
-              origin: field.tableID ? origins.get(`${field.tableID}:${field.columnID}`) : undefined
+              origin: field.tableID
+                ? origins.get(`${toOid(field.tableID)}:${field.columnID}`)
+                : undefined
             }))
       );
     }
@@ -108,13 +103,14 @@ async function loadColumnNames(client: Client, tableIds: number[]) {
   }
 
   const { rows } = await client.query<{
-    table_id: number;
+    table_id: string;
     column_id: number;
     schema: string;
     table: string;
     column: string;
   }>(
-    `SELECT c.oid::int AS table_id, a.attnum::int AS column_id, n.nspname AS schema,
+    // oids are unsigned 32 bit, `::int` would wrap the ones above 2^31
+    `SELECT c.oid::text AS table_id, a.attnum::int AS column_id, n.nspname AS schema,
             c.relname AS table, a.attname AS column
        FROM pg_catalog.pg_attribute a
        JOIN pg_catalog.pg_class c ON c.oid = a.attrelid
@@ -168,6 +164,102 @@ function describe(client: Client, text: string) {
       }
     } as never);
   });
+}
+
+/** Older pg-protocol versions read the table oid as a signed int32 */
+function toOid(tableId: number) {
+  return tableId >>> 0;
+}
+
+/**
+ * Connects the same way prisma's schema engine does, which is what `prisma generate --sql`
+ * used to introspect the queries. Prisma's url parameters differ from libpq's, which pg
+ * follows, so they are translated instead of being handed to pg as is.
+ *
+ * https://www.prisma.io/docs/orm/overview/databases/postgresql#arguments
+ */
+async function connect(url: string, schemaDir: string) {
+  const pg = loadPg();
+  const parsed = new URL(resolvePrismaDevUrl(url));
+  const params = parsed.searchParams;
+
+  // Applied as the search_path, which decides what an unqualified table name refers to
+  const schema = params.get('schema');
+
+  const sslmode = params.get('sslmode') ?? 'prefer';
+  const sslcert = params.get('sslcert');
+  const sslidentity = params.get('sslidentity');
+  const ssl: ConnectionOptions = {
+    // Prisma defaults to accept_invalid_certs, only `strict` verifies the certificate
+    rejectUnauthorized: params.get('sslaccept') === 'strict',
+    // Prisma resolves certificate paths relative to the schema
+    ca: sslcert ? await fs.readFile(resolve(schemaDir, sslcert)) : undefined,
+    pfx: sslidentity ? await fs.readFile(resolve(schemaDir, sslidentity)) : undefined,
+    passphrase: params.get('sslpassword') ?? undefined
+  };
+
+  // Otherwise pg would apply its own (libpq) meaning to them, overriding `ssl` below
+  for (const param of [...params.keys()]) {
+    if (param === 'schema' || param === 'ssl' || param.startsWith('ssl')) {
+      params.delete(param);
+    }
+  }
+
+  const create = (useSsl: boolean) => {
+    const client = new pg.Client({
+      connectionString: parsed.toString(),
+      ssl: useSsl ? ssl : false,
+      connectionTimeoutMillis: 10_000,
+      query_timeout: 60_000,
+      application_name: 'prisma-json-types-generator'
+    });
+
+    // Without a listener, a connection dropped by the server would crash the process.
+    // The error still reaches us through the pending query.
+    client.on('error', () => {});
+
+    return client;
+  };
+
+  let client = create(sslmode !== 'disable');
+
+  try {
+    await client.connect();
+  } catch (error) {
+    // `prefer` tries TLS first and falls back to plaintext, like prisma and libpq
+    if (sslmode !== 'prefer' || !/does not support SSL/i.test(String(error))) {
+      throw error;
+    }
+
+    await client.end().catch(() => {});
+    client = create(false);
+    await client.connect();
+  }
+
+  return { client, schema };
+}
+
+/**
+ * `prisma dev` urls point to an HTTP server, the actual postgres url is encoded in its api
+ * key. Remote Prisma Postgres urls cannot be used for introspection, by prisma or by us.
+ */
+function resolvePrismaDevUrl(url: string) {
+  if (!url.startsWith('prisma+postgres:')) {
+    return url;
+  }
+
+  try {
+    const apiKey = new URL(url).searchParams.get('api_key') ?? '';
+    const { databaseUrl } = JSON.parse(Buffer.from(apiKey, 'base64url').toString('utf8'));
+
+    if (typeof databaseUrl === 'string' && /^postgres(ql)?:\/\//.test(databaseUrl)) {
+      return databaseUrl;
+    }
+  } catch {}
+
+  throw new Error(
+    '`prisma+postgres://` urls are only supported for `prisma dev`, point the `typedSqlUrlEnv` option to a variable with a direct `postgres://` url'
+  );
 }
 
 function loadPg(): typeof import('pg') {
