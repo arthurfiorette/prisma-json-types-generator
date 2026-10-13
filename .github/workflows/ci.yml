@@ -52,3 +52,50 @@ jobs:
         env:
           # Prisma breaks when running tests in parallel
           PJTG_SEQUENTIAL_TESTS: 1
+
+  typedsql:
+    name: TypedSQL ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Uses LF line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.0.9
+
+      - name: Setup node and restore cached dependencies
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
+
+      - name: Build code
+        run: pnpm build
+
+      # Docker service containers are linux only, this works on every OS
+      - name: Setup PostgreSQL
+        id: postgres
+        uses: ikalnytskyi/action-setup-postgres@v8
+        with:
+          username: prisma
+          password: prisma
+          database: typedsql
+
+      - name: TypedSQL tests
+        shell: bash
+        run: pnpm test-typedsql
+        env:
+          DATABASE_URL: ${{ steps.postgres.outputs.connection-uri }}

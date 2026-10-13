@@ -1,9 +1,11 @@
 import fs from 'node:fs/promises';
 import { join } from 'node:path';
+import { styleText } from 'node:util';
 import type { GeneratorOptions } from '@prisma/generator';
 import ts from 'typescript';
 import { handlePrismaModule } from './handler/module';
 import { handleStatement } from './handler/statement';
+import { handleTypedSqlFiles, resolveTypedSqlTypes } from './handler/typedsql';
 import { extractPrismaModels } from './helpers/dmmf';
 import { type PrismaJsonTypesGeneratorConfig, parseConfig } from './util/config';
 import { DeclarationWriter, getNamespacePrelude } from './util/declaration-writer';
@@ -16,8 +18,21 @@ export async function onGenerate(options: GeneratorOptions) {
     const config = parseConfig(options.generator.config);
     const clients = findPrismaClientGenerators(options.otherGenerators);
 
+    // Resolved once, as it may need a database round trip, and shared by all clients
+    const typedSqlTypes = await resolveTypedSqlTypes(options, config, warn);
+
     // Run them all in parallel
-    await Promise.all(clients.map((client) => generateClient(client, config, options)));
+    await Promise.all(
+      clients.map(async (client) => {
+        await generateClient(client, config, options);
+        await handleTypedSqlFiles(
+          client.output.value,
+          isNewClient(client),
+          getImportFileExtension(client),
+          typedSqlTypes
+        );
+      })
+    );
 
     // Ensures we don't crash the generator process
   } catch (error) {
@@ -30,11 +45,9 @@ async function generateClient(
   config: PrismaJsonTypesGeneratorConfig,
   options: GeneratorOptions
 ) {
-  const ext = prismaClient.config.importFileExtension?.toString();
-  const isNewClient =
-    (prismaClient.provider.fromEnvVar || prismaClient.provider.value) === 'prisma-client';
+  const ext = getImportFileExtension(prismaClient);
 
-  if (isNewClient) {
+  if (isNewClient(prismaClient)) {
     const modelsFolder = join(prismaClient.output.value, 'models');
     const stat = await fs.stat(modelsFolder).catch(() => null);
 
@@ -57,11 +70,24 @@ async function generateClient(
     }
   }
 
-  const clientOutput = isNewClient
+  const clientOutput = isNewClient(prismaClient)
     ? join(prismaClient.output.value, 'client.ts')
     : buildTypesFilePath(prismaClient.output.value, config.clientOutput, options.schemaPath);
 
   await handleDeclarationFile(clientOutput, config, options, ext, false);
+}
+
+function isNewClient(prismaClient: GeneratorWithOutput) {
+  return (prismaClient.provider.fromEnvVar || prismaClient.provider.value) === 'prisma-client';
+}
+
+function getImportFileExtension(prismaClient: GeneratorWithOutput) {
+  return prismaClient.config.importFileExtension?.toString();
+}
+
+// Generators talk JSON-RPC over stderr, stdout is what reaches the user
+function warn(message: string) {
+  console.log(styleText('yellow', `prisma-json-types-generator: ${message}`));
 }
 
 async function handleDeclarationFile(

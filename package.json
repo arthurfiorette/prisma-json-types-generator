@@ -35,7 +35,8 @@
     "prepare": "husky",
     "start": "node dist/bin.js",
     "test-e2e": "sh ./scripts/test.sh",
-    "test-unit": "pnpm tsx --test test/unit/**/*.test.ts"
+    "test-unit": "pnpm tsx --test test/unit/**/*.test.ts",
+    "test-typedsql": "sh ./scripts/test-typedsql.sh"
   },
   "dependencies": {
     "@prisma/generator-helper": "^7.8.0",
@@ -47,18 +48,27 @@
   "devDependencies": {
     "@arthurfiorette/biomejs-config": "^2.0.1",
     "@biomejs/biome": "^2.5.3",
+    "@prisma/client-runtime-utils": "^7.8.0",
     "@prisma/dmmf": "^7.8.0",
     "@prisma/generator": "^7.8.0",
     "@types/node": "^26.1.1",
+    "@types/pg": "^8.23.1",
     "@types/semver": "^7.7.1",
     "husky": "^9.1.7",
+    "pg": "^8.23.1",
     "prisma": "^7.8.0",
     "tsd": "^0.33.0",
     "tsx": "^4.23.0"
   },
   "peerDependencies": {
     "@prisma/client": "^7.8.0",
+    "pg": "^8.0.0",
     "prisma": "^7.8.0"
+  },
+  "peerDependenciesMeta": {
+    "pg": {
+      "optional": true
+    }
   },
   "packageManager": "pnpm@11.10.0",
   "engines": {

@@ -41,6 +41,7 @@
 - [Quick Start](#quick-start)
 - [Typing `String` Fields (Enums)](#typing-string-fields-enums)
 - [Advanced Typing](#advanced-typing)
+- [TypedSQL](#typedsql)
   - [Examples](#examples)
 - [Validating Types at Runtime](#validating-types-at-runtime)
 - [How It Works](#how-it-works)
@@ -103,6 +104,8 @@ generator json {
 | `clientOutput` | Path to the `@prisma/client` output directory. The generator usually finds this automatically, but you can specify it if needed (e.g., in complex monorepos).            | (auto-detected) |
 | `allowAny`     | If `true`, untyped `Json` fields will resolve to `any`. If `false`, they will resolve to `unknown` for stricter type safety.                                             | `false`         |
 | `useType`      | Specifies a root type within your namespace to use as a fallback for all untyped `Json` fields. This adds an index signature `[key: string]: any` to the specified type. | `undefined`     |
+| `typedSqlUrlEnv` | Environment variable holding the PostgreSQL url used to match [TypedSQL](#typedsql) columns to schema fields.                                                          | `"DATABASE_URL"` |
+| `typedSqlPath` | Directory of your [TypedSQL](#typedsql) `.sql` files, relative to the schema. Only needed if you changed `typedSql.path` in `prisma.config.ts`.                          | `"sql"`         |
 
 <br />
 
@@ -263,6 +266,79 @@ Important:
 
 - For array fields, keep the Prisma field as the array and keep the type as the element shape. Use `tags Json[]` with `/// [Tag]`, not `tags Json` with an array type like `/// ![Tag[]]` unless the JSON value itself is meant to be an array.
 - The same comment syntax also works for scalar fields such as `String`, `Int`, and `Float`, including nullable variants.
+
+<br />
+
+## TypedSQL
+
+[TypedSQL](https://www.prisma.io/docs/orm/prisma-client/using-raw-sql/typedsql) queries are typed from the database alone, so `Json` columns come out as `JsonValue` and annotated `String` columns as `string`. This generator types them too, for both `prisma-client` and `prisma-client-js`, when you run `prisma generate --sql`.
+
+### Columns read from your models (PostgreSQL)
+
+Columns that are read straight from a table column get the type of the schema field behind them, just like model payloads do:
+
+```prisma
+model User {
+  id      Int    @id
+  /// [UserProfile]
+  profile Json   @map("profile_data")
+  /// [UserEmail]
+  email   String
+}
+```
+
+```sql
+-- prisma/sql/getUsers.sql
+WITH u AS (SELECT id, profile_data AS p, email FROM "User")
+SELECT u.id, u.p AS profile, u.email AS contact FROM u
+```
+
+```ts
+export namespace getUsers {
+  export type Result = {
+    id: number
+    profile: PrismaJson.UserProfile // was $runtime.JsonValue
+    contact: PrismaJson.UserEmail // was string
+  }
+}
+```
+
+Columns are **never matched by name**. The generator asks PostgreSQL which table and column each result column comes from (it only describes the query, it never runs it), so aliases, joins, subqueries and CTEs just work, and same-named columns of different tables or schemas can't be confused. Nullability and `Json[]` arrays are kept as Prisma inferred them.
+
+This needs a database connection, just like `prisma generate --sql` itself:
+
+- Install [`pg`](https://www.npmjs.com/package/pg), which you already have if you use `@prisma/adapter-pg`.
+- The url is read from `DATABASE_URL`, or from the variable set in the `typedSqlUrlEnv` option. Prisma does not pass the url from `prisma.config.ts` to generators.
+
+When it isn't available, a warning is printed and only the annotations below are applied.
+
+### Annotating columns in the `.sql` file
+
+Computed columns have no field behind them, and other databases don't report where a column comes from. Annotate those at the top of the `.sql` file with the usual syntax followed by the column name. These also take priority over the schema field annotations:
+
+```sql
+-- prisma/sql/getStats.sql
+-- [UserStats] stats
+-- ![{ total: number }] "Total Count"
+SELECT
+  json_build_object('posts', count(*)) AS stats,
+  json_build_object('total', count(*)) AS "Total Count"
+FROM "Post"
+```
+
+Only the leading comment block is read, which is the same block Prisma reads `@param` from.
+
+### Parameters
+
+Put the annotation at the start of the description in Prisma's own `@param` tag:
+
+```sql
+-- @param {Json} $1:filter [PostFilter]
+-- @param {String} $2:email [UserEmail]
+SELECT id FROM "Post" WHERE meta @> $1 AND author_email = $2
+```
+
+Parameters without an annotation keep Prisma's type.
 
 <br />
 
