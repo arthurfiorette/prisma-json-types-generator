@@ -44,7 +44,8 @@ export function parseTypeSyntax(text?: string) {
         return null;
       }
 
-      return { literal, type };
+      // `end` is relative to the trimmed text, right after the closing bracket
+      return { literal, type, end: i + 1 };
     }
   }
 

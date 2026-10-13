@@ -1,0 +1,62 @@
+import { parseTypeSyntax } from './type-parser';
+
+/**
+ * Parses result column annotations from the `--` comment lines of a TypedSQL file.
+ *
+ * Each annotation follows the same syntax as schema doc-comments, followed by the name of
+ * the result column it applies to:
+ *
+ * ```sql
+ * -- [Profile] profile
+ * -- ![{ total: number }] "computed stats"
+ * SELECT ...
+ * ```
+ *
+ * Every line starting with `--` is read, like prisma does for `@param`, as prisma strips
+ * them all from the query source it introspects. Lines whose remainder is not exactly one
+ * column name (e.g. `-- [WIP] fix this later`) are treated as prose.
+ *
+ * @param foldUnquoted Lowercases unquoted names, as postgres does with identifiers
+ * @returns A map of result column name to its raw annotation (e.g. `[Profile]`)
+ */
+export function parseSqlAnnotations(sql: string, foldUnquoted: boolean): Map<string, string> {
+  const annotations = new Map<string, string>();
+
+  for (const rawLine of sql.split(/\r?\n/)) {
+    const line = rawLine.trim();
+
+    if (!line.startsWith('--')) {
+      continue;
+    }
+
+    const comment = line.slice(2).trim();
+    const parsed = parseTypeSyntax(comment);
+
+    if (!parsed) {
+      continue;
+    }
+
+    const column = parseColumnName(comment.slice(parsed.end).trim(), foldUnquoted);
+
+    if (column !== undefined) {
+      annotations.set(column, comment.slice(0, parsed.end));
+    }
+  }
+
+  return annotations;
+}
+
+/** Accepts a bare identifier or a double quoted one (with `""` escapes), like SQL does. */
+function parseColumnName(text: string, foldUnquoted: boolean) {
+  const quoted = text.match(/^"((?:[^"]|"")+)"$/);
+
+  if (quoted) {
+    return quoted[1]!.replace(/""/g, '"');
+  }
+
+  if (!/^[^\s"]+$/.test(text)) {
+    return undefined;
+  }
+
+  return foldUnquoted ? text.toLowerCase() : text;
+}

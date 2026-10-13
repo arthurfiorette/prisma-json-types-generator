@@ -1,0 +1,77 @@
+// Lives outside test/schemas because TypedSQL needs a live postgres, see scripts/test-typedsql.sh
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../target/typedsql/client"
+  previewFeatures = ["typedSql"]
+}
+
+generator clientJs {
+  provider        = "prisma-client-js"
+  output          = "../target/typedsql/client-js"
+  previewFeatures = ["typedSql"]
+}
+
+generator clientMts {
+  provider               = "prisma-client"
+  output                 = "../target/typedsql/client-mts"
+  previewFeatures        = ["typedSql"]
+  generatedFileExtension = "mts"
+  importFileExtension    = "mjs"
+}
+
+generator json {
+  provider  = "node ./index.js"
+  namespace = "PTypedSqlJson"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["public", "audit"]
+}
+
+model User {
+  id Int @id
+
+  /// [UserProfile]
+  profile Json @map("profile_data")
+
+  /// ![string]
+  tags Json[]
+
+  extra Json?
+
+  /// [UserEmail]
+  email String
+
+  name String
+
+  posts Post[]
+
+  @@map("users")
+  @@schema("public")
+}
+
+model Post {
+  id Int @id
+
+  /// [PostMeta]
+  meta Json?
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id])
+
+  @@schema("public")
+}
+
+// Same table and column names as Post, in another schema and with another type, which
+// would be ambiguous for anything matching result columns by name.
+model AuditPost {
+  id Int @id
+
+  /// [AuditMeta]
+  meta Json
+
+  @@map("Post")
+  @@schema("audit")
+}

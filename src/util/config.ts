@@ -41,6 +41,23 @@ export interface PrismaJsonTypesGeneratorConfig {
    * @default false
    */
   allowAny?: boolean;
+
+  /**
+   * The environment variable holding the postgres url used to match TypedSQL result
+   * columns to the schema fields they are read from. Prisma does not pass the datasource
+   * url to generators, so it has to be read from the environment.
+   *
+   * @default 'DATABASE_URL'
+   */
+  typedSqlUrlEnv: string;
+
+  /**
+   * The directory of your TypedSQL `.sql` files, relative to the schema. Only needed when
+   * `typedSql.path` is customized in prisma.config.ts, since generators cannot read it.
+   *
+   * @default 'sql'
+   */
+  typedSqlPath?: string;
 }
 
 export function parseConfig(
@@ -54,6 +71,10 @@ export function parseConfig(
 
     useType: config.useType ? String(config.useType) : undefined,
 
-    allowAny: config.allowAny ? String(config.allowAny).toLowerCase().trim() === 'true' : false
+    allowAny: config.allowAny ? String(config.allowAny).toLowerCase().trim() === 'true' : false,
+
+    typedSqlUrlEnv: config.typedSqlUrlEnv ? String(config.typedSqlUrlEnv) : 'DATABASE_URL',
+
+    typedSqlPath: config.typedSqlPath ? String(config.typedSqlPath) : undefined
   };
 }
