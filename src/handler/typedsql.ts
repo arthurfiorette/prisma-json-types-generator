@@ -148,7 +148,13 @@ async function describeOrigins(
   queries: readonly SqlQueryOutput[],
   warn: (message: string) => void
 ) {
-  if (options.datasources[0]?.activeProvider !== 'postgresql') {
+  const provider = options.datasources[0]?.activeProvider;
+
+  if (provider !== 'postgresql') {
+    warn(
+      `TypedSQL columns were not matched to schema fields because ${provider ?? 'this database'} does not report where result columns come from, only PostgreSQL does. ` +
+        'Annotate columns in your .sql files instead, e.g. `-- [MyType] column`.'
+    );
     return undefined;
   }
 
