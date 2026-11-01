@@ -21,7 +21,7 @@
 <br />
 
 > [!IMPORTANT]  
-> `prisma-json-types-generator@6` supports Prisma 7.8 or later and does not depend on your project's TypeScript version. See [Legacy versions](#legacy-versions) for older releases.
+> `prisma-json-types-generator@6` supports Prisma 7.10 or later and does not depend on your project's TypeScript version. See [Legacy versions](#legacy-versions) for older releases.
 
 <br />
 
@@ -43,6 +43,9 @@
 - [Advanced typing](#advanced-typing)
   - [Examples](#examples)
 - [TypedSQL](#typedsql)
+  - [Columns read from your models (PostgreSQL)](#columns-read-from-your-models-postgresql)
+  - [Annotating columns in the `.sql` file](#annotating-columns-in-the-sql-file)
+  - [Parameters](#parameters)
 - [Validating types at runtime](#validating-types-at-runtime)
 - [How it works](#how-it-works)
 - [Limitations](#limitations)
@@ -387,7 +390,7 @@ For each model property in the AST, it looks up the field's type comment in the 
 ## Limitations
 
 - `JsonFilter` and `JsonWithAggregatesFilter` stay untyped so that filtering keeps working.
-- `prisma-json-types-generator@6` only supports Prisma 7.8 or later.
+- `prisma-json-types-generator@6` only supports Prisma 7.10 or later.
 - If a `Json` field is not typed correctly, please [open an issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues).
 
 <br />
@@ -398,7 +401,7 @@ Since v6, the generator parses Prisma's output with [oxc-parser](https://www.npm
 
 | Version          | Prisma  | TypeScript                          |
 | ---------------- | ------- | ----------------------------------- |
-| `6.x`            | 7.8+    | Not used by the generator           |
+| `6.x`            | 7.10+   | Not used by the generator           |
 | `5.1.1` to `5.x` | 7.8+    | Bundles its own TypeScript 6        |
 | `5.0` to `5.1.0` | 7.8+    | TypeScript 6 as a peer dependency   |
 | `4.x`            | 7       | TypeScript 5.9 as a peer dependency |

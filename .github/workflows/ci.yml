@@ -27,11 +27,13 @@ jobs:
           git config --global core.eol lf
 
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup pnpm
-        uses: pnpm/setup@v3
+        uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
+          # devEngines.runtime is a range and would resolve to the latest (even prerelease) node
+          node-version-file: .nvmrc
           cache: true
           install: true
 
@@ -62,11 +64,13 @@ jobs:
           git config --global core.eol lf
 
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup pnpm
-        uses: pnpm/setup@v3
+        uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
+          # devEngines.runtime is a range and would resolve to the latest (even prerelease) node
+          node-version-file: .nvmrc
           cache: true
           install: true
 
@@ -76,7 +80,7 @@ jobs:
       # Docker service containers are linux only, this works on every OS
       - name: Setup PostgreSQL
         id: postgres
-        uses: ikalnytskyi/action-setup-postgres@v8
+        uses: ikalnytskyi/action-setup-postgres@325155bfd7807b2a21ac9c2c7bb9b9a6eacc44df # v9
         with:
           username: prisma
           password: prisma
