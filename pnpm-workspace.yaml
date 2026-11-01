@@ -1,5 +1,5 @@
 ignoredBuiltDependencies:
-  - '@prisma/engines'
+  - "@prisma/engines"
   - esbuild
   - prisma
 
@@ -13,6 +13,7 @@ minimumReleaseAge: 1440
 blockExoticSubdeps: true
 
 allowBuilds:
-  '@prisma/engines': true
+  "@prisma/engines": true
   esbuild: true
   prisma: true
+  workerd: true

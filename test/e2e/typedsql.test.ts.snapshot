@@ -1,0 +1,481 @@
+exports[`typedsql 1`] = `
+test/target/typedsql/client-js/index.d.ts | + declare global {
+test/target/typedsql/client-js/index.d.ts | + namespace PTypedSqlJson {
+test/target/typedsql/client-js/index.d.ts | + // This namespace will always be empty. Definitions should be done by
+test/target/typedsql/client-js/index.d.ts | + // you manually, and merged automatically by typescript. Make sure that
+test/target/typedsql/client-js/index.d.ts | + // your declaration merging file is included in your tsconfig.json
+test/target/typedsql/client-js/index.d.ts | + //
+test/target/typedsql/client-js/index.d.ts | + // Learn more: https://github.com/arthurfiorette/prisma-json-types-generator/issues/143
+test/target/typedsql/client-js/index.d.ts | + // Declaration Merging: https://www.typescriptlang.org/docs/handbook/declaration-merging.html
+test/target/typedsql/client-js/index.d.ts | + }
+test/target/typedsql/client-js/index.d.ts | + }
+test/target/typedsql/client-js/index.d.ts | + /** A filter to be used against nullable List types. */
+test/target/typedsql/client-js/index.d.ts | + export type NullableListFilter<T> = {
+test/target/typedsql/client-js/index.d.ts | + equals?: T | T[] | null;
+test/target/typedsql/client-js/index.d.ts | + has?: T | null;
+test/target/typedsql/client-js/index.d.ts | + hasEvery?: T[];
+test/target/typedsql/client-js/index.d.ts | + hasSome?: T[];
+test/target/typedsql/client-js/index.d.ts | + isEmpty?: boolean;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /** A type to determine how to update a json field */
+test/target/typedsql/client-js/index.d.ts | + export type UpdateInput<T> = T extends object ? { [P in keyof T]?: UpdateInput<T[P]> } : T;
+test/target/typedsql/client-js/index.d.ts | + /** A type to determine how to update a json[] field */
+test/target/typedsql/client-js/index.d.ts | + export type UpdateManyInput<T> = T | T[] | { set?: T[]; push?: T | T[] };
+test/target/typedsql/client-js/index.d.ts | + /** A type to determine how to create a json[] input */
+test/target/typedsql/client-js/index.d.ts | + export type CreateManyInput<T> = T | T[] | { set?: T[] };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of NestedStringFilter, allowing narrowing of string types to
+test/target/typedsql/client-js/index.d.ts | + * discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedNestedStringFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.StringFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.StringFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S;
+test/target/typedsql/client-js/index.d.ts | + in?: S[];
+test/target/typedsql/client-js/index.d.ts | + notIn?: S[];
+test/target/typedsql/client-js/index.d.ts | + not?: TypedNestedStringFilter<S> | S;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of StringFilter, allowing narrowing of string types to discriminated
+test/target/typedsql/client-js/index.d.ts | + * unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedStringFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.StringFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.StringFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S;
+test/target/typedsql/client-js/index.d.ts | + in?: S[];
+test/target/typedsql/client-js/index.d.ts | + notIn?: S[];
+test/target/typedsql/client-js/index.d.ts | + not?: TypedNestedStringFilter<S> | S;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of NestedStringNullableFilter, allowing narrowing of string types to
+test/target/typedsql/client-js/index.d.ts | + * discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedNestedStringNullableFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.StringNullableFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.StringNullableFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S | null;
+test/target/typedsql/client-js/index.d.ts | + in?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + notIn?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + not?: TypedNestedStringNullableFilter<S> | S | null;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of StringNullableFilter, allowing narrowing of string types to
+test/target/typedsql/client-js/index.d.ts | + * discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedStringNullableFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.StringNullableFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.StringNullableFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S | null;
+test/target/typedsql/client-js/index.d.ts | + in?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + notIn?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + not?: TypedNestedStringNullableFilter<S> | S | null;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of NestedStringWithAggregatesFilter, allowing narrowing of string types
+test/target/typedsql/client-js/index.d.ts | + * to discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedNestedStringWithAggregatesFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.NestedStringWithAggregatesFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.NestedStringWithAggregatesFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S;
+test/target/typedsql/client-js/index.d.ts | + in?: S[];
+test/target/typedsql/client-js/index.d.ts | + notIn?: S[];
+test/target/typedsql/client-js/index.d.ts | + not?: TypedNestedStringWithAggregatesFilter<S> | S;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of StringWithAggregatesFilter, allowing narrowing of string types to
+test/target/typedsql/client-js/index.d.ts | + * discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedStringWithAggregatesFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.StringWithAggregatesFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.StringWithAggregatesFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S;
+test/target/typedsql/client-js/index.d.ts | + in?: S[];
+test/target/typedsql/client-js/index.d.ts | + notIn?: S[];
+test/target/typedsql/client-js/index.d.ts | + not?: TypedNestedStringWithAggregatesFilter<S> | S;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of NestedStringNullableWithAggregatesFilter, allowing narrowing of
+test/target/typedsql/client-js/index.d.ts | + * string types to discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedNestedStringNullableWithAggregatesFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.NestedStringNullableWithAggregatesFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.NestedStringNullableWithAggregatesFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S | null;
+test/target/typedsql/client-js/index.d.ts | + in?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + notIn?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + not?: TypedNestedStringNullableWithAggregatesFilter<S> | S | null;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of StringNullableWithAggregatesFilter, allowing narrowing of string
+test/target/typedsql/client-js/index.d.ts | + * types to discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedStringNullableWithAggregatesFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.StringNullableWithAggregatesFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.StringNullableWithAggregatesFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S | null;
+test/target/typedsql/client-js/index.d.ts | + in?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + notIn?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + not?: TypedNestedStringNullableWithAggregatesFilter<S> | S | null;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of StringFieldUpdateOperationsInput, allowing narrowing of string types
+test/target/typedsql/client-js/index.d.ts | + * to discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedStringFieldUpdateOperationsInput<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.StringFieldUpdateOperationsInput is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.StringFieldUpdateOperationsInput & {
+test/target/typedsql/client-js/index.d.ts | + set?: S;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of NullableStringFieldUpdateOperationsInput, allowing narrowing of
+test/target/typedsql/client-js/index.d.ts | + * string types to discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedNullableStringFieldUpdateOperationsInput<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.NullableStringFieldUpdateOperationsInput is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.NullableStringFieldUpdateOperationsInput & {
+test/target/typedsql/client-js/index.d.ts | + set?: S | null;
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of StringNullableListFilter, allowing narrowing of string types to
+test/target/typedsql/client-js/index.d.ts | + * discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type TypedStringNullableListFilter<S extends string> =
+test/target/typedsql/client-js/index.d.ts | + //@ts-ignore - When Prisma.StringNullableListFilter is not present, this type is not used
+test/target/typedsql/client-js/index.d.ts | + Prisma.StringNullableListFilter & {
+test/target/typedsql/client-js/index.d.ts | + equals?: S[] | null;
+test/target/typedsql/client-js/index.d.ts | + has?: S | null;
+test/target/typedsql/client-js/index.d.ts | + hasEvery?: S[];
+test/target/typedsql/client-js/index.d.ts | + hasSome?: S[];
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of the input type to update a string[] field, allowing narrowing of
+test/target/typedsql/client-js/index.d.ts | + * string types to discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type UpdateStringArrayInput<S extends string> = {
+test/target/typedsql/client-js/index.d.ts | + set?: S[];
+test/target/typedsql/client-js/index.d.ts | + push?: S | S[];
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | + /**
+test/target/typedsql/client-js/index.d.ts | + * A typed version of the input type to create a string[] field, allowing narrowing of
+test/target/typedsql/client-js/index.d.ts | + * string types to discriminated unions.
+test/target/typedsql/client-js/index.d.ts | + */
+test/target/typedsql/client-js/index.d.ts | + export type CreateStringArrayInput<S extends string> = {
+test/target/typedsql/client-js/index.d.ts | + set?: S[];
+test/target/typedsql/client-js/index.d.ts | + };
+test/target/typedsql/client-js/index.d.ts | UserMinAggregateOutputType | email: string | null => email: PTypedSqlJson.UserEmail | null
+test/target/typedsql/client-js/index.d.ts | UserMaxAggregateOutputType | email: string | null => email: PTypedSqlJson.UserEmail | null
+test/target/typedsql/client-js/index.d.ts | UserGroupByOutputType | profile: JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserGroupByOutputType | tags: JsonValue[] => tags: (string)[]
+test/target/typedsql/client-js/index.d.ts | UserGroupByOutputType | extra: JsonValue | null => extra: unknown | null
+test/target/typedsql/client-js/index.d.ts | UserGroupByOutputType | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | $UserPayload | profile: Prisma.JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | $UserPayload | tags: Prisma.JsonValue[] => tags: (string)[]
+test/target/typedsql/client-js/index.d.ts | $UserPayload | extra: Prisma.JsonValue | null => extra: unknown | null
+test/target/typedsql/client-js/index.d.ts | $UserPayload | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | PostGroupByOutputType | meta: JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client-js/index.d.ts | $PostPayload | meta: Prisma.JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client-js/index.d.ts | AuditPostGroupByOutputType | meta: JsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | $AuditPostPayload | meta: Prisma.JsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | UserWhereInput | tags?: JsonNullableListFilter<"User"> => tags?: NullableListFilter<(string)>
+test/target/typedsql/client-js/index.d.ts | UserWhereInput | email?: StringFilter<"User"> | string => email?: TypedStringFilter<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserScalarWhereWithAggregatesInput | tags?: JsonNullableListFilter<"User"> => tags?: NullableListFilter<(string)>
+test/target/typedsql/client-js/index.d.ts | UserScalarWhereWithAggregatesInput | email?: StringWithAggregatesFilter<"User"> | string => email?: TypedStringWithAggregatesFilter<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserCreateInput | profile: JsonNullValueInput | InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserCreateInput | tags?: UserCreatetagsInput | InputJsonValue[] => tags?: CreateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserCreateInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserCreateInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserUncheckedCreateInput | profile: JsonNullValueInput | InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserUncheckedCreateInput | tags?: UserCreatetagsInput | InputJsonValue[] => tags?: CreateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserUncheckedCreateInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserUncheckedCreateInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserUpdateInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserUpdateInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserUpdateInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserUpdateInput | email?: StringFieldUpdateOperationsInput | string => email?: TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateInput | email?: StringFieldUpdateOperationsInput | string => email?: TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserCreateManyInput | profile: JsonNullValueInput | InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserCreateManyInput | tags?: UserCreatetagsInput | InputJsonValue[] => tags?: CreateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserCreateManyInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserCreateManyInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserUpdateManyMutationInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserUpdateManyMutationInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserUpdateManyMutationInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserUpdateManyMutationInput | email?: StringFieldUpdateOperationsInput | string => email?: TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateManyInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateManyInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateManyInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateManyInput | email?: StringFieldUpdateOperationsInput | string => email?: TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | PostCreateInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUncheckedCreateInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUpdateInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUncheckedUpdateInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostCreateManyInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUpdateManyMutationInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUncheckedUpdateManyInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | AuditPostCreateInput | meta: JsonNullValueInput | InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | AuditPostUncheckedCreateInput | meta: JsonNullValueInput | InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | AuditPostUpdateInput | meta?: JsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | AuditPostUncheckedUpdateInput | meta?: JsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | AuditPostCreateManyInput | meta: JsonNullValueInput | InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | AuditPostUpdateManyMutationInput | meta?: JsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | AuditPostUncheckedUpdateManyInput | meta?: JsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/index.d.ts | PostCreateWithoutAuthorInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUncheckedCreateWithoutAuthorInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserCreateWithoutPostsInput | profile: JsonNullValueInput | InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserCreateWithoutPostsInput | tags?: UserCreatetagsInput | InputJsonValue[] => tags?: CreateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserCreateWithoutPostsInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserCreateWithoutPostsInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserUncheckedCreateWithoutPostsInput | profile: JsonNullValueInput | InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserUncheckedCreateWithoutPostsInput | tags?: UserCreatetagsInput | InputJsonValue[] => tags?: CreateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserUncheckedCreateWithoutPostsInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserUncheckedCreateWithoutPostsInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserUpdateWithoutPostsInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserUpdateWithoutPostsInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserUpdateWithoutPostsInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserUpdateWithoutPostsInput | email?: StringFieldUpdateOperationsInput | string => email?: TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateWithoutPostsInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateWithoutPostsInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<(string)>
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateWithoutPostsInput | extra?: NullableJsonNullValueInput | InputJsonValue => extra?: unknown | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | UserUncheckedUpdateWithoutPostsInput | email?: StringFieldUpdateOperationsInput | string => email?: TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/index.d.ts | PostCreateManyAuthorInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUpdateWithoutAuthorInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUncheckedUpdateWithoutAuthorInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/index.d.ts | PostUncheckedUpdateManyWithoutAuthorInput | meta?: NullableJsonNullValueInput | InputJsonValue => meta?: PTypedSqlJson.PostMeta | NullableJsonNullValueInput
+test/target/typedsql/client-js/sql/getAliased.d.ts | Result | profile: $runtime.JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/sql/getAliased.d.ts | Result | contact: string => contact: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/sql/getComputed.d.ts | getComputed | export const getComputed: (filter: $runtime.InputJsonObject, email: string, limit: number) => $runtime.TypedSql<getComputed.Parameters, getComputed.Result> => export const getComputed: (filter: PTypedSqlJson.PostMetaFilter, email: PTypedSqlJson.UserEmail, limit: number) => $runtime.TypedSql<getComputed.Parameters, getComputed.Result>
+test/target/typedsql/client-js/sql/getComputed.d.ts | Parameters | export type Parameters = [filter: $runtime.InputJsonObject, email: string, limit: number] => export type Parameters = [filter: PTypedSqlJson.PostMetaFilter, email: PTypedSqlJson.UserEmail, limit: number]
+test/target/typedsql/client-js/sql/getComputed.d.ts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.ProfileOverride
+test/target/typedsql/client-js/sql/getComputed.d.ts | Result | stats: $runtime.JsonValue | null => stats: ({ posts: number }) | null
+test/target/typedsql/client-js/sql/getComputed.d.ts | Result | ["weird \\"name\\""]: $runtime.JsonValue | null => ["weird \\"name\\""]: ({ tag: string }) | null
+test/target/typedsql/client-js/sql/getComputed.d.ts | Result | mixed: $runtime.JsonValue | null => mixed: ({ mixed: true }) | null
+test/target/typedsql/client-js/sql/getSameNames.d.ts | Result | meta: $runtime.JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client-js/sql/getSameNames.d.ts | Result | audit_meta: $runtime.JsonValue => audit_meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-js/sql/getUsers.d.ts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/sql/getUsers.d.ts | Result | tags: $runtime.JsonValue[] | null => tags: (string)[] | null
+test/target/typedsql/client-js/sql/getUsers.d.ts | Result | extra: $runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client-js/sql/getUsers.d.ts | Result | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-js/sql/updateExtra.d.ts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.UserProfile
+test/target/typedsql/client-js/sql/updateExtra.d.ts | Result | extra: $runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client-mts/models/AuditPost.mts | + import type * as PJTG from '../pjtg.mjs';
+test/target/typedsql/client-mts/models/AuditPost.mts | AuditPostGroupByOutputType | meta: runtime.JsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/AuditPost.mts | AuditPostCreateInput | meta: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/AuditPost.mts | AuditPostUncheckedCreateInput | meta: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/AuditPost.mts | AuditPostUpdateInput | meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/AuditPost.mts | AuditPostUncheckedUpdateInput | meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/AuditPost.mts | AuditPostCreateManyInput | meta: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/AuditPost.mts | AuditPostUpdateManyMutationInput | meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/AuditPost.mts | AuditPostUncheckedUpdateManyInput | meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/AuditPost.mts | $AuditPostPayload | meta: runtime.JsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/models/Post.mts | + import type * as PJTG from '../pjtg.mjs';
+test/target/typedsql/client-mts/models/Post.mts | PostGroupByOutputType | meta: runtime.JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client-mts/models/Post.mts | PostCreateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUncheckedCreateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUpdateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUncheckedUpdateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostCreateManyInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUpdateManyMutationInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUncheckedUpdateManyInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostCreateWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUncheckedCreateWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostCreateManyAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUpdateWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUncheckedUpdateWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | PostUncheckedUpdateManyWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/Post.mts | $PostPayload | meta: runtime.JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client-mts/models/User.mts | + import type * as PJTG from '../pjtg.mjs';
+test/target/typedsql/client-mts/models/User.mts | UserMinAggregateOutputType | email: string | null => email: PTypedSqlJson.UserEmail | null
+test/target/typedsql/client-mts/models/User.mts | UserMaxAggregateOutputType | email: string | null => email: PTypedSqlJson.UserEmail | null
+test/target/typedsql/client-mts/models/User.mts | UserGroupByOutputType | profile: runtime.JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserGroupByOutputType | tags: runtime.JsonValue[] => tags: (string)[]
+test/target/typedsql/client-mts/models/User.mts | UserGroupByOutputType | extra: runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client-mts/models/User.mts | UserGroupByOutputType | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserWhereInput | tags?: Prisma.JsonNullableListFilter<"User"> => tags?: PJTG.NullableListFilter<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserWhereInput | email?: Prisma.StringFilter<"User"> | string => email?: PJTG.TypedStringFilter<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserScalarWhereWithAggregatesInput | tags?: Prisma.JsonNullableListFilter<"User"> => tags?: PJTG.NullableListFilter<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserScalarWhereWithAggregatesInput | email?: Prisma.StringWithAggregatesFilter<"User"> | string => email?: PJTG.TypedStringWithAggregatesFilter<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserCreateInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserCreateInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserCreateInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserCreateInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedCreateInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedCreateInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedCreateInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedCreateInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserUpdateInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserUpdateInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserUpdateInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserUpdateInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserCreateManyInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserCreateManyInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserCreateManyInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserCreateManyInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserUpdateManyMutationInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserUpdateManyMutationInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserUpdateManyMutationInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserUpdateManyMutationInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateManyInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateManyInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateManyInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateManyInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserCreateWithoutPostsInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserCreateWithoutPostsInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserCreateWithoutPostsInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserCreateWithoutPostsInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedCreateWithoutPostsInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedCreateWithoutPostsInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedCreateWithoutPostsInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedCreateWithoutPostsInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserUpdateWithoutPostsInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserUpdateWithoutPostsInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserUpdateWithoutPostsInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserUpdateWithoutPostsInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateWithoutPostsInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateWithoutPostsInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateWithoutPostsInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client-mts/models/User.mts | UserUncheckedUpdateWithoutPostsInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/models/User.mts | $UserPayload | profile: runtime.JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/models/User.mts | $UserPayload | tags: runtime.JsonValue[] => tags: (string)[]
+test/target/typedsql/client-mts/models/User.mts | $UserPayload | extra: runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client-mts/models/User.mts | $UserPayload | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/pjtg.mts | created
+test/target/typedsql/client-mts/pjtg.mts | + import * as Prisma from './internal/prismaNamespace.mjs';
+test/target/typedsql/client-mts/sql/getAliased.mts | + import type * as PJTG from '../pjtg.mjs';
+test/target/typedsql/client-mts/sql/getAliased.mts | Result | profile: $runtime.JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/sql/getAliased.mts | Result | contact: string => contact: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/sql/getComputed.mts | + import type * as PJTG from '../pjtg.mjs';
+test/target/typedsql/client-mts/sql/getComputed.mts | getComputed | export const getComputed = $runtime.makeTypedQueryFactory("SELECT\\nu.profile_data,\\njson_build_object('posts', count(p.id)) AS stats,\\njson_build_object('tag', 'a') AS \\"weird \\"\\"name\\"\\"\\",\\njson_build_object('mixed', true) AS Mixed,\\nu.profile_data -> 'nested' AS unannotated\\nFROM users u\\nLEFT JOIN \\"Post\\" p ON p.\\"authorId\\" = u.id AND p.meta @> $1\\nWHERE u.email = $2\\nGROUP BY u.id\\nLIMIT $3") as (filter: $runtime.InputJsonObject, email: string, limit: number) => $runtime.TypedSql<getComputed.Parameters, getComputed.Result> => export const getComputed = $runtime.makeTypedQueryFactory("SELECT\\nu.profile_data,\\njson_build_object('posts', count(p.id)) AS stats,\\njson_build_object('tag', 'a') AS \\"weird \\"\\"name\\"\\"\\",\\njson_build_object('mixed', true) AS Mixed,\\nu.profile_data -> 'nested' AS unannotated\\nFROM users u\\nLEFT JOIN \\"Post\\" p ON p.\\"authorId\\" = u.id AND p.meta @> $1\\nWHERE u.email = $2\\nGROUP BY u.id\\nLIMIT $3") as (filter: PTypedSqlJson.PostMetaFilter, email: PTypedSqlJson.UserEmail, limit: number) => $runtime.TypedSql<getComputed.Parameters, getComputed.Result>
+test/target/typedsql/client-mts/sql/getComputed.mts | Parameters | export type Parameters = [filter: $runtime.InputJsonObject, email: string, limit: number] => export type Parameters = [filter: PTypedSqlJson.PostMetaFilter, email: PTypedSqlJson.UserEmail, limit: number]
+test/target/typedsql/client-mts/sql/getComputed.mts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.ProfileOverride
+test/target/typedsql/client-mts/sql/getComputed.mts | Result | stats: $runtime.JsonValue | null => stats: ({ posts: number }) | null
+test/target/typedsql/client-mts/sql/getComputed.mts | Result | ["weird \\"name\\""]: $runtime.JsonValue | null => ["weird \\"name\\""]: ({ tag: string }) | null
+test/target/typedsql/client-mts/sql/getComputed.mts | Result | mixed: $runtime.JsonValue | null => mixed: ({ mixed: true }) | null
+test/target/typedsql/client-mts/sql/getSameNames.mts | + import type * as PJTG from '../pjtg.mjs';
+test/target/typedsql/client-mts/sql/getSameNames.mts | Result | meta: $runtime.JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client-mts/sql/getSameNames.mts | Result | audit_meta: $runtime.JsonValue => audit_meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client-mts/sql/getUsers.mts | + import type * as PJTG from '../pjtg.mjs';
+test/target/typedsql/client-mts/sql/getUsers.mts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/sql/getUsers.mts | Result | tags: $runtime.JsonValue[] | null => tags: (string)[] | null
+test/target/typedsql/client-mts/sql/getUsers.mts | Result | extra: $runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client-mts/sql/getUsers.mts | Result | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client-mts/sql/updateExtra.mts | + import type * as PJTG from '../pjtg.mjs';
+test/target/typedsql/client-mts/sql/updateExtra.mts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.UserProfile
+test/target/typedsql/client-mts/sql/updateExtra.mts | Result | extra: $runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client/models/AuditPost.ts | + import type * as PJTG from '../pjtg';
+test/target/typedsql/client/models/AuditPost.ts | AuditPostGroupByOutputType | meta: runtime.JsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/AuditPost.ts | AuditPostCreateInput | meta: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/AuditPost.ts | AuditPostUncheckedCreateInput | meta: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/AuditPost.ts | AuditPostUpdateInput | meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/AuditPost.ts | AuditPostUncheckedUpdateInput | meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/AuditPost.ts | AuditPostCreateManyInput | meta: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/AuditPost.ts | AuditPostUpdateManyMutationInput | meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/AuditPost.ts | AuditPostUncheckedUpdateManyInput | meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/AuditPost.ts | $AuditPostPayload | meta: runtime.JsonValue => meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/models/Post.ts | + import type * as PJTG from '../pjtg';
+test/target/typedsql/client/models/Post.ts | PostGroupByOutputType | meta: runtime.JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client/models/Post.ts | PostCreateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUncheckedCreateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUpdateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUncheckedUpdateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostCreateManyInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUpdateManyMutationInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUncheckedUpdateManyInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostCreateWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUncheckedCreateWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostCreateManyAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUpdateWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUncheckedUpdateWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | PostUncheckedUpdateManyWithoutAuthorInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PTypedSqlJson.PostMeta | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/Post.ts | $PostPayload | meta: runtime.JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client/models/User.ts | + import type * as PJTG from '../pjtg';
+test/target/typedsql/client/models/User.ts | UserMinAggregateOutputType | email: string | null => email: PTypedSqlJson.UserEmail | null
+test/target/typedsql/client/models/User.ts | UserMaxAggregateOutputType | email: string | null => email: PTypedSqlJson.UserEmail | null
+test/target/typedsql/client/models/User.ts | UserGroupByOutputType | profile: runtime.JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserGroupByOutputType | tags: runtime.JsonValue[] => tags: (string)[]
+test/target/typedsql/client/models/User.ts | UserGroupByOutputType | extra: runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client/models/User.ts | UserGroupByOutputType | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserWhereInput | tags?: Prisma.JsonNullableListFilter<"User"> => tags?: PJTG.NullableListFilter<(string)>
+test/target/typedsql/client/models/User.ts | UserWhereInput | email?: Prisma.StringFilter<"User"> | string => email?: PJTG.TypedStringFilter<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserScalarWhereWithAggregatesInput | tags?: Prisma.JsonNullableListFilter<"User"> => tags?: PJTG.NullableListFilter<(string)>
+test/target/typedsql/client/models/User.ts | UserScalarWhereWithAggregatesInput | email?: Prisma.StringWithAggregatesFilter<"User"> | string => email?: PJTG.TypedStringWithAggregatesFilter<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserCreateInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserCreateInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserCreateInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserCreateInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserUncheckedCreateInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserUncheckedCreateInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserUncheckedCreateInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserUncheckedCreateInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserUpdateInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserUpdateInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserUpdateInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserUpdateInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserCreateManyInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserCreateManyInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserCreateManyInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserCreateManyInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserUpdateManyMutationInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserUpdateManyMutationInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserUpdateManyMutationInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserUpdateManyMutationInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateManyInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateManyInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateManyInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateManyInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserCreateWithoutPostsInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserCreateWithoutPostsInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserCreateWithoutPostsInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserCreateWithoutPostsInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserUncheckedCreateWithoutPostsInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserUncheckedCreateWithoutPostsInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserUncheckedCreateWithoutPostsInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserUncheckedCreateWithoutPostsInput | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserUpdateWithoutPostsInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserUpdateWithoutPostsInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserUpdateWithoutPostsInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserUpdateWithoutPostsInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateWithoutPostsInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateWithoutPostsInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<(string)>
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateWithoutPostsInput | extra?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => extra?: unknown | Prisma.NullableJsonNullValueInput
+test/target/typedsql/client/models/User.ts | UserUncheckedUpdateWithoutPostsInput | email?: Prisma.StringFieldUpdateOperationsInput | string => email?: PJTG.TypedStringFieldUpdateOperationsInput<PTypedSqlJson.UserEmail> | PTypedSqlJson.UserEmail
+test/target/typedsql/client/models/User.ts | $UserPayload | profile: runtime.JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client/models/User.ts | $UserPayload | tags: runtime.JsonValue[] => tags: (string)[]
+test/target/typedsql/client/models/User.ts | $UserPayload | extra: runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client/models/User.ts | $UserPayload | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client/pjtg.ts | created
+test/target/typedsql/client/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+test/target/typedsql/client/sql/getAliased.ts | + import type * as PJTG from '../pjtg';
+test/target/typedsql/client/sql/getAliased.ts | Result | profile: $runtime.JsonValue => profile: PTypedSqlJson.UserProfile
+test/target/typedsql/client/sql/getAliased.ts | Result | contact: string => contact: PTypedSqlJson.UserEmail
+test/target/typedsql/client/sql/getComputed.ts | + import type * as PJTG from '../pjtg';
+test/target/typedsql/client/sql/getComputed.ts | getComputed | export const getComputed = $runtime.makeTypedQueryFactory("SELECT\\nu.profile_data,\\njson_build_object('posts', count(p.id)) AS stats,\\njson_build_object('tag', 'a') AS \\"weird \\"\\"name\\"\\"\\",\\njson_build_object('mixed', true) AS Mixed,\\nu.profile_data -> 'nested' AS unannotated\\nFROM users u\\nLEFT JOIN \\"Post\\" p ON p.\\"authorId\\" = u.id AND p.meta @> $1\\nWHERE u.email = $2\\nGROUP BY u.id\\nLIMIT $3") as (filter: $runtime.InputJsonObject, email: string, limit: number) => $runtime.TypedSql<getComputed.Parameters, getComputed.Result> => export const getComputed = $runtime.makeTypedQueryFactory("SELECT\\nu.profile_data,\\njson_build_object('posts', count(p.id)) AS stats,\\njson_build_object('tag', 'a') AS \\"weird \\"\\"name\\"\\"\\",\\njson_build_object('mixed', true) AS Mixed,\\nu.profile_data -> 'nested' AS unannotated\\nFROM users u\\nLEFT JOIN \\"Post\\" p ON p.\\"authorId\\" = u.id AND p.meta @> $1\\nWHERE u.email = $2\\nGROUP BY u.id\\nLIMIT $3") as (filter: PTypedSqlJson.PostMetaFilter, email: PTypedSqlJson.UserEmail, limit: number) => $runtime.TypedSql<getComputed.Parameters, getComputed.Result>
+test/target/typedsql/client/sql/getComputed.ts | Parameters | export type Parameters = [filter: $runtime.InputJsonObject, email: string, limit: number] => export type Parameters = [filter: PTypedSqlJson.PostMetaFilter, email: PTypedSqlJson.UserEmail, limit: number]
+test/target/typedsql/client/sql/getComputed.ts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.ProfileOverride
+test/target/typedsql/client/sql/getComputed.ts | Result | stats: $runtime.JsonValue | null => stats: ({ posts: number }) | null
+test/target/typedsql/client/sql/getComputed.ts | Result | ["weird \\"name\\""]: $runtime.JsonValue | null => ["weird \\"name\\""]: ({ tag: string }) | null
+test/target/typedsql/client/sql/getComputed.ts | Result | mixed: $runtime.JsonValue | null => mixed: ({ mixed: true }) | null
+test/target/typedsql/client/sql/getSameNames.ts | + import type * as PJTG from '../pjtg';
+test/target/typedsql/client/sql/getSameNames.ts | Result | meta: $runtime.JsonValue | null => meta: PTypedSqlJson.PostMeta | null
+test/target/typedsql/client/sql/getSameNames.ts | Result | audit_meta: $runtime.JsonValue => audit_meta: PTypedSqlJson.AuditMeta
+test/target/typedsql/client/sql/getUsers.ts | + import type * as PJTG from '../pjtg';
+test/target/typedsql/client/sql/getUsers.ts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.UserProfile
+test/target/typedsql/client/sql/getUsers.ts | Result | tags: $runtime.JsonValue[] | null => tags: (string)[] | null
+test/target/typedsql/client/sql/getUsers.ts | Result | extra: $runtime.JsonValue | null => extra: unknown | null
+test/target/typedsql/client/sql/getUsers.ts | Result | email: string => email: PTypedSqlJson.UserEmail
+test/target/typedsql/client/sql/updateExtra.ts | + import type * as PJTG from '../pjtg';
+test/target/typedsql/client/sql/updateExtra.ts | Result | profile_data: $runtime.JsonValue => profile_data: PTypedSqlJson.UserProfile
+test/target/typedsql/client/sql/updateExtra.ts | Result | extra: $runtime.JsonValue | null => extra: unknown | null
+`;

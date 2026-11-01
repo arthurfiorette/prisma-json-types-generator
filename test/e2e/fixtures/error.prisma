@@ -1,0 +1,22 @@
+// Typed Boolean fields are unsupported. test/e2e/generate.test.ts runs this schema to prove
+// that it detects generator errors.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../../target/e2e-error"
+}
+
+generator json {
+  provider = "node ./index.js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Model {
+  id Int @id @default(autoincrement())
+
+  /// [Unsupported]
+  flag Boolean
+}

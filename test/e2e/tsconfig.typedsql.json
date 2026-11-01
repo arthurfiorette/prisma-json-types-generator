@@ -1,0 +1,6 @@
+{
+  // Type checks the generated output of test/e2e/typedsql.test.ts with TypeScript 7
+  "extends": "./tsconfig.json",
+  "include": ["../types/typedsql.test-d.ts"],
+  "exclude": []
+}

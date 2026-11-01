@@ -4,7 +4,7 @@ Read this when the project does not have `prisma-json-types-generator` set up ye
 
 ## Requirements
 
-`prisma-json-types-generator@5+` requires Prisma 7.8 or later, with `prisma` and `@prisma/client` installed. It bundles its own TypeScript compiler. On older Prisma versions, do not assume this setup works unchanged.
+`prisma-json-types-generator@6` requires Prisma 7.8 or later, with `prisma` and `@prisma/client` installed. It parses Prisma's output with its own parser, so the project's TypeScript version does not matter at generate time. On older Prisma versions, do not assume this setup works unchanged.
 
 TypedSQL column matching also needs [`pg`](https://www.npmjs.com/package/pg), an optional peer dependency. Projects using `@prisma/adapter-pg` already have it.
 
@@ -48,9 +48,9 @@ All options go in the `json` generator block.
 | Option           | Default          | Use                                                                                                                                                                  |
 | :--------------- | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `namespace`      | `"PrismaJson"`   | Global namespace that `/// [TypeName]` resolves against. The TypeScript declaration must use the same name.                                                          |
-| `clientOutput`   | auto-detected    | Path to the generated client, relative to the schema or as an importable path. Set it only when detection picks the wrong client.                                   |
-| `allowAny`       | `false`          | When `true`, untyped `Json` fields become `any` instead of `unknown`. Keep `false` unless the user asks for looser types.                                           |
-| `useType`        | unset            | Namespace type used for every untyped `Json` field. The generator adds an index signature `[key: string]: any` to it, so it is less strict than per-field types.    |
+| `clientOutput`   | auto-detected    | Path to the generated client, relative to the schema or as an importable path. Set it only when detection picks the wrong client.                                    |
+| `allowAny`       | `false`          | When `true`, untyped `Json` fields become `any` instead of `unknown`. Keep `false` unless the user asks for looser types.                                            |
+| `useType`        | unset            | Namespace type used for every untyped `Json` field. The generator adds an index signature `[key: string]: any` to it, so it is less strict than per-field types.     |
 | `typedSqlUrlEnv` | `"DATABASE_URL"` | Environment variable holding the PostgreSQL URL used to match TypedSQL columns to schema fields. Prisma does not pass the URL from `prisma.config.ts` to generators. |
 | `typedSqlPath`   | `"sql"`          | Directory of the TypedSQL `.sql` files, relative to the schema. Set it only when `typedSql.path` in `prisma.config.ts` was changed.                                  |
 

@@ -1,6 +1,6 @@
 {
   "name": "prisma-json-types-generator",
-  "version": "5.2.0",
+  "version": "6.0.0",
   "description": "Changes JsonValues to your custom typescript type",
   "keywords": [
     "prisma",
@@ -34,45 +34,55 @@
     "lint-fix": "biome check --write --unsafe .",
     "prepare": "husky",
     "start": "node dist/bin.js",
-    "test-e2e": "sh ./scripts/test.sh",
-    "test-unit": "pnpm tsx --test test/unit/**/*.test.ts",
-    "test-typedsql": "sh ./scripts/test-typedsql.sh"
+    "test-e2e": "pnpm build && tsx --test --test-concurrency=1 test/e2e/generate.test.ts",
+    "test-e2e-update": "pnpm build && tsx --test --test-concurrency=1 --test-update-snapshots test/e2e/generate.test.ts",
+    "test-typedsql": "pnpm build && tsx --test --test-concurrency=1 test/e2e/typedsql.test.ts",
+    "test-typedsql-update": "pnpm build && tsx --test --test-concurrency=1 --test-update-snapshots test/e2e/typedsql.test.ts",
+    "test-unit": "pnpm tsx --test test/unit/**/*.test.ts"
   },
   "dependencies": {
-    "@prisma/generator-helper": "^7.10.0",
+    "@prisma/generator-helper": "^7.10.1",
+    "oxc-parser": "^0.156.0",
     "semver": "^7.8.5",
     "try": "^1.0.3",
-    "tslib": "^2.8.1",
-    "typescript": "npm:typescript@^6.0.3"
+    "tslib": "^2.9.1"
   },
   "devDependencies": {
     "@arthurfiorette/biomejs-config": "^2.0.1",
-    "@biomejs/biome": "^2.5.15",
-    "@prisma/client-runtime-utils": "^7.10.0",
-    "@prisma/dmmf": "^7.10.0",
-    "@prisma/generator": "^7.10.0",
-    "@types/node": "^26.6.5",
+    "@biomejs/biome": "^2.6.4",
+    "@prisma/client-runtime-utils": "^7.10.1",
+    "@prisma/dmmf": "^7.10.1",
+    "@prisma/generator": "^7.10.1",
+    "@types/node": "^26.6.6",
     "@types/pg": "^8.23.1",
     "@types/semver": "^7.8.0",
     "husky": "^9.1.7",
     "pg": "^8.23.1",
-    "prisma": "^7.10.0",
+    "prisma": "^8.0.0-rc.29",
     "tsd": "^0.33.0",
-    "tsx": "^4.23.15"
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   },
   "peerDependencies": {
-    "@prisma/client": "^7.8.0",
-    "pg": "^8.0.0",
-    "prisma": "^7.8.0"
+    "@prisma/client": "^7.10.1",
+    "pg": "^8.23.1",
+    "prisma": "^7.10.1"
   },
   "peerDependenciesMeta": {
     "pg": {
       "optional": true
     }
   },
-  "packageManager": "pnpm@11.10.0",
+  "packageManager": "pnpm@12.16.1",
   "engines": {
-    "node": ">=14.0"
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "onFail": "error",
+      "version": ">=24"
+    }
   },
   "tsd": {
     "compilerOptions": {

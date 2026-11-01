@@ -1,0 +1,2 @@
+# Snapshots are compared byte by byte, so they must stay LF on every platform
+*.snapshot text eol=lf

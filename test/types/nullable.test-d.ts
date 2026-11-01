@@ -1,12 +1,22 @@
 import { Decimal } from '@prisma/client/runtime/client';
-import { expectAssignable, expectNotAssignable } from 'tsd';
+import { expectAssignable, expectNotAssignable, expectType } from 'tsd';
+import type { Prisma } from '../target/nullable/client';
 import type { ModelCreateInput, ModelWhereInput } from '../target/nullable/models';
 
+// `useType` reads types from a map inside the default `PrismaJson` namespace
 declare global {
-  export namespace PNullable {
-    type TestJsonType = { foo: string; bar: number };
+  export namespace PrismaJson {
+    export type PNullable = {
+      TestJsonType: { foo: string; bar: number };
+    };
   }
 }
+
+// expectType is exact, so an unresolved reference, which is silently `any`, fails here
+declare const input: ModelCreateInput;
+expectType<{ foo: string; bar: number } | Prisma.NullableJsonNullValueInput | undefined>(
+  input.testJSON
+);
 
 // Test basic model type with all fields
 expectAssignable<ModelCreateInput>({

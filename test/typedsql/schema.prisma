@@ -1,4 +1,4 @@
-// Lives outside test/schemas because TypedSQL needs a live postgres, see scripts/test-typedsql.sh
+// Lives outside test/schemas because TypedSQL needs a live postgres, see test/e2e/typedsql.test.ts
 
 generator client {
   provider        = "prisma-client"
