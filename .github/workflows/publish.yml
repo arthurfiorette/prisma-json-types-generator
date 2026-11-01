@@ -7,10 +7,10 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'NPM tag to publish under'
+        description: "NPM tag to publish under"
         required: true
         type: choice
-        default: 'latest'
+        default: "latest"
         options:
           - latest
           - beta
@@ -32,27 +32,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6.1.0
-
-      - name: Setup node and restore cached dependencies
-        uses: actions/setup-node@v7
+        uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
-          node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org/'
-          cache: 'pnpm'
-
-      - name: Install packages
-        run: pnpm install --frozen-lockfile
+          # devEngines.runtime is a range and would resolve to the latest (even prerelease) node
+          node-version-file: .nvmrc
+          cache: true
+          install: true
 
       - name: Build
         run: pnpm run build
 
       # Uses OIDC authentication
       - name: Publish to NPM @ ${{ env.NPM_PUBLISH_TAG }}
-        run: pnpm publish --access public --no-git-checks --tag ${{ env.NPM_PUBLISH_TAG }}
+        run: npx --yes npm@latest publish --access public --tag ${{ env.NPM_PUBLISH_TAG }}

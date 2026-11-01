@@ -105,7 +105,7 @@ export namespace q {
 
 describe('rewriteTypedSqlFile', () => {
   test('replaces only the base type, keeping nullability and arrays', () => {
-    const { content, changed } = rewriteTypedSqlFile(NEW_CLIENT, 'q', {
+    const { content, changed } = rewriteTypedSqlFile('q.ts', NEW_CLIENT, 'q', {
       columns: new Map([
         ['profile', 'NS.Profile'],
         ['meta', '(1 | 2)'],
@@ -126,7 +126,7 @@ describe('rewriteTypedSqlFile', () => {
   });
 
   test('replaces parameters in the namespace tuple and the factory cast', () => {
-    const { content } = rewriteTypedSqlFile(NEW_CLIENT, 'q', {
+    const { content } = rewriteTypedSqlFile('q.ts', NEW_CLIENT, 'q', {
       columns: new Map(),
       parameters: new Map([[0, 'NS.Filter']])
     });
@@ -136,7 +136,7 @@ describe('rewriteTypedSqlFile', () => {
   });
 
   test('replaces parameters in the prisma-client-js declaration', () => {
-    const { content } = rewriteTypedSqlFile(OLD_CLIENT, 'q', {
+    const { content } = rewriteTypedSqlFile('q.d.ts', OLD_CLIENT, 'q', {
       columns: new Map([['profile', 'NS.Profile']]),
       parameters: new Map([[0, 'NS.Filter']])
     });
@@ -149,14 +149,14 @@ describe('rewriteTypedSqlFile', () => {
   test('leaves other queries and unknown columns untouched', () => {
     const types = { columns: new Map([['missing', 'NS.X']]), parameters: new Map() };
 
-    assert.deepEqual(rewriteTypedSqlFile(NEW_CLIENT, 'q', types), {
+    assert.deepEqual(rewriteTypedSqlFile('q.ts', NEW_CLIENT, 'q', types), {
       content: NEW_CLIENT,
       changed: false
     });
 
     types.columns.set('profile', 'NS.Profile');
 
-    assert.deepEqual(rewriteTypedSqlFile(NEW_CLIENT, 'other', types), {
+    assert.deepEqual(rewriteTypedSqlFile('q.ts', NEW_CLIENT, 'other', types), {
       content: NEW_CLIENT,
       changed: false
     });

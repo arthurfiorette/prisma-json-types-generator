@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -24,19 +27,15 @@ jobs:
           git config --global core.eol lf
 
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6.1.0
-
-      - name: Setup node and restore cached dependencies
-        uses: actions/setup-node@v7
+        uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-
-      - name: Install packages
-        run: pnpm install --frozen-lockfile
+          # devEngines.runtime is a range and would resolve to the latest (even prerelease) node
+          node-version-file: .nvmrc
+          cache: true
+          install: true
 
       - name: Lint
         run: pnpm lint-ci
@@ -49,9 +48,6 @@ jobs:
 
       - name: E2E tests
         run: pnpm test-e2e
-        env:
-          # Prisma breaks when running tests in parallel
-          PJTG_SEQUENTIAL_TESTS: 1
 
   typedsql:
     name: TypedSQL ${{ matrix.os }}
@@ -68,19 +64,15 @@ jobs:
           git config --global core.eol lf
 
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6.1.0
-
-      - name: Setup node and restore cached dependencies
-        uses: actions/setup-node@v7
+        uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-
-      - name: Install packages
-        run: pnpm install --frozen-lockfile
+          # devEngines.runtime is a range and would resolve to the latest (even prerelease) node
+          node-version-file: .nvmrc
+          cache: true
+          install: true
 
       - name: Build code
         run: pnpm build
@@ -88,14 +80,13 @@ jobs:
       # Docker service containers are linux only, this works on every OS
       - name: Setup PostgreSQL
         id: postgres
-        uses: ikalnytskyi/action-setup-postgres@v8
+        uses: ikalnytskyi/action-setup-postgres@325155bfd7807b2a21ac9c2c7bb9b9a6eacc44df # v9
         with:
           username: prisma
           password: prisma
           database: typedsql
 
       - name: TypedSQL tests
-        shell: bash
         run: pnpm test-typedsql
         env:
           DATABASE_URL: ${{ steps.postgres.outputs.connection-uri }}

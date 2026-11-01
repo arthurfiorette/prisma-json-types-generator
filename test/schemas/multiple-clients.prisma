@@ -1,5 +1,5 @@
 generator client_old {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../target/multiple-clients-old"
 }
 

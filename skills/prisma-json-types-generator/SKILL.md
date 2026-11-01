@@ -1,4 +1,5 @@
 ---
+
 name: prisma-json-types-generator
 description: Use when adding or fixing types on Prisma `Json`, `String`, `String[]`, `Int`, or `Float` fields with prisma-json-types-generator, including `/// [Type]` and `/// ![Type]` comments, enum-like literal unions, namespace vs inline types, TypedSQL result columns and parameters, and generated types that still show `JsonValue`, `unknown`, or a plain scalar.
 compatibility: Requires file read/edit access and is most useful when the Prisma schema, tsconfig, and TypeScript type declarations are available in the workspace.

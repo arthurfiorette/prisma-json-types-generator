@@ -15,15 +15,17 @@ const isTransformable = (field: DMMF.Field) => {
   return parseTypeSyntax(field.documentation);
 };
 
+export interface PrismaModels {
+  typeToNameMap: Map<string, string>;
+  modelMap: Map<string, PrismaEntity>;
+  knownNoOps: Set<string>;
+}
+
 /**
  * Parses the DMMF document and returns a list of models that have at least one field with
  * typed json and the regexes for each field type.
  */
-export function extractPrismaModels(dmmf: DMMF.Document): {
-  typeToNameMap: Map<string, string>;
-  modelMap: Map<string, PrismaEntity>;
-  knownNoOps: Set<string>;
-} {
+export function extractPrismaModels(dmmf: DMMF.Document): PrismaModels {
   const models = dmmf.datamodel.models
     // Define the regexes for each model
     .map(

@@ -1,7 +1,8 @@
-import ts from 'typescript';
+import type { TSTypeLiteral } from 'oxc-parser';
 import type { PrismaEntity } from '../helpers/dmmf';
 import { findNewSignature } from '../helpers/find-signature';
 import { parseTypeSyntax } from '../helpers/type-parser';
+import { getIdentifierName, getText } from '../util/ast';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { createType } from '../util/create-signature';
 import type { DeclarationWriter } from '../util/declaration-writer';
@@ -9,7 +10,7 @@ import { PrismaJsonTypesGeneratorError } from '../util/error';
 
 /** Tries to replace every property of an object */
 export function replaceObject(
-  object: ts.TypeLiteralNode,
+  object: TSTypeLiteral,
   writer: DeclarationWriter,
   model: PrismaEntity,
   config: PrismaJsonTypesGeneratorConfig
@@ -23,20 +24,18 @@ export function replaceObject(
     }
 
     for (const member of object.members) {
-      const memberName = member.name?.getText();
-
       if (
         // Not sure when a object member cannot be a PropertySignature,
         // here to avoid errors
-        member.kind !== ts.SyntaxKind.PropertySignature ||
+        member.type !== 'TSPropertySignature' ||
         // The field name does not match the member name
-        field.name !== memberName
+        field.name !== getIdentifierName(member.key, member.computed)
       ) {
         continue;
       }
 
       // the original `field: Type`
-      const signature = (member as ts.PropertySignature).type;
+      const signature = member.typeAnnotation?.typeAnnotation;
 
       if (!signature) {
         throw new PrismaJsonTypesGeneratorError('Could not find signature type', {
@@ -50,7 +49,7 @@ export function replaceObject(
       const defaultedToUnknown = newType === 'unknown';
 
       const newSignature = findNewSignature(
-        signature.getText(),
+        getText(writer.content, signature),
         // Updates the typename according to the config
         newType,
         model.name,
@@ -68,7 +67,7 @@ export function replaceObject(
       }
 
       // Replaces the signature with the new one
-      writer.replace(signature.pos, signature.end, newSignature);
+      writer.replace(signature.start, signature.end, newSignature);
     }
   }
 }

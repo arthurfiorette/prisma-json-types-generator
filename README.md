@@ -21,7 +21,7 @@
 <br />
 
 > [!IMPORTANT]  
-> `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6.
+> `prisma-json-types-generator@6` supports Prisma 7.10 or later and does not depend on your project's TypeScript version. See [Legacy versions](#legacy-versions) for older releases.
 
 <br />
 
@@ -43,9 +43,13 @@
 - [Advanced typing](#advanced-typing)
   - [Examples](#examples)
 - [TypedSQL](#typedsql)
+  - [Columns read from your models (PostgreSQL)](#columns-read-from-your-models-postgresql)
+  - [Annotating columns in the `.sql` file](#annotating-columns-in-the-sql-file)
+  - [Parameters](#parameters)
 - [Validating types at runtime](#validating-types-at-runtime)
 - [How it works](#how-it-works)
 - [Limitations](#limitations)
+- [Legacy versions](#legacy-versions)
 - [License](#license)
 
 Prisma types every `Json` field as `JsonValue` and every `String` field as `string`. This generator replaces those types in the generated `@prisma/client` with TypeScript types you define, so the compiler checks the values you read and write.
@@ -94,13 +98,13 @@ generator json {
 }
 ```
 
-| Option           | Description                                                                                                                               | Default          |
-| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
-| `namespace`      | Global namespace that holds your custom types.                                                                                            | `"PrismaJson"`   |
-| `clientOutput`   | Path to the `@prisma/client` output directory. It is detected automatically, so set it only when detection fails, as in some monorepos.   | (auto-detected)  |
-| `allowAny`       | When `true`, untyped `Json` fields resolve to `any` instead of `unknown`.                                                                 | `false`          |
-| `useType`        | Type in your namespace used for every untyped `Json` field. The generator adds an index signature `[key: string]: any` to it.             | `undefined`      |
-| `typedSqlUrlEnv` | Environment variable with the PostgreSQL URL used to match [TypedSQL](#typedsql) columns to schema fields.                                | `"DATABASE_URL"` |
+| Option           | Description                                                                                                                                     | Default          |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
+| `namespace`      | Global namespace that holds your custom types.                                                                                                  | `"PrismaJson"`   |
+| `clientOutput`   | Path to the `@prisma/client` output directory. It is detected automatically, so set it only when detection fails, as in some monorepos.         | (auto-detected)  |
+| `allowAny`       | When `true`, untyped `Json` fields resolve to `any` instead of `unknown`.                                                                       | `false`          |
+| `useType`        | Type in your namespace used for every untyped `Json` field. The generator adds an index signature `[key: string]: any` to it.                   | `undefined`      |
+| `typedSqlUrlEnv` | Environment variable with the PostgreSQL URL used to match [TypedSQL](#typedsql) columns to schema fields.                                      | `"DATABASE_URL"` |
 | `typedSqlPath`   | Directory of your [TypedSQL](#typedsql) `.sql` files, relative to the schema. Set it only if you changed `typedSql.path` in `prisma.config.ts`. | `"sql"`          |
 
 <br />
@@ -287,10 +291,10 @@ SELECT u.id, u.p AS profile, u.email AS contact FROM u
 ```ts
 export namespace getUsers {
   export type Result = {
-    id: number
-    profile: PrismaJson.UserProfile // was $runtime.JsonValue
-    contact: PrismaJson.UserEmail // was string
-  }
+    id: number;
+    profile: PrismaJson.UserProfile; // was $runtime.JsonValue
+    contact: PrismaJson.UserEmail; // was string
+  };
 }
 ```
 
@@ -377,17 +381,31 @@ Other libraries with static type inference, such as TypeBox or Yup, work the sam
 
 ## How it works
 
-During `npx prisma generate`, Prisma passes the generator the Data Model Meta Format (DMMF), which contains your schema and its AST comments. Once the Prisma client is generated, the generator parses its output files (`index.d.ts` for `prisma-client-js`, `.ts` files for `prisma-client`) into an abstract syntax tree (AST) with the TypeScript Compiler API.
+During `npx prisma generate`, Prisma passes the generator the Data Model Meta Format (DMMF), which contains your schema and its AST comments. Once the Prisma client is generated, the generator parses its output files (`index.d.ts` for `prisma-client-js`, `.ts` files for `prisma-client`) into an abstract syntax tree (AST) with [oxc-parser](https://www.npmjs.com/package/oxc-parser).
 
-For each model property in the AST, it looks up the field's type comment in the DMMF. When there is one, the original type node (such as `Prisma.JsonValue` or `string`) is replaced with a node for your type. The modified AST is then printed back over the original file. See the [core implementation](./src/handler/replace-object.ts) for details.
+For each model property in the AST, it looks up the field's type comment in the DMMF. When there is one, the generator replaces the source text of the original type node (such as `Prisma.JsonValue` or `string`) with your type. See the [core implementation](./src/handler/replace-object.ts) for details.
 
 <br />
 
 ## Limitations
 
 - `JsonFilter` and `JsonWithAggregatesFilter` stay untyped so that filtering keeps working.
-- `prisma-json-types-generator@5+` only supports Prisma v7 and TypeScript v6.
+- `prisma-json-types-generator@6` only supports Prisma 7.10 or later.
 - If a `Json` field is not typed correctly, please [open an issue](https://github.com/arthurfiorette/prisma-json-types-generator/issues).
+
+<br />
+
+## Legacy versions
+
+Since v6, the generator parses Prisma's output with [oxc-parser](https://www.npmjs.com/package/oxc-parser) instead of the TypeScript compiler, so it works with the TypeScript version your project already uses. The generated types are tested with TypeScript 5.9 and 7.
+
+| Version          | Prisma  | TypeScript                          |
+| ---------------- | ------- | ----------------------------------- |
+| `6.x`            | 7.10+   | Not used by the generator           |
+| `5.1.1` to `5.x` | 7.8+    | Bundles its own TypeScript 6        |
+| `5.0` to `5.1.0` | 7.8+    | TypeScript 6 as a peer dependency   |
+| `4.x`            | 7       | TypeScript 5.9 as a peer dependency |
+| `3.x`            | 5 and 6 | TypeScript 5 as a peer dependency   |
 
 <br />
 

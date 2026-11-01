@@ -1,0 +1,873 @@
+exports[`large schema > 300 models with prisma-client 1`] = `
+1 files with 66 BenchJson. and 16 (1 | 2)
+298 files with 96 BenchJson. and 23 (1 | 2)
+1 files with 78 BenchJson. and 19 (1 | 2)
+`;
+
+exports[`large schema > 300 models with prisma-client-js 1`] = `
+1 files with 28752 BenchJson. and 6889 (1 | 2)
+`;
+
+exports[`schemas > any.prisma 1`] = `
+test/target/any/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/any/pjtg.ts | created
+test/target/any/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > array.prisma 1`] = `
+test/target/array/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/array/models/Model.ts | ModelGroupByOutputType | array: runtime.JsonValue[] => array: ([number[]][])[]
+test/target/array/models/Model.ts | ModelWhereInput | array?: Prisma.JsonNullableListFilter<"Model"> => array?: PJTG.NullableListFilter<([number[]][])>
+test/target/array/models/Model.ts | ModelScalarWhereWithAggregatesInput | array?: Prisma.JsonNullableListFilter<"Model"> => array?: PJTG.NullableListFilter<([number[]][])>
+test/target/array/models/Model.ts | ModelCreateInput | array?: Prisma.ModelCreatearrayInput | runtime.InputJsonValue[] => array?: PJTG.CreateManyInput<([number[]][])>
+test/target/array/models/Model.ts | ModelUncheckedCreateInput | array?: Prisma.ModelCreatearrayInput | runtime.InputJsonValue[] => array?: PJTG.CreateManyInput<([number[]][])>
+test/target/array/models/Model.ts | ModelUpdateInput | array?: Prisma.ModelUpdatearrayInput | runtime.InputJsonValue[] => array?: PJTG.UpdateManyInput<([number[]][])>
+test/target/array/models/Model.ts | ModelUncheckedUpdateInput | array?: Prisma.ModelUpdatearrayInput | runtime.InputJsonValue[] => array?: PJTG.UpdateManyInput<([number[]][])>
+test/target/array/models/Model.ts | ModelCreateManyInput | array?: Prisma.ModelCreatearrayInput | runtime.InputJsonValue[] => array?: PJTG.CreateManyInput<([number[]][])>
+test/target/array/models/Model.ts | ModelUpdateManyMutationInput | array?: Prisma.ModelUpdatearrayInput | runtime.InputJsonValue[] => array?: PJTG.UpdateManyInput<([number[]][])>
+test/target/array/models/Model.ts | ModelUncheckedUpdateManyInput | array?: Prisma.ModelUpdatearrayInput | runtime.InputJsonValue[] => array?: PJTG.UpdateManyInput<([number[]][])>
+test/target/array/models/Model.ts | $ModelPayload | array: runtime.JsonValue[] => array: ([number[]][])[]
+test/target/array/pjtg.ts | created
+test/target/array/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > cockroach.prisma 1`] = `
+test/target/cockroach/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/cockroach/models/Model.ts | ModelGroupByOutputType | simple: runtime.JsonValue => simple: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | ModelGroupByOutputType | optional: runtime.JsonValue | null => optional: PCockroachJson.Optional | null
+test/target/cockroach/models/Model.ts | ModelCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | ModelCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PCockroachJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/cockroach/models/Model.ts | ModelUncheckedCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | ModelUncheckedCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PCockroachJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/cockroach/models/Model.ts | ModelUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | ModelUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PCockroachJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/cockroach/models/Model.ts | ModelUncheckedUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | ModelUncheckedUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PCockroachJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/cockroach/models/Model.ts | ModelCreateManyInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | ModelCreateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PCockroachJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/cockroach/models/Model.ts | ModelUpdateManyMutationInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | ModelUpdateManyMutationInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PCockroachJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/cockroach/models/Model.ts | ModelUncheckedUpdateManyInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | ModelUncheckedUpdateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PCockroachJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/cockroach/models/Model.ts | $ModelPayload | simple: runtime.JsonValue => simple: PCockroachJson.Simple
+test/target/cockroach/models/Model.ts | $ModelPayload | optional: runtime.JsonValue | null => optional: PCockroachJson.Optional | null
+test/target/cockroach/models/Text.ts | + import type * as PJTG from '../pjtg';
+test/target/cockroach/models/Text.ts | TextMinAggregateOutputType | typed: string | null => typed: PCockroachJson.WithType | null
+test/target/cockroach/models/Text.ts | TextMinAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/cockroach/models/Text.ts | TextMaxAggregateOutputType | typed: string | null => typed: PCockroachJson.WithType | null
+test/target/cockroach/models/Text.ts | TextMaxAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/cockroach/models/Text.ts | TextGroupByOutputType | typed: string => typed: PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextGroupByOutputType | literal: string => literal: ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextWhereInput | typed?: Prisma.StringFilter<"Text"> | string => typed?: PJTG.TypedStringFilter<PCockroachJson.WithType> | PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextWhereInput | literal?: Prisma.StringFilter<"Text"> | string => literal?: PJTG.TypedStringFilter<('A' | 'B')> | ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextScalarWhereWithAggregatesInput | typed?: Prisma.StringWithAggregatesFilter<"Text"> | string => typed?: PJTG.TypedStringWithAggregatesFilter<PCockroachJson.WithType> | PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextScalarWhereWithAggregatesInput | literal?: Prisma.StringWithAggregatesFilter<"Text"> | string => literal?: PJTG.TypedStringWithAggregatesFilter<('A' | 'B')> | ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextCreateInput | typed: string => typed: PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextCreateInput | literal: string => literal: ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextUncheckedCreateInput | typed: string => typed: PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextUncheckedCreateInput | literal: string => literal: ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PCockroachJson.WithType> | PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextUncheckedUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PCockroachJson.WithType> | PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextUncheckedUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextCreateManyInput | typed: string => typed: PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextCreateManyInput | literal: string => literal: ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextUpdateManyMutationInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PCockroachJson.WithType> | PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextUpdateManyMutationInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/cockroach/models/Text.ts | TextUncheckedUpdateManyInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PCockroachJson.WithType> | PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | TextUncheckedUpdateManyInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/cockroach/models/Text.ts | $TextPayload | typed: string => typed: PCockroachJson.WithType
+test/target/cockroach/models/Text.ts | $TextPayload | literal: string => literal: ('A' | 'B')
+test/target/cockroach/pjtg.ts | created
+test/target/cockroach/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > extensions.prisma 1`] = `
+test/target/extensions/models/User.ts | + import type * as PJTG from '../pjtg';
+test/target/extensions/models/User.ts | UserGroupByOutputType | profile: runtime.JsonValue | null => profile: PExtensionsJson.UserProfile | null
+test/target/extensions/models/User.ts | UserCreateInput | profile?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => profile?: PExtensionsJson.UserProfile | Prisma.NullableJsonNullValueInput
+test/target/extensions/models/User.ts | UserUncheckedCreateInput | profile?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => profile?: PExtensionsJson.UserProfile | Prisma.NullableJsonNullValueInput
+test/target/extensions/models/User.ts | UserUpdateInput | profile?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => profile?: PExtensionsJson.UserProfile | Prisma.NullableJsonNullValueInput
+test/target/extensions/models/User.ts | UserUncheckedUpdateInput | profile?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => profile?: PExtensionsJson.UserProfile | Prisma.NullableJsonNullValueInput
+test/target/extensions/models/User.ts | UserCreateManyInput | profile?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => profile?: PExtensionsJson.UserProfile | Prisma.NullableJsonNullValueInput
+test/target/extensions/models/User.ts | UserUpdateManyMutationInput | profile?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => profile?: PExtensionsJson.UserProfile | Prisma.NullableJsonNullValueInput
+test/target/extensions/models/User.ts | UserUncheckedUpdateManyInput | profile?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => profile?: PExtensionsJson.UserProfile | Prisma.NullableJsonNullValueInput
+test/target/extensions/models/User.ts | $UserPayload | profile: runtime.JsonValue | null => profile: PExtensionsJson.UserProfile | null
+test/target/extensions/pjtg.ts | created
+test/target/extensions/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > literal.prisma 1`] = `
+test/target/literal/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/literal/models/Model.ts | ModelGroupByOutputType | simple: runtime.JsonValue => simple: (1)
+test/target/literal/models/Model.ts | ModelGroupByOutputType | optional: runtime.JsonValue | null => optional: (2) | null
+test/target/literal/models/Model.ts | ModelGroupByOutputType | list: runtime.JsonValue[] => list: (3)[]
+test/target/literal/models/Model.ts | ModelWhereInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<(3)>
+test/target/literal/models/Model.ts | ModelScalarWhereWithAggregatesInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<(3)>
+test/target/literal/models/Model.ts | ModelCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: (1)
+test/target/literal/models/Model.ts | ModelCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: (2) | Prisma.NullableJsonNullValueInput
+test/target/literal/models/Model.ts | ModelCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: (3)[]
+test/target/literal/models/Model.ts | ModelUncheckedCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: (1)
+test/target/literal/models/Model.ts | ModelUncheckedCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: (2) | Prisma.NullableJsonNullValueInput
+test/target/literal/models/Model.ts | ModelUncheckedCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: (3)[]
+test/target/literal/models/Model.ts | ModelUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: (1)
+test/target/literal/models/Model.ts | ModelUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: (2) | Prisma.NullableJsonNullValueInput
+test/target/literal/models/Model.ts | ModelUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<(3)>
+test/target/literal/models/Model.ts | ModelUncheckedUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: (1)
+test/target/literal/models/Model.ts | ModelUncheckedUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: (2) | Prisma.NullableJsonNullValueInput
+test/target/literal/models/Model.ts | ModelUncheckedUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<(3)>
+test/target/literal/models/Model.ts | ModelCreateManyInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: (1)
+test/target/literal/models/Model.ts | ModelCreateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: (2) | Prisma.NullableJsonNullValueInput
+test/target/literal/models/Model.ts | ModelCreateManyInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: (3)[]
+test/target/literal/models/Model.ts | ModelUpdateManyMutationInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: (1)
+test/target/literal/models/Model.ts | ModelUpdateManyMutationInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: (2) | Prisma.NullableJsonNullValueInput
+test/target/literal/models/Model.ts | ModelUpdateManyMutationInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<(3)>
+test/target/literal/models/Model.ts | ModelUncheckedUpdateManyInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: (1)
+test/target/literal/models/Model.ts | ModelUncheckedUpdateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: (2) | Prisma.NullableJsonNullValueInput
+test/target/literal/models/Model.ts | ModelUncheckedUpdateManyInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<(3)>
+test/target/literal/models/Model.ts | $ModelPayload | simple: runtime.JsonValue => simple: (1)
+test/target/literal/models/Model.ts | $ModelPayload | optional: runtime.JsonValue | null => optional: (2) | null
+test/target/literal/models/Model.ts | $ModelPayload | list: runtime.JsonValue[] => list: (3)[]
+test/target/literal/pjtg.ts | created
+test/target/literal/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > mongo.prisma 1`] = `
+test/target/mongo/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/mongo/models/Model.ts | ModelGroupByOutputType | simple: runtime.JsonValue => simple: PMongoJson.Simple
+test/target/mongo/models/Model.ts | ModelGroupByOutputType | optional: runtime.JsonValue | null => optional: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | ModelGroupByOutputType | list: runtime.JsonValue[] => list: PMongoJson.List[]
+test/target/mongo/models/Model.ts | ModelWhereInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<PMongoJson.List>
+test/target/mongo/models/Model.ts | ModelScalarWhereWithAggregatesInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<PMongoJson.List>
+test/target/mongo/models/Model.ts | ModelCreateInput | simple: runtime.InputJsonValue => simple: PMongoJson.Simple
+test/target/mongo/models/Model.ts | ModelCreateInput | optional?: runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | ModelCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PMongoJson.List[]
+test/target/mongo/models/Model.ts | ModelUncheckedCreateInput | simple: runtime.InputJsonValue => simple: PMongoJson.Simple
+test/target/mongo/models/Model.ts | ModelUncheckedCreateInput | optional?: runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | ModelUncheckedCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PMongoJson.List[]
+test/target/mongo/models/Model.ts | ModelUpdateInput | simple?: runtime.InputJsonValue | runtime.InputJsonValue => simple?: PMongoJson.Simple
+test/target/mongo/models/Model.ts | ModelUpdateInput | optional?: runtime.InputJsonValue | runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | ModelUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PMongoJson.List>
+test/target/mongo/models/Model.ts | ModelUncheckedUpdateInput | simple?: runtime.InputJsonValue | runtime.InputJsonValue => simple?: PMongoJson.Simple
+test/target/mongo/models/Model.ts | ModelUncheckedUpdateInput | optional?: runtime.InputJsonValue | runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | ModelUncheckedUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PMongoJson.List>
+test/target/mongo/models/Model.ts | ModelCreateManyInput | simple: runtime.InputJsonValue => simple: PMongoJson.Simple
+test/target/mongo/models/Model.ts | ModelCreateManyInput | optional?: runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | ModelCreateManyInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PMongoJson.List[]
+test/target/mongo/models/Model.ts | ModelUpdateManyMutationInput | simple?: runtime.InputJsonValue | runtime.InputJsonValue => simple?: PMongoJson.Simple
+test/target/mongo/models/Model.ts | ModelUpdateManyMutationInput | optional?: runtime.InputJsonValue | runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | ModelUpdateManyMutationInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PMongoJson.List>
+test/target/mongo/models/Model.ts | ModelUncheckedUpdateManyInput | simple?: runtime.InputJsonValue | runtime.InputJsonValue => simple?: PMongoJson.Simple
+test/target/mongo/models/Model.ts | ModelUncheckedUpdateManyInput | optional?: runtime.InputJsonValue | runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | ModelUncheckedUpdateManyInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PMongoJson.List>
+test/target/mongo/models/Model.ts | NestedCreateInput | simple: runtime.InputJsonValue => simple: PMongoJson.Simple
+test/target/mongo/models/Model.ts | NestedCreateInput | optional?: runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | NestedCreateInput | list?: Prisma.NestedCreatelistInput | runtime.InputJsonValue[] => list?: PMongoJson.List[]
+test/target/mongo/models/Model.ts | $ModelPayload | simple: runtime.JsonValue => simple: PMongoJson.Simple
+test/target/mongo/models/Model.ts | $ModelPayload | optional: runtime.JsonValue | null => optional: PMongoJson.Optional | null
+test/target/mongo/models/Model.ts | $ModelPayload | list: runtime.JsonValue[] => list: PMongoJson.List[]
+test/target/mongo/models/Nested.ts | + import type * as PJTG from '../pjtg';
+test/target/mongo/models/Nested.ts | NestedWhereInput | list?: Prisma.JsonNullableListFilter<"Nested"> => list?: PJTG.NullableListFilter<PMongoJson.List>
+test/target/mongo/models/Nested.ts | NestedUpdateInput | simple?: runtime.InputJsonValue | runtime.InputJsonValue => simple?: PMongoJson.Simple
+test/target/mongo/models/Nested.ts | NestedUpdateInput | optional?: runtime.InputJsonValue | runtime.InputJsonValue | null => optional?: PMongoJson.Optional | null
+test/target/mongo/models/Nested.ts | NestedUpdateInput | list?: Prisma.NestedUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PMongoJson.List>
+test/target/mongo/models/Nested.ts | $NestedPayload | simple: runtime.JsonValue => simple: PMongoJson.Simple
+test/target/mongo/models/Nested.ts | $NestedPayload | optional: runtime.JsonValue | null => optional: PMongoJson.Optional | null
+test/target/mongo/models/Nested.ts | $NestedPayload | list: runtime.JsonValue[] => list: PMongoJson.List[]
+test/target/mongo/models/Text.ts | + import type * as PJTG from '../pjtg';
+test/target/mongo/models/Text.ts | TextMinAggregateOutputType | typed: string | null => typed: PMongoJson.WithType | null
+test/target/mongo/models/Text.ts | TextMinAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/mongo/models/Text.ts | TextMaxAggregateOutputType | typed: string | null => typed: PMongoJson.WithType | null
+test/target/mongo/models/Text.ts | TextMaxAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/mongo/models/Text.ts | TextGroupByOutputType | typed: string => typed: PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextGroupByOutputType | literal: string => literal: ('A' | 'B')
+test/target/mongo/models/Text.ts | TextWhereInput | typed?: Prisma.StringFilter<"Text"> | string => typed?: PJTG.TypedStringFilter<PMongoJson.WithType> | PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextWhereInput | literal?: Prisma.StringFilter<"Text"> | string => literal?: PJTG.TypedStringFilter<('A' | 'B')> | ('A' | 'B')
+test/target/mongo/models/Text.ts | TextScalarWhereWithAggregatesInput | typed?: Prisma.StringWithAggregatesFilter<"Text"> | string => typed?: PJTG.TypedStringWithAggregatesFilter<PMongoJson.WithType> | PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextScalarWhereWithAggregatesInput | literal?: Prisma.StringWithAggregatesFilter<"Text"> | string => literal?: PJTG.TypedStringWithAggregatesFilter<('A' | 'B')> | ('A' | 'B')
+test/target/mongo/models/Text.ts | TextCreateInput | typed: string => typed: PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextCreateInput | literal: string => literal: ('A' | 'B')
+test/target/mongo/models/Text.ts | TextUncheckedCreateInput | typed: string => typed: PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextUncheckedCreateInput | literal: string => literal: ('A' | 'B')
+test/target/mongo/models/Text.ts | TextUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMongoJson.WithType> | PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mongo/models/Text.ts | TextUncheckedUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMongoJson.WithType> | PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextUncheckedUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mongo/models/Text.ts | TextCreateManyInput | typed: string => typed: PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextCreateManyInput | literal: string => literal: ('A' | 'B')
+test/target/mongo/models/Text.ts | TextUpdateManyMutationInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMongoJson.WithType> | PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextUpdateManyMutationInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mongo/models/Text.ts | TextUncheckedUpdateManyInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMongoJson.WithType> | PMongoJson.WithType
+test/target/mongo/models/Text.ts | TextUncheckedUpdateManyInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mongo/models/Text.ts | $TextPayload | typed: string => typed: PMongoJson.WithType
+test/target/mongo/models/Text.ts | $TextPayload | literal: string => literal: ('A' | 'B')
+test/target/mongo/pjtg.ts | created
+test/target/mongo/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > mssql.prisma 1`] = `
+test/target/mssql/models/Text.ts | + import type * as PJTG from '../pjtg';
+test/target/mssql/models/Text.ts | TextMinAggregateOutputType | typed: string | null => typed: PMssqlJson.WithType | null
+test/target/mssql/models/Text.ts | TextMinAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/mssql/models/Text.ts | TextMaxAggregateOutputType | typed: string | null => typed: PMssqlJson.WithType | null
+test/target/mssql/models/Text.ts | TextMaxAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/mssql/models/Text.ts | TextGroupByOutputType | typed: string => typed: PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextGroupByOutputType | literal: string => literal: ('A' | 'B')
+test/target/mssql/models/Text.ts | TextWhereInput | typed?: Prisma.StringFilter<"Text"> | string => typed?: PJTG.TypedStringFilter<PMssqlJson.WithType> | PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextWhereInput | literal?: Prisma.StringFilter<"Text"> | string => literal?: PJTG.TypedStringFilter<('A' | 'B')> | ('A' | 'B')
+test/target/mssql/models/Text.ts | TextScalarWhereWithAggregatesInput | typed?: Prisma.StringWithAggregatesFilter<"Text"> | string => typed?: PJTG.TypedStringWithAggregatesFilter<PMssqlJson.WithType> | PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextScalarWhereWithAggregatesInput | literal?: Prisma.StringWithAggregatesFilter<"Text"> | string => literal?: PJTG.TypedStringWithAggregatesFilter<('A' | 'B')> | ('A' | 'B')
+test/target/mssql/models/Text.ts | TextCreateInput | typed: string => typed: PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextCreateInput | literal: string => literal: ('A' | 'B')
+test/target/mssql/models/Text.ts | TextUncheckedCreateInput | typed: string => typed: PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextUncheckedCreateInput | literal: string => literal: ('A' | 'B')
+test/target/mssql/models/Text.ts | TextUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMssqlJson.WithType> | PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mssql/models/Text.ts | TextUncheckedUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMssqlJson.WithType> | PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextUncheckedUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mssql/models/Text.ts | TextCreateManyInput | typed: string => typed: PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextCreateManyInput | literal: string => literal: ('A' | 'B')
+test/target/mssql/models/Text.ts | TextUpdateManyMutationInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMssqlJson.WithType> | PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextUpdateManyMutationInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mssql/models/Text.ts | TextUncheckedUpdateManyInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMssqlJson.WithType> | PMssqlJson.WithType
+test/target/mssql/models/Text.ts | TextUncheckedUpdateManyInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mssql/models/Text.ts | $TextPayload | typed: string => typed: PMssqlJson.WithType
+test/target/mssql/models/Text.ts | $TextPayload | literal: string => literal: ('A' | 'B')
+test/target/mssql/pjtg.ts | created
+test/target/mssql/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > multiple-clients.prisma 1`] = `
+test/target/multiple-clients-new/models/User.ts | + import type * as PJTG from '../pjtg';
+test/target/multiple-clients-new/models/User.ts | UserGroupByOutputType | profile: runtime.JsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | UserGroupByOutputType | settings: runtime.JsonValue | null => settings: PMultipleClientsJson.Settings | null
+test/target/multiple-clients-new/models/User.ts | UserGroupByOutputType | tags: runtime.JsonValue[] => tags: PMultipleClientsJson.Tag[]
+test/target/multiple-clients-new/models/User.ts | UserWhereInput | tags?: Prisma.JsonNullableListFilter<"User"> => tags?: PJTG.NullableListFilter<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | UserScalarWhereWithAggregatesInput | tags?: Prisma.JsonNullableListFilter<"User"> => tags?: PJTG.NullableListFilter<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | UserCreateInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | UserCreateInput | settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => settings?: PMultipleClientsJson.Settings | Prisma.NullableJsonNullValueInput
+test/target/multiple-clients-new/models/User.ts | UserCreateInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | UserUncheckedCreateInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | UserUncheckedCreateInput | settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => settings?: PMultipleClientsJson.Settings | Prisma.NullableJsonNullValueInput
+test/target/multiple-clients-new/models/User.ts | UserUncheckedCreateInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | UserUpdateInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | UserUpdateInput | settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => settings?: PMultipleClientsJson.Settings | Prisma.NullableJsonNullValueInput
+test/target/multiple-clients-new/models/User.ts | UserUpdateInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | UserUncheckedUpdateInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | UserUncheckedUpdateInput | settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => settings?: PMultipleClientsJson.Settings | Prisma.NullableJsonNullValueInput
+test/target/multiple-clients-new/models/User.ts | UserUncheckedUpdateInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | UserCreateManyInput | profile: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | UserCreateManyInput | settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => settings?: PMultipleClientsJson.Settings | Prisma.NullableJsonNullValueInput
+test/target/multiple-clients-new/models/User.ts | UserCreateManyInput | tags?: Prisma.UserCreatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.CreateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | UserUpdateManyMutationInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | UserUpdateManyMutationInput | settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => settings?: PMultipleClientsJson.Settings | Prisma.NullableJsonNullValueInput
+test/target/multiple-clients-new/models/User.ts | UserUpdateManyMutationInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | UserUncheckedUpdateManyInput | profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue => profile?: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | UserUncheckedUpdateManyInput | settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => settings?: PMultipleClientsJson.Settings | Prisma.NullableJsonNullValueInput
+test/target/multiple-clients-new/models/User.ts | UserUncheckedUpdateManyInput | tags?: Prisma.UserUpdatetagsInput | runtime.InputJsonValue[] => tags?: PJTG.UpdateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-new/models/User.ts | $UserPayload | profile: runtime.JsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-new/models/User.ts | $UserPayload | settings: runtime.JsonValue | null => settings: PMultipleClientsJson.Settings | null
+test/target/multiple-clients-new/models/User.ts | $UserPayload | tags: runtime.JsonValue[] => tags: PMultipleClientsJson.Tag[]
+test/target/multiple-clients-new/pjtg.ts | created
+test/target/multiple-clients-new/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+test/target/multiple-clients-old/index.d.ts | + declare global {
+test/target/multiple-clients-old/index.d.ts | + namespace PMultipleClientsJson {
+test/target/multiple-clients-old/index.d.ts | + // This namespace will always be empty. Definitions should be done by
+test/target/multiple-clients-old/index.d.ts | + // you manually, and merged automatically by typescript. Make sure that
+test/target/multiple-clients-old/index.d.ts | + // your declaration merging file is included in your tsconfig.json
+test/target/multiple-clients-old/index.d.ts | + //
+test/target/multiple-clients-old/index.d.ts | + // Learn more: https://github.com/arthurfiorette/prisma-json-types-generator/issues/143
+test/target/multiple-clients-old/index.d.ts | + // Declaration Merging: https://www.typescriptlang.org/docs/handbook/declaration-merging.html
+test/target/multiple-clients-old/index.d.ts | + }
+test/target/multiple-clients-old/index.d.ts | + }
+test/target/multiple-clients-old/index.d.ts | + /** A filter to be used against nullable List types. */
+test/target/multiple-clients-old/index.d.ts | + export type NullableListFilter<T> = {
+test/target/multiple-clients-old/index.d.ts | + equals?: T | T[] | null;
+test/target/multiple-clients-old/index.d.ts | + has?: T | null;
+test/target/multiple-clients-old/index.d.ts | + hasEvery?: T[];
+test/target/multiple-clients-old/index.d.ts | + hasSome?: T[];
+test/target/multiple-clients-old/index.d.ts | + isEmpty?: boolean;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /** A type to determine how to update a json field */
+test/target/multiple-clients-old/index.d.ts | + export type UpdateInput<T> = T extends object ? { [P in keyof T]?: UpdateInput<T[P]> } : T;
+test/target/multiple-clients-old/index.d.ts | + /** A type to determine how to update a json[] field */
+test/target/multiple-clients-old/index.d.ts | + export type UpdateManyInput<T> = T | T[] | { set?: T[]; push?: T | T[] };
+test/target/multiple-clients-old/index.d.ts | + /** A type to determine how to create a json[] input */
+test/target/multiple-clients-old/index.d.ts | + export type CreateManyInput<T> = T | T[] | { set?: T[] };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of NestedStringFilter, allowing narrowing of string types to
+test/target/multiple-clients-old/index.d.ts | + * discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedNestedStringFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.StringFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.StringFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S;
+test/target/multiple-clients-old/index.d.ts | + in?: S[];
+test/target/multiple-clients-old/index.d.ts | + notIn?: S[];
+test/target/multiple-clients-old/index.d.ts | + not?: TypedNestedStringFilter<S> | S;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of StringFilter, allowing narrowing of string types to discriminated
+test/target/multiple-clients-old/index.d.ts | + * unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedStringFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.StringFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.StringFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S;
+test/target/multiple-clients-old/index.d.ts | + in?: S[];
+test/target/multiple-clients-old/index.d.ts | + notIn?: S[];
+test/target/multiple-clients-old/index.d.ts | + not?: TypedNestedStringFilter<S> | S;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of NestedStringNullableFilter, allowing narrowing of string types to
+test/target/multiple-clients-old/index.d.ts | + * discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedNestedStringNullableFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.StringNullableFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.StringNullableFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S | null;
+test/target/multiple-clients-old/index.d.ts | + in?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + notIn?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + not?: TypedNestedStringNullableFilter<S> | S | null;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of StringNullableFilter, allowing narrowing of string types to
+test/target/multiple-clients-old/index.d.ts | + * discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedStringNullableFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.StringNullableFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.StringNullableFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S | null;
+test/target/multiple-clients-old/index.d.ts | + in?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + notIn?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + not?: TypedNestedStringNullableFilter<S> | S | null;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of NestedStringWithAggregatesFilter, allowing narrowing of string types
+test/target/multiple-clients-old/index.d.ts | + * to discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedNestedStringWithAggregatesFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.NestedStringWithAggregatesFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.NestedStringWithAggregatesFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S;
+test/target/multiple-clients-old/index.d.ts | + in?: S[];
+test/target/multiple-clients-old/index.d.ts | + notIn?: S[];
+test/target/multiple-clients-old/index.d.ts | + not?: TypedNestedStringWithAggregatesFilter<S> | S;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of StringWithAggregatesFilter, allowing narrowing of string types to
+test/target/multiple-clients-old/index.d.ts | + * discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedStringWithAggregatesFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.StringWithAggregatesFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.StringWithAggregatesFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S;
+test/target/multiple-clients-old/index.d.ts | + in?: S[];
+test/target/multiple-clients-old/index.d.ts | + notIn?: S[];
+test/target/multiple-clients-old/index.d.ts | + not?: TypedNestedStringWithAggregatesFilter<S> | S;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of NestedStringNullableWithAggregatesFilter, allowing narrowing of
+test/target/multiple-clients-old/index.d.ts | + * string types to discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedNestedStringNullableWithAggregatesFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.NestedStringNullableWithAggregatesFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.NestedStringNullableWithAggregatesFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S | null;
+test/target/multiple-clients-old/index.d.ts | + in?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + notIn?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + not?: TypedNestedStringNullableWithAggregatesFilter<S> | S | null;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of StringNullableWithAggregatesFilter, allowing narrowing of string
+test/target/multiple-clients-old/index.d.ts | + * types to discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedStringNullableWithAggregatesFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.StringNullableWithAggregatesFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.StringNullableWithAggregatesFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S | null;
+test/target/multiple-clients-old/index.d.ts | + in?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + notIn?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + not?: TypedNestedStringNullableWithAggregatesFilter<S> | S | null;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of StringFieldUpdateOperationsInput, allowing narrowing of string types
+test/target/multiple-clients-old/index.d.ts | + * to discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedStringFieldUpdateOperationsInput<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.StringFieldUpdateOperationsInput is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.StringFieldUpdateOperationsInput & {
+test/target/multiple-clients-old/index.d.ts | + set?: S;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of NullableStringFieldUpdateOperationsInput, allowing narrowing of
+test/target/multiple-clients-old/index.d.ts | + * string types to discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedNullableStringFieldUpdateOperationsInput<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.NullableStringFieldUpdateOperationsInput is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.NullableStringFieldUpdateOperationsInput & {
+test/target/multiple-clients-old/index.d.ts | + set?: S | null;
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of StringNullableListFilter, allowing narrowing of string types to
+test/target/multiple-clients-old/index.d.ts | + * discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type TypedStringNullableListFilter<S extends string> =
+test/target/multiple-clients-old/index.d.ts | + //@ts-ignore - When Prisma.StringNullableListFilter is not present, this type is not used
+test/target/multiple-clients-old/index.d.ts | + Prisma.StringNullableListFilter & {
+test/target/multiple-clients-old/index.d.ts | + equals?: S[] | null;
+test/target/multiple-clients-old/index.d.ts | + has?: S | null;
+test/target/multiple-clients-old/index.d.ts | + hasEvery?: S[];
+test/target/multiple-clients-old/index.d.ts | + hasSome?: S[];
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of the input type to update a string[] field, allowing narrowing of
+test/target/multiple-clients-old/index.d.ts | + * string types to discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type UpdateStringArrayInput<S extends string> = {
+test/target/multiple-clients-old/index.d.ts | + set?: S[];
+test/target/multiple-clients-old/index.d.ts | + push?: S | S[];
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | + /**
+test/target/multiple-clients-old/index.d.ts | + * A typed version of the input type to create a string[] field, allowing narrowing of
+test/target/multiple-clients-old/index.d.ts | + * string types to discriminated unions.
+test/target/multiple-clients-old/index.d.ts | + */
+test/target/multiple-clients-old/index.d.ts | + export type CreateStringArrayInput<S extends string> = {
+test/target/multiple-clients-old/index.d.ts | + set?: S[];
+test/target/multiple-clients-old/index.d.ts | + };
+test/target/multiple-clients-old/index.d.ts | UserGroupByOutputType | profile: JsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | UserGroupByOutputType | settings: JsonValue | null => settings: PMultipleClientsJson.Settings | null
+test/target/multiple-clients-old/index.d.ts | UserGroupByOutputType | tags: JsonValue[] => tags: PMultipleClientsJson.Tag[]
+test/target/multiple-clients-old/index.d.ts | $UserPayload | profile: Prisma.JsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | $UserPayload | settings: Prisma.JsonValue | null => settings: PMultipleClientsJson.Settings | null
+test/target/multiple-clients-old/index.d.ts | $UserPayload | tags: Prisma.JsonValue[] => tags: PMultipleClientsJson.Tag[]
+test/target/multiple-clients-old/index.d.ts | UserWhereInput | tags?: JsonNullableListFilter<"User"> => tags?: NullableListFilter<PMultipleClientsJson.Tag>
+test/target/multiple-clients-old/index.d.ts | UserScalarWhereWithAggregatesInput | tags?: JsonNullableListFilter<"User"> => tags?: NullableListFilter<PMultipleClientsJson.Tag>
+test/target/multiple-clients-old/index.d.ts | UserCreateInput | profile: JsonNullValueInput | InputJsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | UserCreateInput | settings?: NullableJsonNullValueInput | InputJsonValue => settings?: PMultipleClientsJson.Settings | NullableJsonNullValueInput
+test/target/multiple-clients-old/index.d.ts | UserCreateInput | tags?: UserCreatetagsInput | InputJsonValue[] => tags?: CreateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-old/index.d.ts | UserUncheckedCreateInput | profile: JsonNullValueInput | InputJsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | UserUncheckedCreateInput | settings?: NullableJsonNullValueInput | InputJsonValue => settings?: PMultipleClientsJson.Settings | NullableJsonNullValueInput
+test/target/multiple-clients-old/index.d.ts | UserUncheckedCreateInput | tags?: UserCreatetagsInput | InputJsonValue[] => tags?: CreateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-old/index.d.ts | UserUpdateInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | UserUpdateInput | settings?: NullableJsonNullValueInput | InputJsonValue => settings?: PMultipleClientsJson.Settings | NullableJsonNullValueInput
+test/target/multiple-clients-old/index.d.ts | UserUpdateInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-old/index.d.ts | UserUncheckedUpdateInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | UserUncheckedUpdateInput | settings?: NullableJsonNullValueInput | InputJsonValue => settings?: PMultipleClientsJson.Settings | NullableJsonNullValueInput
+test/target/multiple-clients-old/index.d.ts | UserUncheckedUpdateInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-old/index.d.ts | UserCreateManyInput | profile: JsonNullValueInput | InputJsonValue => profile: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | UserCreateManyInput | settings?: NullableJsonNullValueInput | InputJsonValue => settings?: PMultipleClientsJson.Settings | NullableJsonNullValueInput
+test/target/multiple-clients-old/index.d.ts | UserCreateManyInput | tags?: UserCreatetagsInput | InputJsonValue[] => tags?: CreateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-old/index.d.ts | UserUpdateManyMutationInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | UserUpdateManyMutationInput | settings?: NullableJsonNullValueInput | InputJsonValue => settings?: PMultipleClientsJson.Settings | NullableJsonNullValueInput
+test/target/multiple-clients-old/index.d.ts | UserUpdateManyMutationInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<PMultipleClientsJson.Tag>
+test/target/multiple-clients-old/index.d.ts | UserUncheckedUpdateManyInput | profile?: JsonNullValueInput | InputJsonValue => profile?: PMultipleClientsJson.Profile
+test/target/multiple-clients-old/index.d.ts | UserUncheckedUpdateManyInput | settings?: NullableJsonNullValueInput | InputJsonValue => settings?: PMultipleClientsJson.Settings | NullableJsonNullValueInput
+test/target/multiple-clients-old/index.d.ts | UserUncheckedUpdateManyInput | tags?: UserUpdatetagsInput | InputJsonValue[] => tags?: UpdateManyInput<PMultipleClientsJson.Tag>
+`;
+
+exports[`schemas > mysql.prisma 1`] = `
+test/target/mysql/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/mysql/models/Model.ts | ModelGroupByOutputType | simple: runtime.JsonValue => simple: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | ModelGroupByOutputType | optional: runtime.JsonValue | null => optional: PMysqlJson.Optional | null
+test/target/mysql/models/Model.ts | ModelCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | ModelCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PMysqlJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/mysql/models/Model.ts | ModelUncheckedCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | ModelUncheckedCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PMysqlJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/mysql/models/Model.ts | ModelUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | ModelUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PMysqlJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/mysql/models/Model.ts | ModelUncheckedUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | ModelUncheckedUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PMysqlJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/mysql/models/Model.ts | ModelCreateManyInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | ModelCreateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PMysqlJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/mysql/models/Model.ts | ModelUpdateManyMutationInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | ModelUpdateManyMutationInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PMysqlJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/mysql/models/Model.ts | ModelUncheckedUpdateManyInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | ModelUncheckedUpdateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PMysqlJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/mysql/models/Model.ts | $ModelPayload | simple: runtime.JsonValue => simple: PMysqlJson.Simple
+test/target/mysql/models/Model.ts | $ModelPayload | optional: runtime.JsonValue | null => optional: PMysqlJson.Optional | null
+test/target/mysql/models/Text.ts | + import type * as PJTG from '../pjtg';
+test/target/mysql/models/Text.ts | TextMinAggregateOutputType | typed: string | null => typed: PMysqlJson.WithType | null
+test/target/mysql/models/Text.ts | TextMinAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/mysql/models/Text.ts | TextMaxAggregateOutputType | typed: string | null => typed: PMysqlJson.WithType | null
+test/target/mysql/models/Text.ts | TextMaxAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/mysql/models/Text.ts | TextGroupByOutputType | typed: string => typed: PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextGroupByOutputType | literal: string => literal: ('A' | 'B')
+test/target/mysql/models/Text.ts | TextWhereInput | typed?: Prisma.StringFilter<"Text"> | string => typed?: PJTG.TypedStringFilter<PMysqlJson.WithType> | PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextWhereInput | literal?: Prisma.StringFilter<"Text"> | string => literal?: PJTG.TypedStringFilter<('A' | 'B')> | ('A' | 'B')
+test/target/mysql/models/Text.ts | TextScalarWhereWithAggregatesInput | typed?: Prisma.StringWithAggregatesFilter<"Text"> | string => typed?: PJTG.TypedStringWithAggregatesFilter<PMysqlJson.WithType> | PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextScalarWhereWithAggregatesInput | literal?: Prisma.StringWithAggregatesFilter<"Text"> | string => literal?: PJTG.TypedStringWithAggregatesFilter<('A' | 'B')> | ('A' | 'B')
+test/target/mysql/models/Text.ts | TextCreateInput | typed: string => typed: PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextCreateInput | literal: string => literal: ('A' | 'B')
+test/target/mysql/models/Text.ts | TextUncheckedCreateInput | typed: string => typed: PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextUncheckedCreateInput | literal: string => literal: ('A' | 'B')
+test/target/mysql/models/Text.ts | TextUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMysqlJson.WithType> | PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mysql/models/Text.ts | TextUncheckedUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMysqlJson.WithType> | PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextUncheckedUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mysql/models/Text.ts | TextCreateManyInput | typed: string => typed: PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextCreateManyInput | literal: string => literal: ('A' | 'B')
+test/target/mysql/models/Text.ts | TextUpdateManyMutationInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMysqlJson.WithType> | PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextUpdateManyMutationInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mysql/models/Text.ts | TextUncheckedUpdateManyInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PMysqlJson.WithType> | PMysqlJson.WithType
+test/target/mysql/models/Text.ts | TextUncheckedUpdateManyInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/mysql/models/Text.ts | $TextPayload | typed: string => typed: PMysqlJson.WithType
+test/target/mysql/models/Text.ts | $TextPayload | literal: string => literal: ('A' | 'B')
+test/target/mysql/pjtg.ts | created
+test/target/mysql/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > normal-prisma-client.prisma 1`] = `
+test/target/normal-prisma-client/models/Model.ts | + import type * as PJTG from '../pjtg.js';
+test/target/normal-prisma-client/models/Model.ts | ModelGroupByOutputType | simple: runtime.JsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelGroupByOutputType | optional: runtime.JsonValue | null => optional: PNormalPrismaClientJson.Optional | null
+test/target/normal-prisma-client/models/Model.ts | ModelGroupByOutputType | list: runtime.JsonValue[] => list: PNormalPrismaClientJson.List[]
+test/target/normal-prisma-client/models/Model.ts | ModelWhereInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<PNormalPrismaClientJson.List>
+test/target/normal-prisma-client/models/Model.ts | ModelScalarWhereWithAggregatesInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<PNormalPrismaClientJson.List>
+test/target/normal-prisma-client/models/Model.ts | ModelCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PNormalPrismaClientJson.List[]
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PNormalPrismaClientJson.List[]
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalPrismaClientJson.List>
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalPrismaClientJson.List>
+test/target/normal-prisma-client/models/Model.ts | ModelCreateManyInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelCreateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelCreateManyInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PNormalPrismaClientJson.List[]
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateManyMutationInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateManyMutationInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateManyMutationInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalPrismaClientJson.List>
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateManyInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateManyInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalPrismaClientJson.List>
+test/target/normal-prisma-client/models/Model.ts | ModelCreateWithoutModelsInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelCreateWithoutModelsInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelCreateWithoutModelsInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PNormalPrismaClientJson.List[]
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedCreateWithoutModelsInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedCreateWithoutModelsInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedCreateWithoutModelsInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PNormalPrismaClientJson.List[]
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateWithoutModelsInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateWithoutModelsInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelUpdateWithoutModelsInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalPrismaClientJson.List>
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateWithoutModelsInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateWithoutModelsInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalPrismaClientJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal-prisma-client/models/Model.ts | ModelUncheckedUpdateWithoutModelsInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalPrismaClientJson.List>
+test/target/normal-prisma-client/models/Model.ts | $ModelPayload | simple: runtime.JsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/Model.ts | $ModelPayload | optional: runtime.JsonValue | null => optional: PNormalPrismaClientJson.Optional | null
+test/target/normal-prisma-client/models/Model.ts | $ModelPayload | list: runtime.JsonValue[] => list: PNormalPrismaClientJson.List[]
+test/target/normal-prisma-client/models/SubModel.ts | + import type * as PJTG from '../pjtg.js';
+test/target/normal-prisma-client/models/SubModel.ts | SubModelGroupByOutputType | simple: runtime.JsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUncheckedCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUncheckedUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelCreateManyInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUpdateManyMutationInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUncheckedUpdateManyInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelCreateWithoutModelInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUncheckedCreateWithoutModelInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelCreateManyModelInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUpdateWithoutModelInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUncheckedUpdateWithoutModelInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | SubModelUncheckedUpdateManyWithoutModelInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/models/SubModel.ts | $SubModelPayload | simple: runtime.JsonValue => simple: PNormalPrismaClientJson.Simple
+test/target/normal-prisma-client/pjtg.ts | created
+test/target/normal-prisma-client/pjtg.ts | + import * as Prisma from './internal/prismaNamespace.js';
+`;
+
+exports[`schemas > normal.prisma 1`] = `
+test/target/normal/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/normal/models/Model.ts | ModelGroupByOutputType | simple: runtime.JsonValue => simple: PNormalJson.Simple
+test/target/normal/models/Model.ts | ModelGroupByOutputType | optional: runtime.JsonValue | null => optional: PNormalJson.Optional | null
+test/target/normal/models/Model.ts | ModelGroupByOutputType | list: runtime.JsonValue[] => list: PNormalJson.List[]
+test/target/normal/models/Model.ts | ModelWhereInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<PNormalJson.List>
+test/target/normal/models/Model.ts | ModelScalarWhereWithAggregatesInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<PNormalJson.List>
+test/target/normal/models/Model.ts | ModelCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalJson.Simple
+test/target/normal/models/Model.ts | ModelCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal/models/Model.ts | ModelCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PNormalJson.List[]
+test/target/normal/models/Model.ts | ModelUncheckedCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalJson.Simple
+test/target/normal/models/Model.ts | ModelUncheckedCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal/models/Model.ts | ModelUncheckedCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PNormalJson.List[]
+test/target/normal/models/Model.ts | ModelUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalJson.Simple
+test/target/normal/models/Model.ts | ModelUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal/models/Model.ts | ModelUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalJson.List>
+test/target/normal/models/Model.ts | ModelUncheckedUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalJson.Simple
+test/target/normal/models/Model.ts | ModelUncheckedUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal/models/Model.ts | ModelUncheckedUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalJson.List>
+test/target/normal/models/Model.ts | ModelCreateManyInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PNormalJson.Simple
+test/target/normal/models/Model.ts | ModelCreateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal/models/Model.ts | ModelCreateManyInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PNormalJson.List[]
+test/target/normal/models/Model.ts | ModelUpdateManyMutationInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalJson.Simple
+test/target/normal/models/Model.ts | ModelUpdateManyMutationInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal/models/Model.ts | ModelUpdateManyMutationInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalJson.List>
+test/target/normal/models/Model.ts | ModelUncheckedUpdateManyInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PNormalJson.Simple
+test/target/normal/models/Model.ts | ModelUncheckedUpdateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PNormalJson.Optional | Prisma.NullableJsonNullValueInput
+test/target/normal/models/Model.ts | ModelUncheckedUpdateManyInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PNormalJson.List>
+test/target/normal/models/Model.ts | $ModelPayload | simple: runtime.JsonValue => simple: PNormalJson.Simple
+test/target/normal/models/Model.ts | $ModelPayload | optional: runtime.JsonValue | null => optional: PNormalJson.Optional | null
+test/target/normal/models/Model.ts | $ModelPayload | list: runtime.JsonValue[] => list: PNormalJson.List[]
+test/target/normal/models/orders.ts | + import type * as PJTG from '../pjtg';
+test/target/normal/models/orders.ts | OrdersGroupByOutputType | meta: runtime.JsonValue | null => meta: PNormalJson.SampleJson | null
+test/target/normal/models/orders.ts | ordersCreateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PNormalJson.SampleJson | Prisma.NullableJsonNullValueInput
+test/target/normal/models/orders.ts | ordersUncheckedCreateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PNormalJson.SampleJson | Prisma.NullableJsonNullValueInput
+test/target/normal/models/orders.ts | ordersUpdateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PNormalJson.SampleJson | Prisma.NullableJsonNullValueInput
+test/target/normal/models/orders.ts | ordersUncheckedUpdateInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PNormalJson.SampleJson | Prisma.NullableJsonNullValueInput
+test/target/normal/models/orders.ts | ordersCreateManyInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PNormalJson.SampleJson | Prisma.NullableJsonNullValueInput
+test/target/normal/models/orders.ts | ordersUpdateManyMutationInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PNormalJson.SampleJson | Prisma.NullableJsonNullValueInput
+test/target/normal/models/orders.ts | ordersUncheckedUpdateManyInput | meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => meta?: PNormalJson.SampleJson | Prisma.NullableJsonNullValueInput
+test/target/normal/models/orders.ts | $ordersPayload | meta: runtime.JsonValue | null => meta: PNormalJson.SampleJson | null
+test/target/normal/pjtg.ts | created
+test/target/normal/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > nullable.prisma 1`] = `
+test/target/nullable/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/nullable/models/Model.ts | ModelGroupByOutputType | testJSON: runtime.JsonValue | null => testJSON: PrismaJson.PNullable["TestJsonType"] | null
+test/target/nullable/models/Model.ts | ModelCreateInput | testJSON?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => testJSON?: PrismaJson.PNullable["TestJsonType"] | Prisma.NullableJsonNullValueInput
+test/target/nullable/models/Model.ts | ModelUncheckedCreateInput | testJSON?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => testJSON?: PrismaJson.PNullable["TestJsonType"] | Prisma.NullableJsonNullValueInput
+test/target/nullable/models/Model.ts | ModelUpdateInput | testJSON?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => testJSON?: PrismaJson.PNullable["TestJsonType"] | Prisma.NullableJsonNullValueInput
+test/target/nullable/models/Model.ts | ModelUncheckedUpdateInput | testJSON?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => testJSON?: PrismaJson.PNullable["TestJsonType"] | Prisma.NullableJsonNullValueInput
+test/target/nullable/models/Model.ts | ModelCreateManyInput | testJSON?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => testJSON?: PrismaJson.PNullable["TestJsonType"] | Prisma.NullableJsonNullValueInput
+test/target/nullable/models/Model.ts | ModelUpdateManyMutationInput | testJSON?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => testJSON?: PrismaJson.PNullable["TestJsonType"] | Prisma.NullableJsonNullValueInput
+test/target/nullable/models/Model.ts | ModelUncheckedUpdateManyInput | testJSON?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => testJSON?: PrismaJson.PNullable["TestJsonType"] | Prisma.NullableJsonNullValueInput
+test/target/nullable/models/Model.ts | $ModelPayload | testJSON: runtime.JsonValue | null => testJSON: PrismaJson.PNullable["TestJsonType"] | null
+test/target/nullable/pjtg.ts | created
+test/target/nullable/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > number.prisma 1`] = `
+test/target/number/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/number/models/Model.ts | ModelMinAggregateOutputType | price: number | null => price: PNumberJson.Price | null
+test/target/number/models/Model.ts | ModelMinAggregateOutputType | nullablePrice: number | null => nullablePrice: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelMinAggregateOutputType | floatPrice: number | null => floatPrice: PNumberJson.FloatPrice | null
+test/target/number/models/Model.ts | ModelMaxAggregateOutputType | price: number | null => price: PNumberJson.Price | null
+test/target/number/models/Model.ts | ModelMaxAggregateOutputType | nullablePrice: number | null => nullablePrice: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelMaxAggregateOutputType | floatPrice: number | null => floatPrice: PNumberJson.FloatPrice | null
+test/target/number/models/Model.ts | ModelGroupByOutputType | price: number => price: PNumberJson.Price
+test/target/number/models/Model.ts | ModelGroupByOutputType | nullablePrice: number | null => nullablePrice: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelGroupByOutputType | floatPrice: number => floatPrice: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelGroupByOutputType | config: runtime.JsonValue | null => config: PNumberJson.Config | null
+test/target/number/models/Model.ts | ModelWhereInput | price?: Prisma.IntFilter<"Model"> | number => price?: Prisma.IntFilter<"Model"> | PNumberJson.Price
+test/target/number/models/Model.ts | ModelWhereInput | nullablePrice?: Prisma.IntNullableFilter<"Model"> | number | null => nullablePrice?: Prisma.IntNullableFilter<"Model"> | PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelWhereInput | floatPrice?: Prisma.FloatFilter<"Model"> | number => floatPrice?: Prisma.FloatFilter<"Model"> | PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelCreateInput | price: number => price: PNumberJson.Price
+test/target/number/models/Model.ts | ModelCreateInput | nullablePrice?: number | null => nullablePrice?: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelCreateInput | floatPrice: number => floatPrice: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelCreateInput | config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => config?: PNumberJson.Config | Prisma.NullableJsonNullValueInput
+test/target/number/models/Model.ts | ModelUncheckedCreateInput | price: number => price: PNumberJson.Price
+test/target/number/models/Model.ts | ModelUncheckedCreateInput | nullablePrice?: number | null => nullablePrice?: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelUncheckedCreateInput | floatPrice: number => floatPrice: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelUncheckedCreateInput | config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => config?: PNumberJson.Config | Prisma.NullableJsonNullValueInput
+test/target/number/models/Model.ts | ModelUpdateInput | price?: Prisma.IntFieldUpdateOperationsInput | number => price?: PNumberJson.Price
+test/target/number/models/Model.ts | ModelUpdateInput | nullablePrice?: Prisma.NullableIntFieldUpdateOperationsInput | number | null => nullablePrice?: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelUpdateInput | floatPrice?: Prisma.FloatFieldUpdateOperationsInput | number => floatPrice?: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelUpdateInput | config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => config?: PNumberJson.Config | Prisma.NullableJsonNullValueInput
+test/target/number/models/Model.ts | ModelUncheckedUpdateInput | price?: Prisma.IntFieldUpdateOperationsInput | number => price?: PNumberJson.Price
+test/target/number/models/Model.ts | ModelUncheckedUpdateInput | nullablePrice?: Prisma.NullableIntFieldUpdateOperationsInput | number | null => nullablePrice?: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelUncheckedUpdateInput | floatPrice?: Prisma.FloatFieldUpdateOperationsInput | number => floatPrice?: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelUncheckedUpdateInput | config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => config?: PNumberJson.Config | Prisma.NullableJsonNullValueInput
+test/target/number/models/Model.ts | ModelCreateManyInput | price: number => price: PNumberJson.Price
+test/target/number/models/Model.ts | ModelCreateManyInput | nullablePrice?: number | null => nullablePrice?: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelCreateManyInput | floatPrice: number => floatPrice: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelCreateManyInput | config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => config?: PNumberJson.Config | Prisma.NullableJsonNullValueInput
+test/target/number/models/Model.ts | ModelUpdateManyMutationInput | price?: Prisma.IntFieldUpdateOperationsInput | number => price?: PNumberJson.Price
+test/target/number/models/Model.ts | ModelUpdateManyMutationInput | nullablePrice?: Prisma.NullableIntFieldUpdateOperationsInput | number | null => nullablePrice?: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelUpdateManyMutationInput | floatPrice?: Prisma.FloatFieldUpdateOperationsInput | number => floatPrice?: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelUpdateManyMutationInput | config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => config?: PNumberJson.Config | Prisma.NullableJsonNullValueInput
+test/target/number/models/Model.ts | ModelUncheckedUpdateManyInput | price?: Prisma.IntFieldUpdateOperationsInput | number => price?: PNumberJson.Price
+test/target/number/models/Model.ts | ModelUncheckedUpdateManyInput | nullablePrice?: Prisma.NullableIntFieldUpdateOperationsInput | number | null => nullablePrice?: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | ModelUncheckedUpdateManyInput | floatPrice?: Prisma.FloatFieldUpdateOperationsInput | number => floatPrice?: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | ModelUncheckedUpdateManyInput | config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => config?: PNumberJson.Config | Prisma.NullableJsonNullValueInput
+test/target/number/models/Model.ts | $ModelPayload | price: number => price: PNumberJson.Price
+test/target/number/models/Model.ts | $ModelPayload | nullablePrice: number | null => nullablePrice: PNumberJson.NullablePrice | null
+test/target/number/models/Model.ts | $ModelPayload | floatPrice: number => floatPrice: PNumberJson.FloatPrice
+test/target/number/models/Model.ts | $ModelPayload | config: runtime.JsonValue | null => config: PNumberJson.Config | null
+test/target/number/pjtg.ts | created
+test/target/number/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > skip.prisma 1`] = `
+test/target/skip/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/skip/models/Model.ts | ModelGroupByOutputType | simple: runtime.JsonValue => simple: SkipJson.Simple
+test/target/skip/models/Model.ts | ModelGroupByOutputType | optional: runtime.JsonValue | null => optional: SkipJson.Optional | null
+test/target/skip/models/Model.ts | ModelGroupByOutputType | list: runtime.JsonValue[] => list: SkipJson.List[]
+test/target/skip/models/Model.ts | ModelWhereInput | list?: Prisma.JsonNullableListFilter<"Model"> | runtime.Types.Skip => list?: PJTG.NullableListFilter<SkipJson.List>| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelScalarWhereWithAggregatesInput | list?: Prisma.JsonNullableListFilter<"Model"> | runtime.Types.Skip => list?: PJTG.NullableListFilter<SkipJson.List>| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: SkipJson.Simple
+test/target/skip/models/Model.ts | ModelCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => optional?: SkipJson.Optional | Prisma.NullableJsonNullValueInput| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] | runtime.Types.Skip => list?: SkipJson.List[]| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUncheckedCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: SkipJson.Simple
+test/target/skip/models/Model.ts | ModelUncheckedCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => optional?: SkipJson.Optional | Prisma.NullableJsonNullValueInput| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUncheckedCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] | runtime.Types.Skip => list?: SkipJson.List[]| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => simple?: SkipJson.Simple| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => optional?: SkipJson.Optional | Prisma.NullableJsonNullValueInput| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] | runtime.Types.Skip => list?: PJTG.UpdateManyInput<SkipJson.List>| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUncheckedUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => simple?: SkipJson.Simple| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUncheckedUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => optional?: SkipJson.Optional | Prisma.NullableJsonNullValueInput| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUncheckedUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] | runtime.Types.Skip => list?: PJTG.UpdateManyInput<SkipJson.List>| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelCreateManyInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: SkipJson.Simple
+test/target/skip/models/Model.ts | ModelCreateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => optional?: SkipJson.Optional | Prisma.NullableJsonNullValueInput| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelCreateManyInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] | runtime.Types.Skip => list?: SkipJson.List[]| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUpdateManyMutationInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => simple?: SkipJson.Simple| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUpdateManyMutationInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => optional?: SkipJson.Optional | Prisma.NullableJsonNullValueInput| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUpdateManyMutationInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] | runtime.Types.Skip => list?: PJTG.UpdateManyInput<SkipJson.List>| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUncheckedUpdateManyInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => simple?: SkipJson.Simple| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUncheckedUpdateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue | runtime.Types.Skip => optional?: SkipJson.Optional | Prisma.NullableJsonNullValueInput| runtime.Types.Skip
+test/target/skip/models/Model.ts | ModelUncheckedUpdateManyInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] | runtime.Types.Skip => list?: PJTG.UpdateManyInput<SkipJson.List>| runtime.Types.Skip
+test/target/skip/models/Model.ts | $ModelPayload | simple: runtime.JsonValue => simple: SkipJson.Simple
+test/target/skip/models/Model.ts | $ModelPayload | optional: runtime.JsonValue | null => optional: SkipJson.Optional | null
+test/target/skip/models/Model.ts | $ModelPayload | list: runtime.JsonValue[] => list: SkipJson.List[]
+test/target/skip/pjtg.ts | created
+test/target/skip/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > sqlite.prisma 1`] = `
+test/target/sqlite/models/Text.ts | + import type * as PJTG from '../pjtg';
+test/target/sqlite/models/Text.ts | TextMinAggregateOutputType | typed: string | null => typed: PSqliteJson.WithType | null
+test/target/sqlite/models/Text.ts | TextMinAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/sqlite/models/Text.ts | TextMaxAggregateOutputType | typed: string | null => typed: PSqliteJson.WithType | null
+test/target/sqlite/models/Text.ts | TextMaxAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/sqlite/models/Text.ts | TextGroupByOutputType | typed: string => typed: PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextGroupByOutputType | literal: string => literal: ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextWhereInput | typed?: Prisma.StringFilter<"Text"> | string => typed?: PJTG.TypedStringFilter<PSqliteJson.WithType> | PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextWhereInput | literal?: Prisma.StringFilter<"Text"> | string => literal?: PJTG.TypedStringFilter<('A' | 'B')> | ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextScalarWhereWithAggregatesInput | typed?: Prisma.StringWithAggregatesFilter<"Text"> | string => typed?: PJTG.TypedStringWithAggregatesFilter<PSqliteJson.WithType> | PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextScalarWhereWithAggregatesInput | literal?: Prisma.StringWithAggregatesFilter<"Text"> | string => literal?: PJTG.TypedStringWithAggregatesFilter<('A' | 'B')> | ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextCreateInput | typed: string => typed: PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextCreateInput | literal: string => literal: ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextUncheckedCreateInput | typed: string => typed: PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextUncheckedCreateInput | literal: string => literal: ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PSqliteJson.WithType> | PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextUncheckedUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PSqliteJson.WithType> | PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextUncheckedUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextCreateManyInput | typed: string => typed: PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextCreateManyInput | literal: string => literal: ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextUpdateManyMutationInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PSqliteJson.WithType> | PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextUpdateManyMutationInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/sqlite/models/Text.ts | TextUncheckedUpdateManyInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PSqliteJson.WithType> | PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | TextUncheckedUpdateManyInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/sqlite/models/Text.ts | $TextPayload | typed: string => typed: PSqliteJson.WithType
+test/target/sqlite/models/Text.ts | $TextPayload | literal: string => literal: ('A' | 'B')
+test/target/sqlite/pjtg.ts | created
+test/target/sqlite/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > string.prisma 1`] = `
+test/target/string/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/string/models/Model.ts | ModelMinAggregateOutputType | typed: string | null => typed: PStringJson.WithType | null
+test/target/string/models/Model.ts | ModelMinAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/string/models/Model.ts | ModelMaxAggregateOutputType | typed: string | null => typed: PStringJson.WithType | null
+test/target/string/models/Model.ts | ModelMaxAggregateOutputType | literal: string | null => literal: ('A' | 'B') | null
+test/target/string/models/Model.ts | ModelGroupByOutputType | typed: string => typed: PStringJson.WithType
+test/target/string/models/Model.ts | ModelGroupByOutputType | literal: string => literal: ('A' | 'B')
+test/target/string/models/Model.ts | ModelWhereInput | typed?: Prisma.StringFilter<"Model"> | string => typed?: PJTG.TypedStringFilter<PStringJson.WithType> | PStringJson.WithType
+test/target/string/models/Model.ts | ModelWhereInput | literal?: Prisma.StringFilter<"Model"> | string => literal?: PJTG.TypedStringFilter<('A' | 'B')> | ('A' | 'B')
+test/target/string/models/Model.ts | ModelScalarWhereWithAggregatesInput | typed?: Prisma.StringWithAggregatesFilter<"Model"> | string => typed?: PJTG.TypedStringWithAggregatesFilter<PStringJson.WithType> | PStringJson.WithType
+test/target/string/models/Model.ts | ModelScalarWhereWithAggregatesInput | literal?: Prisma.StringWithAggregatesFilter<"Model"> | string => literal?: PJTG.TypedStringWithAggregatesFilter<('A' | 'B')> | ('A' | 'B')
+test/target/string/models/Model.ts | ModelCreateInput | typed: string => typed: PStringJson.WithType
+test/target/string/models/Model.ts | ModelCreateInput | literal: string => literal: ('A' | 'B')
+test/target/string/models/Model.ts | ModelUncheckedCreateInput | typed: string => typed: PStringJson.WithType
+test/target/string/models/Model.ts | ModelUncheckedCreateInput | literal: string => literal: ('A' | 'B')
+test/target/string/models/Model.ts | ModelUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PStringJson.WithType> | PStringJson.WithType
+test/target/string/models/Model.ts | ModelUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/string/models/Model.ts | ModelUncheckedUpdateInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PStringJson.WithType> | PStringJson.WithType
+test/target/string/models/Model.ts | ModelUncheckedUpdateInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/string/models/Model.ts | ModelCreateManyInput | typed: string => typed: PStringJson.WithType
+test/target/string/models/Model.ts | ModelCreateManyInput | literal: string => literal: ('A' | 'B')
+test/target/string/models/Model.ts | ModelUpdateManyMutationInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PStringJson.WithType> | PStringJson.WithType
+test/target/string/models/Model.ts | ModelUpdateManyMutationInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/string/models/Model.ts | ModelUncheckedUpdateManyInput | typed?: Prisma.StringFieldUpdateOperationsInput | string => typed?: PJTG.TypedStringFieldUpdateOperationsInput<PStringJson.WithType> | PStringJson.WithType
+test/target/string/models/Model.ts | ModelUncheckedUpdateManyInput | literal?: Prisma.StringFieldUpdateOperationsInput | string => literal?: PJTG.TypedStringFieldUpdateOperationsInput<('A' | 'B')> | ('A' | 'B')
+test/target/string/models/Model.ts | $ModelPayload | typed: string => typed: PStringJson.WithType
+test/target/string/models/Model.ts | $ModelPayload | literal: string => literal: ('A' | 'B')
+test/target/string/models/StringArrayModel.ts | + import type * as PJTG from '../pjtg';
+test/target/string/models/StringArrayModel.ts | StringArrayModelGroupByOutputType | tags: string[] => tags: (PStringJson.StringArrayType)[]
+test/target/string/models/StringArrayModel.ts | StringArrayModelWhereInput | tags?: Prisma.StringNullableListFilter<"StringArrayModel"> => tags?: PJTG.TypedStringNullableListFilter<PStringJson.StringArrayType>
+test/target/string/models/StringArrayModel.ts | StringArrayModelScalarWhereWithAggregatesInput | tags?: Prisma.StringNullableListFilter<"StringArrayModel"> => tags?: PJTG.TypedStringNullableListFilter<PStringJson.StringArrayType>
+test/target/string/models/StringArrayModel.ts | StringArrayModelCreateInput | tags?: Prisma.StringArrayModelCreatetagsInput | string[] => tags?: PJTG.CreateStringArrayInput<PStringJson.StringArrayType> | PStringJson.StringArrayType[]
+test/target/string/models/StringArrayModel.ts | StringArrayModelUncheckedCreateInput | tags?: Prisma.StringArrayModelCreatetagsInput | string[] => tags?: PJTG.CreateStringArrayInput<PStringJson.StringArrayType> | PStringJson.StringArrayType[]
+test/target/string/models/StringArrayModel.ts | StringArrayModelUpdateInput | tags?: Prisma.StringArrayModelUpdatetagsInput | string[] => tags?: PJTG.CreateStringArrayInput<PStringJson.StringArrayType> | PStringJson.StringArrayType[]
+test/target/string/models/StringArrayModel.ts | StringArrayModelUncheckedUpdateInput | tags?: Prisma.StringArrayModelUpdatetagsInput | string[] => tags?: PJTG.CreateStringArrayInput<PStringJson.StringArrayType> | PStringJson.StringArrayType[]
+test/target/string/models/StringArrayModel.ts | StringArrayModelCreateManyInput | tags?: Prisma.StringArrayModelCreatetagsInput | string[] => tags?: PJTG.CreateStringArrayInput<PStringJson.StringArrayType> | PStringJson.StringArrayType[]
+test/target/string/models/StringArrayModel.ts | StringArrayModelUpdateManyMutationInput | tags?: Prisma.StringArrayModelUpdatetagsInput | string[] => tags?: PJTG.CreateStringArrayInput<PStringJson.StringArrayType> | PStringJson.StringArrayType[]
+test/target/string/models/StringArrayModel.ts | StringArrayModelUncheckedUpdateManyInput | tags?: Prisma.StringArrayModelUpdatetagsInput | string[] => tags?: PJTG.CreateStringArrayInput<PStringJson.StringArrayType> | PStringJson.StringArrayType[]
+test/target/string/models/StringArrayModel.ts | $StringArrayModelPayload | tags: string[] => tags: (PStringJson.StringArrayType)[]
+test/target/string/pjtg.ts | created
+test/target/string/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > unknown.prisma 1`] = `
+test/target/unknown/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/unknown/models/Model.ts | ModelGroupByOutputType | field: runtime.JsonValue => field: unknown
+test/target/unknown/models/Model.ts | ModelGroupByOutputType | fieldArray: runtime.JsonValue[] => fieldArray: unknown[]
+test/target/unknown/models/Model.ts | ModelGroupByOutputType | fieldOptional: runtime.JsonValue | null => fieldOptional: unknown | null
+test/target/unknown/models/Model.ts | ModelWhereInput | fieldArray?: Prisma.JsonNullableListFilter<"Model"> => fieldArray?: PJTG.NullableListFilter<unknown>
+test/target/unknown/models/Model.ts | ModelScalarWhereWithAggregatesInput | fieldArray?: Prisma.JsonNullableListFilter<"Model"> => fieldArray?: PJTG.NullableListFilter<unknown>
+test/target/unknown/models/Model.ts | ModelCreateInput | field: Prisma.JsonNullValueInput | runtime.InputJsonValue => field: unknown
+test/target/unknown/models/Model.ts | ModelCreateInput | fieldArray?: Prisma.ModelCreatefieldArrayInput | runtime.InputJsonValue[] => fieldArray?: PJTG.CreateManyInput<unknown>
+test/target/unknown/models/Model.ts | ModelCreateInput | fieldOptional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => fieldOptional?: unknown | Prisma.NullableJsonNullValueInput
+test/target/unknown/models/Model.ts | ModelUncheckedCreateInput | field: Prisma.JsonNullValueInput | runtime.InputJsonValue => field: unknown
+test/target/unknown/models/Model.ts | ModelUncheckedCreateInput | fieldArray?: Prisma.ModelCreatefieldArrayInput | runtime.InputJsonValue[] => fieldArray?: PJTG.CreateManyInput<unknown>
+test/target/unknown/models/Model.ts | ModelUncheckedCreateInput | fieldOptional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => fieldOptional?: unknown | Prisma.NullableJsonNullValueInput
+test/target/unknown/models/Model.ts | ModelUpdateInput | field?: Prisma.JsonNullValueInput | runtime.InputJsonValue => field?: unknown
+test/target/unknown/models/Model.ts | ModelUpdateInput | fieldArray?: Prisma.ModelUpdatefieldArrayInput | runtime.InputJsonValue[] => fieldArray?: PJTG.UpdateManyInput<unknown>
+test/target/unknown/models/Model.ts | ModelUpdateInput | fieldOptional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => fieldOptional?: unknown | Prisma.NullableJsonNullValueInput
+test/target/unknown/models/Model.ts | ModelUncheckedUpdateInput | field?: Prisma.JsonNullValueInput | runtime.InputJsonValue => field?: unknown
+test/target/unknown/models/Model.ts | ModelUncheckedUpdateInput | fieldArray?: Prisma.ModelUpdatefieldArrayInput | runtime.InputJsonValue[] => fieldArray?: PJTG.UpdateManyInput<unknown>
+test/target/unknown/models/Model.ts | ModelUncheckedUpdateInput | fieldOptional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => fieldOptional?: unknown | Prisma.NullableJsonNullValueInput
+test/target/unknown/models/Model.ts | ModelCreateManyInput | field: Prisma.JsonNullValueInput | runtime.InputJsonValue => field: unknown
+test/target/unknown/models/Model.ts | ModelCreateManyInput | fieldArray?: Prisma.ModelCreatefieldArrayInput | runtime.InputJsonValue[] => fieldArray?: PJTG.CreateManyInput<unknown>
+test/target/unknown/models/Model.ts | ModelCreateManyInput | fieldOptional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => fieldOptional?: unknown | Prisma.NullableJsonNullValueInput
+test/target/unknown/models/Model.ts | ModelUpdateManyMutationInput | field?: Prisma.JsonNullValueInput | runtime.InputJsonValue => field?: unknown
+test/target/unknown/models/Model.ts | ModelUpdateManyMutationInput | fieldArray?: Prisma.ModelUpdatefieldArrayInput | runtime.InputJsonValue[] => fieldArray?: PJTG.UpdateManyInput<unknown>
+test/target/unknown/models/Model.ts | ModelUpdateManyMutationInput | fieldOptional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => fieldOptional?: unknown | Prisma.NullableJsonNullValueInput
+test/target/unknown/models/Model.ts | ModelUncheckedUpdateManyInput | field?: Prisma.JsonNullValueInput | runtime.InputJsonValue => field?: unknown
+test/target/unknown/models/Model.ts | ModelUncheckedUpdateManyInput | fieldArray?: Prisma.ModelUpdatefieldArrayInput | runtime.InputJsonValue[] => fieldArray?: PJTG.UpdateManyInput<unknown>
+test/target/unknown/models/Model.ts | ModelUncheckedUpdateManyInput | fieldOptional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => fieldOptional?: unknown | Prisma.NullableJsonNullValueInput
+test/target/unknown/models/Model.ts | $ModelPayload | field: runtime.JsonValue => field: unknown
+test/target/unknown/models/Model.ts | $ModelPayload | fieldArray: runtime.JsonValue[] => fieldArray: unknown[]
+test/target/unknown/models/Model.ts | $ModelPayload | fieldOptional: runtime.JsonValue | null => fieldOptional: unknown | null
+test/target/unknown/pjtg.ts | created
+test/target/unknown/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;
+
+exports[`schemas > use-type.prisma 1`] = `
+test/target/use-type/models/Model.ts | + import type * as PJTG from '../pjtg';
+test/target/use-type/models/Model.ts | ModelGroupByOutputType | simple: runtime.JsonValue => simple: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | ModelGroupByOutputType | optional: runtime.JsonValue | null => optional: PrismaJson.MyOwnType["Optional"] | null
+test/target/use-type/models/Model.ts | ModelGroupByOutputType | list: runtime.JsonValue[] => list: PrismaJson.MyOwnType["List"][]
+test/target/use-type/models/Model.ts | ModelWhereInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<PrismaJson.MyOwnType["List"]>
+test/target/use-type/models/Model.ts | ModelScalarWhereWithAggregatesInput | list?: Prisma.JsonNullableListFilter<"Model"> => list?: PJTG.NullableListFilter<PrismaJson.MyOwnType["List"]>
+test/target/use-type/models/Model.ts | ModelCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | ModelCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PrismaJson.MyOwnType["Optional"] | Prisma.NullableJsonNullValueInput
+test/target/use-type/models/Model.ts | ModelCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PrismaJson.MyOwnType["List"][]
+test/target/use-type/models/Model.ts | ModelUncheckedCreateInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | ModelUncheckedCreateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PrismaJson.MyOwnType["Optional"] | Prisma.NullableJsonNullValueInput
+test/target/use-type/models/Model.ts | ModelUncheckedCreateInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PrismaJson.MyOwnType["List"][]
+test/target/use-type/models/Model.ts | ModelUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | ModelUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PrismaJson.MyOwnType["Optional"] | Prisma.NullableJsonNullValueInput
+test/target/use-type/models/Model.ts | ModelUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PrismaJson.MyOwnType["List"]>
+test/target/use-type/models/Model.ts | ModelUncheckedUpdateInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | ModelUncheckedUpdateInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PrismaJson.MyOwnType["Optional"] | Prisma.NullableJsonNullValueInput
+test/target/use-type/models/Model.ts | ModelUncheckedUpdateInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PrismaJson.MyOwnType["List"]>
+test/target/use-type/models/Model.ts | ModelCreateManyInput | simple: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | ModelCreateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PrismaJson.MyOwnType["Optional"] | Prisma.NullableJsonNullValueInput
+test/target/use-type/models/Model.ts | ModelCreateManyInput | list?: Prisma.ModelCreatelistInput | runtime.InputJsonValue[] => list?: PrismaJson.MyOwnType["List"][]
+test/target/use-type/models/Model.ts | ModelUpdateManyMutationInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | ModelUpdateManyMutationInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PrismaJson.MyOwnType["Optional"] | Prisma.NullableJsonNullValueInput
+test/target/use-type/models/Model.ts | ModelUpdateManyMutationInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PrismaJson.MyOwnType["List"]>
+test/target/use-type/models/Model.ts | ModelUncheckedUpdateManyInput | simple?: Prisma.JsonNullValueInput | runtime.InputJsonValue => simple?: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | ModelUncheckedUpdateManyInput | optional?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue => optional?: PrismaJson.MyOwnType["Optional"] | Prisma.NullableJsonNullValueInput
+test/target/use-type/models/Model.ts | ModelUncheckedUpdateManyInput | list?: Prisma.ModelUpdatelistInput | runtime.InputJsonValue[] => list?: PJTG.UpdateManyInput<PrismaJson.MyOwnType["List"]>
+test/target/use-type/models/Model.ts | $ModelPayload | simple: runtime.JsonValue => simple: PrismaJson.MyOwnType["Simple"]
+test/target/use-type/models/Model.ts | $ModelPayload | optional: runtime.JsonValue | null => optional: PrismaJson.MyOwnType["Optional"] | null
+test/target/use-type/models/Model.ts | $ModelPayload | list: runtime.JsonValue[] => list: PrismaJson.MyOwnType["List"][]
+test/target/use-type/pjtg.ts | created
+test/target/use-type/pjtg.ts | + import * as Prisma from './internal/prismaNamespace';
+`;

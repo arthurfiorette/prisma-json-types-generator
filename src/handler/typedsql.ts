@@ -2,9 +2,10 @@ import fs from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import type DMMF from '@prisma/dmmf';
 import type { GeneratorOptions, SqlQueryOutput } from '@prisma/generator';
-import ts from 'typescript';
+import type { ParamPattern, TSPropertySignature, TSTupleElement } from 'oxc-parser';
 import { type DescribedColumn, describeQueryOrigins } from '../helpers/pg-origins';
 import { parseSqlAnnotations } from '../helpers/sql-annotations';
+import { getIdentifierName, getText, parseSource, unwrapExport } from '../util/ast';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { createType } from '../util/create-signature';
 import { findFirstCodeIndex } from '../util/source-path';
@@ -208,39 +209,46 @@ async function readSqlAnnotations(sqlDir: string, query: SqlQueryOutput, foldUnq
  * Handles both clients: `prisma-client` (`as (...) => TypedSql` cast in a `.ts` file) and
  * `prisma-client-js` (`const q: (...) => TypedSql` in a `.d.ts` file).
  */
-export function rewriteTypedSqlFile(content: string, queryName: string, types: QueryTypes) {
-  const source = ts.createSourceFile('query.ts', content, ts.ScriptTarget.ESNext, true);
+export function rewriteTypedSqlFile(
+  filepath: string,
+  content: string,
+  queryName: string,
+  types: QueryTypes
+) {
+  const program = parseSource(filepath, content);
   const changes: TextDiff[] = [];
 
-  const replace = (node: ts.TypeNode | undefined, type: string | undefined) => {
+  const replace = (node: TSTupleElement | null | undefined, type: string | undefined) => {
     const base = node && type ? findBaseType(node) : undefined;
 
     if (base && type) {
-      changes.push({ start: base.getStart(source), end: base.end, text: type });
+      changes.push({ start: base.start, end: base.end, text: type });
     }
   };
 
-  const replaceParameters = (parameters: readonly (ts.TypeNode | undefined)[]) => {
+  const replaceParameters = (parameters: readonly (TSTupleElement | null | undefined)[]) => {
     for (const [index, node] of parameters.entries()) {
       replace(node, types.parameters.get(index));
     }
   };
 
-  for (const statement of source.statements) {
-    if (ts.isVariableStatement(statement)) {
-      for (const declaration of statement.declarationList.declarations) {
-        if (!ts.isIdentifier(declaration.name) || declaration.name.text !== queryName) {
+  for (const child of program.body) {
+    const statement = unwrapExport(child);
+
+    if (statement?.type === 'VariableDeclaration') {
+      for (const declaration of statement.declarations) {
+        if (declaration.id.type !== 'Identifier' || declaration.id.name !== queryName) {
           continue;
         }
 
         const signature =
-          declaration.type ??
-          (declaration.initializer && ts.isAsExpression(declaration.initializer)
-            ? declaration.initializer.type
+          declaration.id.typeAnnotation?.typeAnnotation ??
+          (declaration.init?.type === 'TSAsExpression'
+            ? declaration.init.typeAnnotation
             : undefined);
 
-        if (signature && ts.isFunctionTypeNode(signature)) {
-          replaceParameters(signature.parameters.map((p) => p.type));
+        if (signature?.type === 'TSFunctionType') {
+          replaceParameters(signature.params.map(getParameterType));
         }
       }
 
@@ -248,31 +256,36 @@ export function rewriteTypedSqlFile(content: string, queryName: string, types: Q
     }
 
     if (
-      !ts.isModuleDeclaration(statement) ||
-      statement.name.text !== queryName ||
-      !statement.body ||
-      !ts.isModuleBlock(statement.body)
+      statement?.type !== 'TSModuleDeclaration' ||
+      statement.id.type !== 'Identifier' ||
+      statement.id.name !== queryName ||
+      !statement.body
     ) {
       continue;
     }
 
-    for (const alias of statement.body.statements) {
-      if (!ts.isTypeAliasDeclaration(alias)) {
+    for (const child of statement.body.body) {
+      const alias = unwrapExport(child);
+
+      if (alias?.type !== 'TSTypeAliasDeclaration') {
         continue;
       }
 
-      if (alias.name.text === 'Result' && ts.isTypeLiteralNode(alias.type)) {
-        for (const member of alias.type.members) {
-          if (ts.isPropertySignature(member) && member.name) {
-            replace(member.type, types.columns.get(getPropertyName(member.name)));
+      if (alias.id.name === 'Result' && alias.typeAnnotation.type === 'TSTypeLiteral') {
+        for (const member of alias.typeAnnotation.members) {
+          if (member.type === 'TSPropertySignature') {
+            replace(
+              member.typeAnnotation?.typeAnnotation,
+              types.columns.get(getPropertyName(content, member))
+            );
           }
         }
       }
 
-      if (alias.name.text === 'Parameters' && ts.isTupleTypeNode(alias.type)) {
+      if (alias.id.name === 'Parameters' && alias.typeAnnotation.type === 'TSTupleType') {
         replaceParameters(
-          alias.type.elements.map((element) =>
-            ts.isNamedTupleMember(element) ? element.type : element
+          alias.typeAnnotation.elementTypes.map((element) =>
+            element.type === 'TSNamedTupleMember' ? element.elementType : element
           )
         );
       }
@@ -283,19 +296,17 @@ export function rewriteTypedSqlFile(content: string, queryName: string, types: Q
 }
 
 /** Unwraps `X | null`, `X[]` and `(X)` down to `X`, or undefined for anything else. */
-function findBaseType(node: ts.TypeNode): ts.TypeNode | undefined {
-  if (ts.isParenthesizedTypeNode(node)) {
-    return findBaseType(node.type);
+function findBaseType(node: TSTupleElement): TSTupleElement | undefined {
+  if (node.type === 'TSParenthesizedType') {
+    return findBaseType(node.typeAnnotation);
   }
 
-  if (ts.isArrayTypeNode(node)) {
+  if (node.type === 'TSArrayType') {
     return findBaseType(node.elementType);
   }
 
-  if (ts.isUnionTypeNode(node)) {
-    const types = node.types.filter(
-      (type) => !ts.isLiteralTypeNode(type) || type.literal.kind !== ts.SyntaxKind.NullKeyword
-    );
+  if (node.type === 'TSUnionType') {
+    const types = node.types.filter((type) => type.type !== 'TSNullKeyword');
 
     return types.length === 1 ? findBaseType(types[0]!) : undefined;
   }
@@ -303,13 +314,21 @@ function findBaseType(node: ts.TypeNode): ts.TypeNode | undefined {
   return node;
 }
 
-function getPropertyName(name: ts.PropertyName) {
+function getParameterType(parameter: ParamPattern) {
+  return parameter.type === 'TSParameterProperty'
+    ? undefined
+    : parameter.typeAnnotation?.typeAnnotation;
+}
+
+function getPropertyName(content: string, member: TSPropertySignature) {
+  const { key } = member;
+
   // Prisma writes names that aren't identifiers as `["computed"]` properties
-  if (ts.isComputedPropertyName(name) && ts.isStringLiteralLike(name.expression)) {
-    return name.expression.text;
+  if (key.type === 'Literal' && typeof key.value === 'string') {
+    return key.value;
   }
 
-  return ts.isIdentifier(name) || ts.isStringLiteral(name) ? name.text : name.getText();
+  return getIdentifierName(key, member.computed) ?? getText(content, key);
 }
 
 /** Applies the resolved types to every query file generated for a client. */
@@ -335,14 +354,17 @@ export async function handleTypedSqlFiles(
       continue;
     }
 
-    let { content, changed } = rewriteTypedSqlFile(original, queryName, queryTypes);
+    let { content, changed } = rewriteTypedSqlFile(filepath, original, queryName, queryTypes);
 
     if (!changed) {
       continue;
     }
 
     // Same as model files, makes sure the global namespace is part of the program
-    if (isNewClient && (await fs.stat(join(outputDir, 'pjtg.ts')).catch(() => null))) {
+    if (
+      isNewClient &&
+      (await fs.stat(join(outputDir, `pjtg.${fileExtension}`)).catch(() => null))
+    ) {
       const index = findFirstCodeIndex(content);
       const dotExt = importFileExtension ? `.${importFileExtension}` : '';
       content = `${content.slice(0, index)}\nimport type * as PJTG from '../pjtg${dotExt}';\n${content.slice(index)}`;

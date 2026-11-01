@@ -1,5 +1,5 @@
+import type { TSModuleDeclaration } from 'oxc-parser';
 import { Result } from 'try';
-import ts from 'typescript';
 import type { PrismaEntity } from '../helpers/dmmf';
 import type { PrismaJsonTypesGeneratorConfig } from '../util/config';
 import { PRISMA_NAMESPACE_NAME } from '../util/constants';
@@ -9,32 +9,24 @@ import { handleStatement } from './statement';
 
 /** Handles the prisma namespace module. */
 export function handlePrismaModule(
-  child: ts.ModuleDeclaration,
+  child: TSModuleDeclaration,
   writer: DeclarationWriter,
   modelMap: Map<string, PrismaEntity>,
   knownNoOps: Set<string>,
   typeToNameMap: Map<string, string>,
   config: PrismaJsonTypesGeneratorConfig
 ) {
-  const name = child
-    .getChildren()
-    .find((n): n is ts.Identifier => n.kind === ts.SyntaxKind.Identifier);
-
   // Not a prisma namespace
-  if (!name || name.text !== PRISMA_NAMESPACE_NAME) {
+  if (child.id.type !== 'Identifier' || child.id.name !== PRISMA_NAMESPACE_NAME) {
     return;
   }
 
-  const content = child
-    .getChildren()
-    .find((n): n is ts.ModuleBlock => n.kind === ts.SyntaxKind.ModuleBlock);
-
-  if (!content?.statements.length) {
+  if (!child.body?.body.length) {
     throw new PrismaJsonTypesGeneratorError('Prisma namespace content could not be found');
   }
 
   // Loops through all statements in the prisma namespace
-  for (const statement of content.statements) {
+  for (const statement of child.body.body) {
     const { ok, error } = Result.try(() =>
       handleStatement(statement, writer, modelMap, typeToNameMap, knownNoOps, config)
     );

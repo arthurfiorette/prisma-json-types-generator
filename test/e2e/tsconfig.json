@@ -1,0 +1,17 @@
+{
+  // Type checks the generated output of test/e2e/generate.test.ts with TypeScript 7
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
+    "strict": true,
+    // Prisma imports its own untyped query compiler `.js` files
+    "noImplicitAny": false,
+    // The prisma-client-js output is a `.d.ts` file
+    "skipLibCheck": false,
+    "noEmit": true
+  },
+  "include": ["../types/*.test-d.ts", "./fixtures/large-types.ts"],
+  "exclude": ["../types/typedsql.test-d.ts"]
+}
